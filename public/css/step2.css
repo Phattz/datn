@@ -1,0 +1,161 @@
+/* trang thanh toán 2 */
+.paymentStep2{
+    margin: 50px 0;
+}
+/* component */
+.mgt24{
+    margin-top: 24px;
+}
+
+.mgt20{
+    margin-top: 20px;
+}
+
+.mgt16{
+    margin-top: 16px;
+}
+
+.fs10{
+    font-size: 10px;
+}
+
+.fs14{
+    font-size: 14px;
+}
+
+.fs16{
+    font-size: 16px;
+}
+/* màu title */
+.tcolor{ 
+    color: #545454;
+}
+/* thông tin đơn hàng */
+.paymentStep2__order{
+    padding: 32px 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+}
+
+.paymentStep2__order-title{
+    font-size: 20px;
+}
+
+.paymentStep2__order-product{
+    max-height: 100px;
+    background: #f6f6f6;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 5px;
+}
+
+.img__title{
+    display: flex;
+    align-items: center;
+
+}
+.img__title img{
+    border: 1px dotted #ccc;
+    border-radius: 5px;
+    width: 90px;
+    height: 90px;
+    margin: 5px;
+    
+}
+
+.paymentStep2__product-price{
+    padding: 30px;
+}
+/* thông tin giá */
+.payment__infomation-summary {
+    margin-top: 24px;
+    font-size: 16px;
+    color: #666;
+}
+
+.payment__infomation-summary .summary-item {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 24px;
+}
+
+.payment__infomation-summary .total {
+    font-weight: bold;
+    color: #000;
+}
+
+/* thanh toán qr code */
+
+.paymentStep2__pay-btn{
+    display: flex;
+    justify-content: space-around;
+}
+
+.action-btn-pay{
+    color: black;
+    text-align: center;
+    border: 1px solid #8d6e6e;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 10px;
+    padding: 8px 5px;
+}
+
+.qr{
+    text-align: center;
+    margin-top: 30px;
+}
+
+.name__bank{
+    font-weight: bold;
+}
+/* button next and prev */
+.paymentStep2_btn {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px 0;
+}
+  
+  .paymentStep2__btn-prev a, .paymentStep2__btn-next {
+    width: 150px;
+    display: inline-block;
+    padding: 10px 20px;
+    color: #fff;
+    background-color: #808080;
+    border-radius: 5px;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    border: none;
+  }
+  
+  .paymentStep2__btn-prev:hover , .paymentStep2__btn-next:hover{
+    background-color: #8d6e6e;
+    border-radius: 5px;
+  }
+  
+  .paymentStep2__btn-prev:active, .paymentStep2__btn-next:active {
+    transform: scale(0.95);
+  }
+
+  .acceptInfo{
+    text-align: start;
+  }
+
+
+  .payment-radio{
+    padding: 10px;
+    margin: 10px;
+    border: 1px solid #8d6e6e;
+  }
+  input[type="radio"]{
+    padding: 10px;
+    cursor: pointer;
+    align-items: center;
+  }
+  input[type="radio"]:checked{
+    background-color: #8d6e6e;
+  }
+

@@ -1,0 +1,1354 @@
+
+.col {
+    text-align: center;
+    background-clip: content-box;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+header {
+    border-bottom: 1px solid #8D6E6E;
+}
+
+.header_logo {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    height: 120px;
+}
+
+.header_logo h3 {
+    color: #8D6E6E;
+    font-weight: lighter;
+    padding: 10px;
+}
+
+.header_search {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    height: 120px;
+}
+
+.header_search #cart-checkbox {
+    display: block;
+}
+
+#cart-checkbox-icon:checked~.box-cart {
+    transform: translateX(0%);
+}
+
+#cart-checkbox-icon:checked~.cart-overlay {
+    display: block;
+}
+
+.header_logo a img {
+    width: 120px;
+    padding: 8px;
+}
+
+.header_search i {
+    font-size: 35px;
+    color: #8D6E6E;
+}
+
+.header_search input {
+    margin: 10px;
+    padding-left: 20px;
+    border: 1px solid #8D6E6E;
+    border-radius: 5px;
+    width: 400px;
+    height: 30px;
+}
+
+.header_sub-search {
+    display: flex;
+    align-items: center;
+}
+.header_sub-search .box-cart-icon{
+    cursor: pointer;
+}
+.header_sub-search label {
+    margin: 0 10px;
+}
+
+.header_sub-search .icon-bar-menu {
+    display: none;
+}
+
+.header_sub-search .menu-action {
+    display: flex;
+    justify-content: center;
+}
+
+.menu-action .icon-cart,
+.menu-action .icon-bar-menu {
+    padding: 0 20px;
+}
+
+.nav {
+    border-bottom: 1px solid #8D6E6E;
+}
+
+.nav_menu {
+    display: flex;
+    align-items: center;
+    height: 50px;
+}
+
+.nav_menu li {
+    width: 150px;
+}
+
+.nav_menu li a {
+    padding: 17px 0;
+}
+
+.nav_social {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    height: 50px;
+    width: 100%;
+}
+
+.nav_social .nav_icon {
+    margin-left: 20px;
+    font-size: 30px;
+}
+
+.nav_main-menu {
+    padding: 0;
+}
+
+.nav_main-menu li {
+    position: relative;
+}
+
+.nav_main-menu li a {
+    display: block;
+    color: black;
+    text-align: center;
+    font-size: 16px;
+    padding: 24px 0;
+
+}
+
+.nav_main-menu li .nav_drop-down li {
+    display: block;
+    border-bottom: 1px solid #8D6E6E;
+    background-color: #fbfbfb;
+}
+
+.nav_main-menu li .nav_drop-down {
+    position: absolute;
+    z-index: 999;
+    display: none;
+    padding: 0;
+    border: 1px solid #8D6E6E;
+}
+
+.nav_main-menu li a:hover {
+    color: #8D6E6E;
+}
+
+.nav_main-menu li:hover .nav_drop-down {
+    display: block;
+}
+
+.nav_main-menu .bars-menu {
+    display: none;
+}
+
+.bar-menu {
+    display: none;
+}
+
+@media (max-width: 740px) {
+    .header_sub-search .icon-bar-menu {
+        display: block;
+    }
+
+    .bars-menu {
+        display: block;
+    }
+
+    .header_logo {
+        width: 100%;
+        height: 100%;
+    }
+
+
+    /* css menu mobile  */
+    .nav_menu {
+        display: block;
+        z-index: 1;
+        position: fixed;
+        top: 14%;
+        left: 0;
+    }
+
+    .nav_menu .nav_main-menu {
+        background-color: rgb(255, 255, 255);
+        width: 200px;
+        transform: translateX(-100%);
+        transition: 0.5s;
+        z-index: 999;
+        padding: 0;
+        border: 1px solid #8D6E6E;
+        border-radius: 4px;
+    }
+
+    .nav_menu .nav_main-menu li a {
+        width: 100%;
+        height: 40px;
+        padding: 0;
+        line-height: 40px;
+    }
+
+    .nav_main-menu li .nav_drop-down {
+        
+        left: 100%;
+    }
+    #bar-menu:checked ~ .nav_menu .nav_main-menu{
+        transform: translateX(0%);
+        
+    }
+    .social {
+        display: none;
+    }
+
+}
+
+@media (max-width: 773px) {
+    .nav_main-menu {
+        padding: 0;
+    }
+
+}
+
+@media (max-width: 1017px) {
+    .header_sub-search {
+        margin-right: 20px;
+    }
+
+    .nav_main-menu {
+        padding: 0;
+    }
+
+    .header_logo a img {
+        width: 100px;
+        padding: 8px;
+    }
+
+    .header_search input {
+        width: 100%;
+    }
+}
+/* Box giỏ hàng Trạm Nhỏ Xinh */
+.box-cart {
+    transition: 0.7s;
+    width: 400px;
+    height: 100%;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    transform: translateX(100%);
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+}
+
+.cart-checkbox-icon {
+    display: none;
+}
+
+.cart-box-header .cart-item-header {
+    margin-left: 15px;
+}
+
+.cart-box-header .cart-item-header .item {
+    width: 150px;
+    height: 50px;
+    line-height: 25px;
+    float: left;
+}
+
+.cart-box-header .cart-item-header h6 {
+    margin: 0;
+    float: left;
+    font-size: 14px;
+    color: white;
+    font-weight: 300;
+}
+
+.box-cart .cart-box-header {
+    width: 100%;
+    height: 60px;
+    display: flex;
+    background-color: #8D6E6E;
+    align-items: center;
+    padding: 0 16px;
+}
+
+.box-cart .cart-box-main {
+    width: 100%;
+    height: 130px;
+    border-bottom: 0.5px solid #8D6E6E;
+    display: flex;
+    align-items: center;
+}
+
+.cart-box-main .cart-container-pro {
+    width: 100%;
+    height: 90px;
+    display: block;
+}
+
+.cart-container-pro .cart-name-pro {
+    height: 24px;
+}
+
+.cart-container-pro .cart-name-pro h4 {
+    margin: 0;
+    float: left;
+    font-size: 16px;
+}
+
+.cart-container-pro .cart-variant-pro {
+    width: 100%;
+    height: 24px;
+}
+
+.cart-container-pro .cart-variant-pro span {
+    float: left;
+    font-size: 14px;
+}
+
+.cart-container-pro .cart-quantityANDPrice-pro {
+    width: 100%;
+    height: 34px;
+    background-color: white;
+    display: flex;
+
+}
+
+.cart-quantityANDPrice-pro .form-deteleCart{
+    width: 0;
+    justify-items: end;
+}
+
+.cart-quantityANDPrice-pro .cart-quantity {
+    height: 34px;
+    display: flex;
+    align-items: center;
+}
+
+.cart-quantity {
+    border: 0.5px solid #8D6E6E;
+    border-radius: 5px;
+}
+
+.cart-quantity span {
+    width: 40px;
+}
+
+.cart-quantity button {
+    width: 34px;
+    height: 34px;
+    border: none;
+    background: none;
+}
+
+.cart-quantity button:hover {
+    background-color: #8D6E6E;
+    color: white;
+}
+
+.cart-Price h3 {
+    margin: 0;
+}
+
+.cart-Price {
+    width: 169px;
+    display: flex;
+    align-items: center;
+    margin-left: 25px;
+}
+
+.cart-box-main .cart-img {
+    width: 90px;
+    overflow: hidden;
+}
+
+.cart-box-main .cart-img img{
+    padding: 10px 0;
+}
+
+.cart-xoaProduct {
+    height: 34px;
+    display: flex;
+    align-items: center;
+    /* padding: 0 10px; */
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.cart-xoaProduct i {
+    font-size: 18px;
+}
+
+.cart-box-main .cart-img img {
+    width: 100%;
+    height: 100%;
+    transition: transform 0.3s ease;
+}
+
+.box-cart .cart-box-header h1 {
+    color: #fff;
+    margin: 0;
+    font-size: 20px;
+}
+
+.box-cart .cart-box-header #cart-closeButton {
+    margin-left: auto;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.box-cart .cart-box-footer {
+    width: 100%;
+    height: 60px;
+    background-color: #808080F0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0 16px;
+    margin-top: auto;
+}
+
+.cart-box-footer button {
+    border: none;
+    background: none;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+
+}
+
+.cart-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.1);
+    display: none;
+    z-index: 999;
+}
+
+@media (max-width:413px) {
+    .box-cart {
+        width: 330px;
+    }
+}
+
+/* END Box giỏ hàng Trạm Nhỏ Xinh */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Box đăng nhập Trạm Nhỏ Xinh */
+.main-box-login {
+    display: none;
+}
+
+.login {
+    display: flex;
+    justify-content: center;
+}
+.background-box-login{
+    top: 0;
+    height: 100vh;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.box-login {
+    height: auto;
+    max-width: 600px;
+    min-width: 300px;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    position: fixed;
+    display: ruby;
+    z-index: 1000;
+}
+
+.login-box-header {
+    width: 480px;
+    max-width: 640px;
+    height: 150px;
+    min-width: 300px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 18px;
+    /* margin: 0px 50px; */
+}
+
+.login-box-header #closeButton{
+    cursor: pointer;
+}
+
+.join-register {
+    width: 480px;
+    height: 40px;
+    display: flex;
+    float: left;
+}
+
+.join-login a {
+    text-decoration: none;
+    color: black;
+    font-size: 14px;
+}
+
+.join-register a:hover {
+    color: #8D6E6E;
+}
+
+.login-box-header button {
+    border: none;
+    background: none;
+}
+
+form {
+    width: 480px;
+}
+
+.login-box-header button>i {
+    font-size: 25px;
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    font-size: 14px;
+    margin-bottom: 5px;
+    display: block;
+    float: left;
+}
+
+.input-group input {
+    width: 100%;
+    height: 48px;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #8D6E6E;
+    border-radius: 5px;
+}
+
+.input-group input:focus,
+.password-container input:focus {
+    border: 2px solid #8D6E6E;
+    outline: none;
+}
+
+.password-container {
+    position: relative;
+}
+
+.passForm {
+    width: 100%;
+    display: flex;
+}
+
+.passForm .text-passForm {
+    float: left;
+}
+
+.password-container input {
+    height: 48px;
+    border: 1px solid #8D6E6E;
+    padding: 8px;
+    font-size: 14px;
+    border-radius: 5px;
+}
+
+.show-password {
+    position: absolute;
+    top: 70%;
+    right: 10px;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.show-password i {
+    font-size: 18px;
+}
+
+.checkbox-group {
+    width: 100%;
+    display: flex;
+    float: left;
+}
+
+.checkbox-group label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    margin-left: 5px;
+}
+
+.checkbox-group .checkbox {
+    width: 25px;
+    height: 25px;
+}
+
+.actions {
+    display: block;
+    float: left;
+    margin-bottom: 30px;
+}
+
+.actions .forgot-password {
+    font-weight: 600;
+    color: black;
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
+    color: #8d6e6e;
+}
+
+.login-btn {
+    height: 50px;
+    width: 100%;
+    background-color: #808080F0;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    margin: 45px 0px;
+}
+
+.login-btn:hover {
+    background-color: #8D6E6E;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: block;
+    z-index: 999;
+}
+
+@media (max-width: 730px) {
+    .login-box-header {
+        width: 450px;
+        max-width: 640px;
+        height: 150px;
+        min-width: 300px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 18px;
+        margin: 0px 50px;
+    }
+
+    form {
+        width: 360px;
+
+    }
+
+    .join-register {
+        width: 360px;
+        height: 40px;
+        display: flex;
+        float: left;
+    }
+}
+
+@media (max-width: 600px) {
+    .login-box-header {
+        width: 300px;
+        max-width: 640px;
+        height: 150px;
+        min-width: 300px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 18px;
+        margin: 0px 50px;
+    }
+
+    form {
+        width: 300px;
+
+    }
+
+    .join-register {
+        width: 300px;
+        height: 40px;
+        display: flex;
+        float: left;
+    }
+}
+
+/* END Box đăng nhập Trạm Nhỏ Xinh */
+
+
+
+/*  quên mật khẩu */
+.main-box-quenPass {
+    display: none;
+}
+
+.quenPass {
+    display: flex;
+    justify-content: center;
+}
+.background-box-quenPass{
+    top: 0;
+    height: 100vh;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.box-quenPass {
+    height: auto;
+    max-width: 600px;
+    min-width: 300px;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: ruby;
+    z-index: 1000;
+}
+
+.quenPass-box-header {
+    width: 480px;
+    max-width: 640px;
+    height: 90px;
+    min-width: 300px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 18px;
+
+}
+
+.quenPass-box-header #re-closeButton{
+    cursor: pointer;
+}
+
+.join-login {
+    width: 480px;
+    height: 40px;
+    display: flex;
+    float: left;
+}
+
+.join-login a {
+    text-decoration: none;
+    color: black;
+    font-size: 14px;
+}
+
+.join-login a:hover {
+    color: #8D6E6E;
+}
+
+.quenPass-box-header button {
+    border: none;
+    background: none;
+}
+
+form {
+    width: 480px;
+}
+
+.quenPass-box-header button>i {
+    font-size: 25px;
+}
+
+.forgot-input-group {
+    margin-bottom: 15px;
+}
+
+.forgot-input-group label {
+    font-size: 14px;
+    margin-bottom: 5px;
+    display: block;
+    float: left;
+}
+
+.forgot-input-group input {
+    width: 100%;
+    height: 48px;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #8D6E6E;
+    border-radius: 5px;
+}
+
+.forgot-input-group input:focus,
+.forgot-password-container input:focus {
+    border: 2px solid #8D6E6E;
+    outline: none;
+}
+
+.forgot-password-container {
+    position: relative;
+}
+
+.forgot-passForm {
+    width: 100%;
+    display: flex;
+}
+
+.forgot-passForm .forgot-text-passForm {
+    float: left;
+}
+
+.forgot-password-container input {
+    height: 48px;
+    border: 1px solid #8D6E6E;
+    padding: 8px;
+    font-size: 14px;
+    border-radius: 5px;
+}
+
+.forgot-show-password {
+    position: absolute;
+    top: 70%;
+    right: 10px;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.forgot-show-password i {
+    font-size: 18px;
+}
+
+.forgot-checkbox-group {
+    width: 100%;
+    display: flex;
+    float: left;
+}
+
+.forgot-checkbox-group label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    margin-left: 5px;
+}
+
+.forgot-checkbox-group .forgot-checkbox {
+    width: 25px;
+    height: 25px;
+}
+
+.forgot-actions {
+    display: block;
+    float: left;
+    margin-bottom: 30px;
+}
+
+.forgot-actions .forgot-forgot-password {
+    font-weight: 600;
+    color: black;
+}
+
+.forgot-forgot-password:hover {
+    text-decoration: underline;
+    color: #8d6e6e;
+}
+
+.quenPass-btn {
+    height: 50px;
+    width: 100%;
+    background-color: #808080F0;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    margin: 45px 0px;
+
+}
+
+.quenPass-btn:hover {
+    background-color: #8D6E6E;
+}
+
+.forgot-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: block;
+    z-index: 999;
+}
+
+@media (max-width: 730px) {
+    .quenPass-box-header {
+        width: 450px;
+        max-width: 640px;
+        height: 150px;
+        min-width: 300px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 18px;
+        margin: 0px 50px;
+    }
+
+    form {
+        width: 360px;
+
+    }
+
+    .join-login {
+        width: 360px;
+        height: 40px;
+        display: flex;
+        float: left;
+    }
+}
+
+@media (max-width: 600px) {
+    .quenPass-box-header {
+        width: 300px;
+        max-width: 640px;
+        height: 150px;
+        min-width: 300px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 18px;
+        margin: 0px 50px;
+    }
+
+    form {
+        width: 300px;
+
+    }
+
+    .join-quenPass {
+        width: 300px;
+        height: 40px;
+        display: flex;
+        float: left;
+    }
+}
+@media (max-height: 860px){
+    .quenPass-btn {
+        height: 50px;
+        width: 100%;
+        background-color: #808080F0;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+        margin: 10px 0px;
+    }
+}
+@media (max-height: 750px){
+    .forgot-password-container input{
+        height: 40px;
+        border: 1px solid #8D6E6E;
+        padding: 8px;
+        font-size: 14px;
+        border-radius: 5px;
+    }
+    .forgot-input-group input {
+        width: 100%;
+        height: 40px;
+        padding: 8px;
+        font-size: 14px;
+        border: 1px solid #8D6E6E;
+        border-radius: 5px;
+    }
+}
+
+
+
+
+
+
+
+
+/* end quên mật khẩu */
+
+/* Box đăng ký Trạm Nhỏ Xinh */
+.main-box-register {
+    display: none;
+}
+
+.register {
+    display: flex;
+    justify-content: center;
+}
+.background-box-register{
+    top: 0;
+    height: 100vh;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.box-register {
+    height: auto;
+    max-width: 600px;
+    min-width: 300px;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: ruby;
+    z-index: 1000;
+}
+
+.register-box-header {
+    width: 480px;
+    max-width: 640px;
+    height: 90px;
+
+    min-width: 300px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 18px;
+
+}
+
+.register-box-header #re-closeButton{
+    cursor: pointer;
+}
+
+.join-login {
+    width: 480px;
+    height: 40px;
+    display: flex;
+    float: left;
+}
+
+.join-login a {
+    text-decoration: none;
+    color: black;
+    font-size: 14px;
+}
+
+.join-login a:hover {
+    color: #8D6E6E;
+}
+
+.register-box-header button {
+    border: none;
+    background: none;
+}
+
+form {
+    width: 480px;
+}
+
+.register-box-header button>i {
+    font-size: 25px;
+}
+
+.re-input-group {
+    margin-bottom: 15px;
+}
+
+.re-input-group label {
+    font-size: 14px;
+    margin-bottom: 5px;
+    display: block;
+    float: left;
+}
+
+.re-input-group input {
+    width: 100%;
+    height: 48px;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #8D6E6E;
+    border-radius: 5px;
+}
+
+.re-input-group input:focus,
+.re-password-container input:focus {
+    border: 2px solid #8D6E6E;
+    outline: none;
+}
+
+.re-password-container {
+    position: relative;
+}
+
+.re-passForm {
+    width: 100%;
+    display: flex;
+}
+
+.re-passForm .re-text-passForm {
+    float: left;
+}
+
+.re-password-container input {
+    height: 48px;
+    border: 1px solid #8D6E6E;
+    padding: 8px;
+    font-size: 14px;
+    border-radius: 5px;
+}
+
+.re-show-password {
+    position: absolute;
+    top: 70%;
+    right: 10px;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.re-show-password i {
+    font-size: 18px;
+}
+
+.re-checkbox-group {
+    width: 100%;
+    display: flex;
+    float: left;
+}
+
+.re-checkbox-group label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    margin-left: 5px;
+}
+
+.re-checkbox-group .re-checkbox {
+    width: 25px;
+    height: 25px;
+}
+
+.re-actions {
+    display: block;
+    float: left;
+    margin-bottom: 30px;
+}
+
+.re-actions .re-forgot-password {
+    font-weight: 600;
+    color: black;
+}
+
+.re-forgot-password:hover {
+    text-decoration: underline;
+    color: #8d6e6e;
+}
+
+.register-btn {
+    height: 50px;
+    width: 100%;
+    background-color: #808080F0;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    margin: 45px 0px;
+
+}
+
+.register-btn:hover {
+    background-color: #8D6E6E;
+}
+
+.re-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: block;
+    z-index: 999;
+}
+
+@media (max-width: 730px) {
+    .register-box-header {
+        width: 450px;
+        max-width: 640px;
+        height: 150px;
+        min-width: 300px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 18px;
+        margin: 0px 50px;
+    }
+
+    form {
+        width: 360px;
+
+    }
+
+    .join-login {
+        width: 360px;
+        height: 40px;
+        display: flex;
+        float: left;
+    }
+}
+
+@media (max-width: 600px) {
+    .register-box-header {
+        width: 300px;
+        max-width: 640px;
+        height: 150px;
+        min-width: 300px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 18px;
+        margin: 0px 50px;
+    }
+
+    form {
+        width: 300px;
+
+    }
+
+    .join-register {
+        width: 300px;
+        height: 40px;
+        display: flex;
+        float: left;
+    }
+}
+@media (max-height: 860px){
+    .register-btn {
+        height: 50px;
+        width: 100%;
+        background-color: #808080F0;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+        margin: 10px 0px;
+    }
+}
+@media (max-height: 750px){
+    .re-password-container input{
+        height: 40px;
+        border: 1px solid #8D6E6E;
+        padding: 8px;
+        font-size: 14px;
+        border-radius: 5px;
+    }
+    .re-input-group input {
+        width: 100%;
+        height: 40px;
+        padding: 8px;
+        font-size: 14px;
+        border: 1px solid #8D6E6E;
+        border-radius: 5px;
+    }
+}
+/* thanh tìm kiếm header */
+.header_search form .inputSearch {
+    border-radius: 5px;
+    margin: 10px 0 10px 10px;
+    padding-left: 20px;
+    border: 1px solid #8D6E6E;
+    width: 400px;
+    height: 30px;
+}
+.header_search form .inputSearch:focus {
+    border: 1px solid #8D6E6E;
+    border-radius: 5px 0 0 5px;
+}
+.header_search form .inputSearch:focus{
+    display: block;
+}
+.header_search form{
+    display: flex;
+}
+.header_search form .submitSearch{
+    display: none;
+}
+

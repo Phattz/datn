@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thanh toán</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/grid.css">
+    <link rel="stylesheet" href="../css/payment.css">
+
+</head>
+
+<body>
+    <!-- header -->
+    <!-- payment -->
+    <main class="payment">
+        <div class="grid wide">
+            <div class="row">
+                <div class="col l-12 payment__title">
+                    <p class="payment__title-text">Thanh toán</p>
+                </div>
+                <div class="col l-6 payment__product">
+                    <div class="payment__product-item row">
+                        <div class="col l-6 payment__product-item-left">
+                            <img src="../image/removebg_logo_tramNhoXinh.png" alt="">
+                            <p>Tên sản phẩm</p>
+                        </div>
+                        <div class="col l-6 " style="display: flex; align-items: center; justify-content: space-around;">
+                                <span class="payment__item-action-quantity">
+                                    <input type="text" id="quantity"  value="1">
+                                </span>
+                                <span class="payment__item-price">
+                                    <p>100,000 đ</p>
+                                </span>
+                                <span class="payment__item-action">
+                                    <i class="fa-regular fa-circle-xmark"></i>
+                                </span>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="col l-6 payment__infomation">
+                    <div class="payment__infomation">
+                        <p>Thông tin thanh toán</p>
+                        <form action="">
+                            <label for="name">Tên người nhận</label> 
+                            <input type="text" id="name" placeholder="Nhập tên người nhận" /> 
+    
+                            <label for="phone">Số điện thoại người nhận</label> 
+                            <input type="text" id="phone" placeholder="Số điện thoại người nhận" /> 
+    
+                            <label for="note">Ghi chú</label> 
+                            <textarea id="note" placeholder="Nhập ghi chú" rows="4" cols="10"></textarea> <br>
+                        </form>
+    
+                    </div>
+                    
+                    <div class="payment__infomation-summary">
+                        <div class="summary-item">
+                            <span>Sản phẩm</span>
+                            <span>0đ</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Vận chuyển</span>
+                            <span>0đ</span>
+                        </div>
+                        <div class="summary-item total">
+                            <strong>Tổng cộng</strong>
+                            <strong>0đ</strong>
+                        </div>
+                    </div>
+
+                    <button class="payment-button">Thanh toán</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- footer -->
+</body>
+
+</html>

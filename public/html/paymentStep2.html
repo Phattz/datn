@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thanh toán bước 2</title>
+    <link rel="stylesheet" href="../css/grid.css">
+    <link rel="stylesheet" href="../css/step2.css">
+
+</head>
+
+<body>
+    <main class="paymentStep2">
+        <div class="grid wide">
+            <div class="row">
+                <!-- thông tin -->
+                <div class="col l-6 paymentStep2__order">
+                    <div class="paymentStep2__order-title">Tóm tắt đơn hàng</div>
+                    <!-- sp 1 -->
+                    <div class="paymentStep2__order-product mgt24">
+                        <div class="img__title">
+                            <img src="../image/removebg_logo_tramNhoXinh.png" alt="">
+                            <p>Tên sản phẩm</p>
+                        </div>
+                        <div class="paymentStep2__product-price">
+                            <p>100,000 đ</p>
+                        </div>
+                    </div>
+                    <!-- sp 2 -->
+                    <div class="paymentStep2__order-product mgt24">
+                        <div class="img__title">
+                            <img src="../image/removebg_logo_tramNhoXinh.png" alt="">
+                            <p>Tên sản phẩm</p>
+                        </div>
+                        <div class="paymentStep2__product-price">
+                            <p>100,000 đ</p>
+                        </div>
+                    </div>
+                    <!-- địa chỉ -->
+                    <div class="tcolor fs14 mgt24">
+                        <p>Địa chỉ</p>
+                    </div>
+                    <div class=" fs16 mgt20">
+                        <p>51/17 Tân Lập 2, Hiệp Phú, TP Thủ Đức</p>
+                    </div>
+                    <!-- đơn vị vận chuyển -->
+                    <div class="tcolor fs14 mgt24">
+                        <p>Đơn vị vận chuyển</p>
+                    </div>
+                    <div class=" fs16 mgt20">
+                        <p>JT Express</p>
+                    </div>
+                    <!-- thông tin giá -->
+                    <div class="payment__infomation-summary fs16">
+                        <div class="summary-item ">
+                            <span>Sản phẩm</span>
+                            <span>0đ</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Vận chuyển</span>
+                            <span>0đ</span>
+                        </div>
+                        <div class="summary-item total">
+                            <strong>Tổng cộng</strong>
+                            <strong>0đ</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- thanh toán -->
+                <div class="col l-1"></div>
+
+                <div class="col l-5 paymentStep2__pay">
+                    <div class="paymentStep2__pay-title">Phương thức thanh toán</div>
+                    <div class="paymentStep2__pay-btn">
+                        <div id="cod" class="action-btn-pay fs14">Thanh toán khi nhận hàng</div>
+                        <div id="bank" class="action-btn-pay fs14">Thanh toán khi nhận hàng</div>
+                    </div>
+                    <div class="row">
+                        <div class="col l-12 qr">
+                            <img src="../image/QRcode.png" alt="">
+                        </div>
+                    </div>
+                    <div class="payment_pay-credit">
+                        <div class="fs16 mgt20 tcolor">
+                            <p>Ngân hàng</p>
+                        </div>
+                        <div class="fs14 name__bank mgt16">
+                            <p>TP Bank</p>
+                        </div>
+                        <div class="fs16 mgt20 tcolor">
+                            <p>Số tài khoản</p>
+                        </div>
+                        <div class="fs14 name__bank mgt16">
+                            <p>0123456789</p>
+                        </div>
+                        <div class="fs16 mgt20 tcolor">
+                            <p>Tên chủ tài khoản</p>
+                        </div>
+                        <div class="fs14 name__bank mgt16">
+                            <p>Trạm Nhỏ Xinh</p>
+                        </div>
+                    </div>
+
+                    <div class="col l-12 paymentStep2_btn">
+                        <span class="paymentStep2__btn-prev fs16">Trở lại</span>
+                        <span class="paymentStep2__btn-next fs16">Thanh toán</span>
+                    </div>
+                </div>
+            </div>
+    </main>
+</body>
+<script src="../js/paymentStep2.js"></script>
+</html>

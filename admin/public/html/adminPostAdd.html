@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/grid.css">
+    <link rel="stylesheet" href="../css/Admin.css">
+
+<body>
+    <div class="grid container">
+        <div class="row">
+            <div class="col l-2 st">
+                <div class="category-menu">
+                    <img src="../image/logo.png" width="100px" height="100px">
+                    <h2>Trạm Nhỏ Xinh</h2>
+                    <ul>
+                        <li><a href="../html/adminCate.html">Danh mục</a></li>
+                        <li><a href="../html/adminPro.html">Sản phẩm</a></li>
+                        <li><a href="../html/adminUser.html">Người dùng</a></li>
+                        <li><a href="../html/adminOrder.html">Đơn hàng</a></li>
+                        <li><a href="../html/adminPost.html" style="color: #8D6E6E; font-weight: 600;">Bài viết</a></li>
+                        <li><a href="../html/adminComment.html">Bình luận</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col l-10 ts">
+                <div class="header-allpage">
+                    <img src="../image/logo.png" width="57px" height="57px">
+                    <p>Admin</p>
+                </div>
+                <div class="main">
+                    <div class="main-category">
+                        <div class="main-danhmuc">
+                            <p>Thêm bài viết</p>
+                            <a href="../html/adminPost.html">Quay về</a>
+                        </div>
+                        <div class="main-header">
+                            <div class="right-main-header">
+                                <input type="text" placeholder="Tìm kiếm">
+                                <div class="filter"><i class="fa-solid fa-filter"></i></div>
+                                <div class="sort"><i class="fa-solid fa-arrow-down-a-z"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- xong phần header -->
+                    <form action="">
+                        <div class="main-product">
+                            <div class="category-main-product">
+                                <label for="Tên danh mục">Tiêu đề</label>
+                                <input type="text">
+                            </div>
+                            <div class="category-main-product">
+                                <label for="">Mô tả ngắn</label>
+                                <input type="text">
+                            </div>
+                            <div class="text-main-product">
+                                <label for="">Nội dung</label>
+                                <!-- <input type="text"> -->
+                                <textarea name="" id="" cols="50" rows="5"></textarea>
+                            </div>
+                            <!-- Hình ảnh -->
+                            <div class="category-main-product">
+                                <label for="">Hình ảnh</label>
+                                <input type="file">
+                            </div>
+                            <div class="category-main-product">
+                                <label for="status">Trạng thái</label>
+                                <select name="" id="">
+                                    <option value="">Đã hoạt động</option>
+                                    <option value="">Tạm ngưng</option>
+                                    <option value="">Đã hủy</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="submit-main-product">
+                            <button type="submit"><a href="../html/adminPost.html">Thêm bài viết</a></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

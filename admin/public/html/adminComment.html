@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/grid.css">
+    <link rel="stylesheet" href="../css/Admin.css">
+</head>
+
+<body>
+    <div class="grid container">
+        <div class="row">
+            <div class="col l-2 st">
+                <div class="category-menu">
+                    <img src="../image/logo.png" width="100px" height="100px">
+                    <h2>Trạm Nhỏ Xinh</h2>
+                    <ul>
+                        <li><a href="../html/adminCate.html">Danh mục</a></li>
+                        <li><a href="../html/adminPro.html">Sản phẩm</a></li>
+                        <li><a href="../html/adminUser.html">Người dùng</a></li>
+                        <li><a href="../html/adminOrder.html">Đơn hàng</a></li>
+                        <li><a href="../html/adminPost.html">Bài viết</a></li>
+                        <li><a href="../html/adminComment.html" style="color: #8D6E6E; font-weight: 600;">Bình luận</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col l-10 ts">
+                <div class="header-allpage">
+                    <img src="../image/logo.png" width="57px" height="57px">
+                    <p>Admin</p>
+                </div>
+                <div class="main">
+                    <div class="main-category">
+                        <div class="main-danhmuc">
+                            <p>Bình luận</p>
+                        </div>
+                        <div class="main-header">
+                            <div class="left-main-header">
+                                <p>Đã chọn 3 mục</p>
+                                <a href="">Xóa</a>
+                            </div>
+                            <div class="right-main-header">
+                                <input type="text" placeholder="Tìm kiếm">
+                                <div class="filter"><i class="fa-solid fa-filter"></i></div>
+                                <div class="sort"><i class="fa-solid fa-arrow-down-a-z"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Body chính (Cứ sửa những cột trong bảng, nếu dư thì cứ xóa, nó tự nhảy) -->
+                    <!--không cần phải css thêm -->
+                    <div class="main-product">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th><input type="checkbox"></th>
+                                    <th>Tên người dùng</th>
+                                    <th>Bình luận</th>
+                                    <th>Sản phẩm</th>
+                                    <th>Ngày bình luận</th>
+                                    <th>Xem</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- 1 box -->
+                                <tr>
+                                    <td><input type="checkbox"></td>
+                                    <td>Tên</td>
+                                    <td>Bình luận</td>
+                                    <td>Tên sản phẩm</td>
+                                    <td>01/01/2024</td>
+                                    <td><a href="../html/adminCommentView.html">Xem</a></td>
+                                </tr>
+                                <!-- 1 box -->
+                                <tr>
+                                    <td><input type="checkbox"></td>
+                                    <td>Tên</td>
+                                    <td>Bình luận</td>
+                                    <td>Tên sản phẩm</td>
+                                    <td>01/01/2024</td>
+                                    <td><a href="../html/adminCommentView.html">Xem</a></td>
+                                </tr>
+                                <!-- 1 box -->
+                                <tr>
+                                    <td><input type="checkbox"></td>
+                                    <td>Tên</td>
+                                    <td>Bình luận</td>
+                                    <td>Tên sản phẩm</td>
+                                    <td>01/01/2024</td>
+                                    <td><a href="../html/adminCommentView.html">Xem</a></td>
+                                </tr>
+                                <!-- 1 box -->
+                                <tr>
+                                    <td><input type="checkbox"></td>
+                                    <td>Tên</td>
+                                    <td>Bình luận</td>
+                                    <td>Tên sản phẩm</td>
+                                    <td>01/01/2024</td>
+                                    <td><a href="../html/adminCommentView.html">Xem</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- button chuyển trang -->
+                    <div class="main-turnpage">
+                        <button class="prev">1</button>
+                        <button class="next">2</button>
+                        <button class="nextpage">></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Header</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/grid.css">
+    <link rel="stylesheet" href="../css/header.css">
+</head>
+
+<body>
+    <!-- Header and nav -->
+    <header>
+        <div class="grid wide">
+            <div class="row">
+                <div class="col l-6 m-6 c-6">
+                    <div class="header_logo">
+                        <a href=""><img src="../image/Banner.jpg" alt=""></a>
+                        <h3>Trạm Nhỏ Xinh</h3>
+                    </div>
+                </div>
+                <div class="col l-6 m-6 c-6">
+                    <div class="header_search">
+                        <div class="header_sub-search">
+                            <input type="text" placeholder="Tìm kiếm" name="search" id="search">
+                            <label for="cart-checkbox-icon" class="box-cart-icon"><i class="fa-solid fa-cart-shopping"></i></label>
+                            <label for="bar-menu" class="icon-bar-menu"><i class="fa-solid fa-bars"></i></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <nav>
+        <div class="grid wide">
+            <div class="nav row">
+                <div class="col l-8 m-10">  
+            <input type="checkbox" id="bar-menu" class="bar-menu">
+                    <div class="nav_menu">
+                        <ul class="nav_main-menu row">
+                            <li class="col l-2 m-2 c-12"><a href="#">Trang chủ</a></li>
+                            <li class="col l-2 m-2 c-12"><a href="#">Danh mục</a>
+                                <ul class="nav_drop-down">
+                                    <li><a href="#">Phụ kiện</a></li>
+                                    <li><a href="#">Vòng tay</a></li>
+                                    <li><a href="#">Túi len</a></li>
+                                    <li><a href="#">Nón len</a></li>
+                                    <li><a href="#">Trang trí</a></li>
+                                    <li><a href="#">Tô màu</a></li>
+                                </ul>
+                            </li>
+                            <li class="col l-2 m-2 c-12"><a href="#">Bài viết</a></li>
+                            <li class="col l-2 m-2 c-12"><a href="#">Giới thiệu</a></li>
+                            <li class="col l-2 m-2 c-12"><a href="#">Liên hệ</a></li>
+                            <li class="col l-2 m-2 c-12"><a href="#">Tài khoản </a>
+                                <ul class="nav_drop-down">
+                                    <li><a href="#" class="dangnhap">Đăng nhập</a></li>
+                                    <li><a href="#" class="dangky">Đăng ký</a></li>
+                                </ul>
+
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col l-4 m-2 social">
+                    <div class="nav_social">
+                        <div class="nav_icon">
+                            <a href=""><i class="fa-brands fa-square-facebook"></i></a>
+                        </div>
+                        <div class="nav_icon">
+                            <a href=""><i class="fa-brands fa-instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </nav>
+    <!-- giỏ hàng  -->
+    <section class=" main-box-cart">
+        <div class="col l-12 m-12 c-12 cart">
+            <input type="checkbox" id="cart-checkbox-icon" class="cart-checkbox-icon">
+            <label for="cart-checkbox-icon" class="cart-overlay" id="cart-overlay"></label>
+            <div class="box-cart">
+                <div class="cart-box-header">
+                    <h1>Giỏ hàng</h1>
+                    <div class="cart-item-header">
+                        <div class="item">
+                            <h6>Sản phẩm: <span class="totalProduct"></span></h6>
+                            <h6>Tổng tiền: <span class="totalPrice"></span></h6>
+                        </div>
+                    </div>
+                    <label for="cart-checkbox-icon" type="submit" id="cart-closeButton">
+                        <i class="fa-solid fa-xmark"></i>
+                    </label>
+                </div>
+                <div class="cart-box-main">
+                    <div class="col l-3 m-3 c-3 cart-img">
+                        <img src="../image/y-tuong-lam-do-handmade-2.webp" alt="">
+                    </div>
+                    <div class="col l-9 m-9 c-9 cart-container-pro">
+                        <div class="cart-name-pro">
+                            <h4>Tên sản phẩm</h4>
+                        </div>
+                        <div class="cart-variant-pro">
+                            <span>Thuộc tính:(Màu sắc, kích thước)</span>
+                        </div>
+                        <div class="cart-quantityANDPrice-pro">
+                            <div class="cart-quantity">
+                                <button class="giam"><i class="fa-solid fa-minus"></i></button>
+                                <span class="so">0</span>
+                                <button class="tăng"><i class="fa-solid fa-plus"></i></button>
+                            </div>
+                            <div class="cart-Price">
+                                <h3 class="price">999.999</h3>
+                            </div>
+                            <button class="cart-xoaProduct">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cart-box-footer">
+                    <button>THANH TOÁN</button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- end giỏ hàng  -->
+    <!-- đăng nhập  -->
+    <section class="row main-box-login">
+        <div class="col l-12 m-12 c-12 login">
+            <div class="overlay" id="overlay"></div>
+            <div class="background-box-login">
+                <div class="box-login">
+                    <div class="login-box-header">
+                        <h1>Đăng nhập</h1>
+                        <button type="submit" id="closeButton">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+                    <div class="join-register">
+                        <a href="#">Bạn chưa có tài khoản. ?Đăng ký</a>
+                    </div>
+                    <form action="">
+                        <div class="input-group">
+                            <label for="email">Email:</label>
+                            <input type="email" id="email" name="email" placeholder="Nhập email" required>
+                        </div>
+    
+                        <div class="input-group">
+                            <label for="password" class="passForm">
+                                <span class="text-passForm">Mật khẩu:</span>
+                            </label>
+    
+                            <div class="password-container">
+                                <input type="password" id="password" name="password" placeholder="Nhập mật khẩu" required>
+                                <button type="button" class="show-password">
+                                    <i class="fa-solid fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="actions">
+                            <a href="#" class="forgot-password">Quên mật khẩu?</a>
+                        </div>
+                        <div class="checkbox-group">
+                            <input class="checkbox" type="checkbox" id="rememberMe" name="rememberMe">
+                            <label for="rememberMe">Nhớ mật khẩu</label>
+                        </div>
+    
+                        <button type="submit" class="login-btn">Đăng nhập</button>
+    
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </section>
+    <!-- end đăng nhập  -->
+
+    <!-- đăng ký  -->
+    <section class="row main-box-register">
+        <div class="col l-12 m-12 c-12 register">
+            <div class="re-overlay" id="re-overlay"></div>
+            <div class="background-box-register">
+                <div class="box-register">
+                    <div class="register-box-header">
+                        <h1>Đăng ký</h1>
+                        <button type="submit" id="re-closeButton">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+                    <div class="join-login">
+                        <a href="#">Bạn đã có tài khoản. ?Đăng nhập</a>
+                    </div>
+                    <form action="">
+                        <div class="re-input-group">
+                            <label for="re-email">Email:</label>
+                            <input type="email" id="re-email" name="re-email" placeholder="Nhập email" required>
+                        </div>
+    
+                        <div class="re-input-group">
+                            <label for="password" class="re-passForm">
+                                <span class="re-text-passForm">Mật khẩu:</span>
+                            </label>
+    
+                            <div class="re-password-container">
+                                <input type="password" id="re-password" name="re-password" placeholder="Nhập mật khẩu"
+                                    required>
+                                <button type="button" class="re-show-password">
+                                    <i class="fa-solid fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="re-input-group">
+                            <label for="re-password" class="re-passForm">
+                                <span class="re-text-passForm">Xác nhận mật khẩu</span>
+                            </label>
+    
+                            <div class="re-password-container">
+                                <input type="password" id="re-password" name="re-password" placeholder="Xác nhận mật khẩu"
+                                    required>
+                                <button type="button" class="re-show-password">
+                                    <i class="fa-solid fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="re-input-group">
+                            <label for="re-name">Họ và tên</label>
+                            <input type="text" id="re-name" name="re-name" placeholder="Nhập tên" required>
+                        </div>
+                        <div class="re-input-group">
+                            <label for="re-phone">Số điện thoại</label>
+                            <input type="text" id="re-phone" name="re-phone" placeholder="Nhập số điện thoại" required>
+                        </div>
+                        <div class="re-checkbox-group">
+                            <input class="re-checkbox" type="checkbox" id="re-rememberMe" name="re-rememberMe">
+                            <label for="re-rememberMe">Nhớ mật khẩu</label>
+                        </div>
+    
+                        <button type="submit" class="register-btn">Đăng nhập</button>
+    
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- quên mật khẩu -->
+    <section class="row main-box-quenPass">
+        <div class="col l-12 m-12 c-12 register">
+            <div class="re-overlay" id="re-overlay"></div>
+            <div class="background-box-register">
+                <div class="box-quenPass">
+                    <div class="register-box-header">
+                        <h1>Đăng ký</h1>
+                        <button type="submit" id="re-closeButton">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+                    <div class="join-login">
+                        <a href="#">Bạn đã có tài khoản. ?Đăng nhập</a>
+                    </div>
+                    <form action="">
+                        <div class="re-input-group">
+                            <label for="re-email">Email:</label>
+                            <input type="email" id="re-email" name="re-email" placeholder="Nhập email" required>
+                        </div>
+    
+                        <div class="re-input-group">
+                            <label for="password" class="re-passForm">
+                                <span class="re-text-passForm">Mật khẩu:</span>
+                            </label>
+    
+                            <div class="re-password-container">
+                                <input type="password" id="re-password" name="re-password" placeholder="Nhập mật khẩu"
+                                    required>
+                                <button type="button" class="re-show-password">
+                                    <i class="fa-solid fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="re-input-group">
+                            <label for="re-password" class="re-passForm">
+                                <span class="re-text-passForm">Xác nhận mật khẩu</span>
+                            </label>
+    
+                            <div class="re-password-container">
+                                <input type="password" id="re-password" name="re-password" placeholder="Xác nhận mật khẩu"
+                                    required>
+                                <button type="button" class="re-show-password">
+                                    <i class="fa-solid fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="re-input-group">
+                            <label for="re-name">Họ và tên</label>
+                            <input type="text" id="re-name" name="re-name" placeholder="Nhập tên" required>
+                        </div>
+                        <div class="re-input-group">
+                            <label for="re-phone">Số điện thoại</label>
+                            <input type="text" id="re-phone" name="re-phone" placeholder="Nhập số điện thoại" required>
+                        </div>
+                        <div class="re-checkbox-group">
+                            <input class="re-checkbox" type="checkbox" id="re-rememberMe" name="re-rememberMe">
+                            <label for="re-rememberMe">Nhớ mật khẩu</label>
+                        </div>
+    
+                        <button type="submit" class="register-btn">Đăng nhập</button>
+    
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </section>
+    
+</body>
+<script src="../js/header.js"></script>
+</html>

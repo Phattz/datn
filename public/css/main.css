@@ -1,0 +1,592 @@
+.col {
+    text-align: center;
+    background-clip: content-box;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+/* banner  quảng cáo  */
+.banner-home {
+    position: relative;
+    width: 100%;
+    height: 350px;
+    overflow: hidden;
+    /* background-color: aqua;  */
+}
+
+.slider-container {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.slide {
+    flex: 0 0 100%;
+    height: 100%;
+}
+
+.slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+}
+
+.dots-container {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 5px;
+}
+
+.dot {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: rgba(206, 206, 206, 0.7);
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.dot.active {
+    background-color: #8d6e6e;
+}
+
+@media (max-width:1023px) {
+    .banner-home {
+        height: auto;
+
+    }
+}
+
+
+/* KẾT THÚC STYLE HEADER */
+
+/* END banner  quảng cáo  */
+
+
+
+
+
+
+.product {
+    max-width: 280px;
+    height: 365px;
+    background-color: #fff;
+    margin: 5px;
+    box-sizing: border-box;
+    border-radius: 10px;
+    position: relative;
+    border: 2px solid #8D6E6E;
+    overflow: hidden;
+}
+
+.product .img-product {
+    width: 280px;
+    height: 250px;
+    background-color: #ccc;
+    overflow: hidden;
+}
+
+.product .img-product img {
+    width: 100%;
+    height: 100%;
+    transition: transform 0.3s ease;
+}
+
+.product .img-product:hover img {
+    transform: scale(1.1);
+}
+
+.product .name-product {
+    width: 100%;
+    height: 45px;
+    padding: 10px;
+    font-size: 14px;
+    line-height: 18px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+}
+
+.product .price-product span,
+.product .name-product span {
+    font-weight: 400;
+    font-size: 16px;
+}
+
+.product .price-product {
+    height: 35px;
+    line-height: 35px;
+}
+
+
+.product .addCart-product {
+    width: 100%;
+    height: 35px;
+    border: none;
+    background: #808080;
+    color: white;
+}
+
+.product .addCart-product:hover {
+    width: 100%;
+    height: 35px;
+    border: none;
+    background: #8D6E6E;
+    color: white;
+    cursor: pointer;
+}
+
+.product .icon {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    float: right;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+    font-size: 26px;
+    transition: color 0.3s ease;
+}
+
+.product .heart-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.product .heart-button .off {
+    display: block;
+}
+
+.product .heart-button .on {
+    display: none;
+}
+
+.product .heart-button.active .on {
+    display: block;
+    color: #ce2b2b;
+}
+
+.product .heart-button.active .off {
+    display: none;
+}
+
+.heart-button.active .icon {
+    color: #ce2b2b;
+}
+
+.title-box {
+    width: 100%;
+    height: 70px;
+    border-bottom: 2px solid #8D6E6E;
+    background-color: white;
+}
+
+.title-box h3 {
+    width: 250px;
+    float: left;
+    line-height: 70px;
+    margin: 0;
+    font-weight: 400;
+    font-size: 24px;
+}
+
+.box-hot-product {
+    position: relative;
+    display: flex;
+    overflow: hidden;
+    width: 100%;
+    justify-content: flex-start;
+
+}
+
+.box-hot-product .product {
+    flex: 0 0 auto;
+    width: 280px;
+    height: 365px;
+    background-color: #fff;
+    margin: 5px;
+    box-sizing: border-box;
+    border-radius: 10px;
+    position: relative;
+    border: 2px solid #8D6E6E;
+    overflow: hidden;
+}
+
+.box-hot-product .prev-btn,
+.box-hot-product .next-btn {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    z-index: 1;
+    border-radius: 50%;
+}
+
+.box-hot-product .prev-btn {
+    left: 10px;
+}
+
+.box-hot-product .next-btn {
+    right: 10px;
+}
+
+.box-hot-product .products-container {
+    display: flex;
+    flex-wrap: nowrap;
+    transition: transform 0.3s ease;
+    overflow-x: auto; /* Cho phép cuộn ngang */
+    scroll-behavior: smooth; /* Cuộn mượt */
+}
+
+.product-hot {
+    padding: 0;
+}
+
+.products-container.active {
+    cursor: grabbing;
+}
+
+.products-container {
+    cursor: grab;
+}
+
+.box-hot-product .products-container {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+}
+
+.products-container::-webkit-scrollbar {
+    display: none;
+}
+
+/* END Sản phẩm  */
+
+
+
+
+
+
+
+
+
+
+
+
+/* Bài viết  */
+.post {
+    max-width: 380px;
+    height: 445px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.post .img-post {
+    width: 100%;
+    height: 300px;
+    overflow: hidden;
+}
+
+.post .img-post img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+
+}
+
+.post .name-post {
+    width: 100%;
+    height: 55px;
+    padding: 10px;
+    font-size: 16px;
+    line-height: 21px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    text-align: left;
+}
+
+.post .name-post a {
+    display: block;
+    font-weight: 540;
+    font-size: 16px;
+    color: black;
+    text-decoration: none;
+    word-wrap: break-word;
+}
+
+.post .description {
+    width: 100%;
+    height: 70px;
+    padding: 10px;
+    font-size: 14px;
+    line-height: 15px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    text-align: left;
+}
+.description .textDes {
+    white-space: wrap; 
+    overflow: hidden;          
+    text-overflow: ellipsis;   
+    display: block;            
+    height: 30px;
+}
+
+.description .datePost{
+    font-size: 14px;
+    color: #999;
+    margin-top: 5px;
+}
+
+.post .description span {
+    font-style: italic;
+    font-weight: 400;
+    word-wrap: break-word;
+}
+
+.sub-banner-home {
+    height: 300px;
+    background-color: #ccc;
+    overflow: hidden;
+}
+
+.sub-banner-home img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.banner-sub {
+    padding: 0;
+}
+
+/* END Bài viết  */
+
+
+
+
+
+
+
+
+
+
+/* bố cục chính sách Trạm Nhỏ Xinh */
+.policy-home {
+    max-width: 380px;
+    height: 150px;
+    border: 2px solid #8D6E6E;
+    border-radius: 10px;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.policy-home h1{
+    margin: 10px;
+}
+
+.policy-home i{
+    color: #8d6e6e;
+    font-size: 50px;
+    margin: 20px;
+}
+
+/* END bố cục chính sách Trạm Nhỏ Xinh */
+
+
+
+/* REPONTIVE trang chủ Trạm Nhỏ Xinh */
+@media (max-width: 745px) {
+    .c-12 {
+        display: flex;
+        justify-content: center;
+    }
+}
+
+@media (min-width: 740px) and (max-width: 1023px) {
+    .row {
+        /* display: flex; */
+        justify-content: center;
+    }
+
+
+
+}
+
+/* END REPONTIVE trang chủ Trạm Nhỏ Xinh */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* footer Chí Minh  */
+/* Footer Trạm Nhỏ Xinh */
+footer {
+    background-color: #f8f8f8;
+    padding: 40px 0;
+    color: #333;
+    border-top: 2px solid #ddd;
+}
+
+.footer_item {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.footer_item h3 {
+    color: #8D6E6E;
+    font-weight: 300;
+    font-size: 18px;
+    margin-top: 12px;
+}
+
+.footer_item img {
+    width: 180px;
+    margin-bottom: 12px;
+}
+
+.footer_menu,
+.footer_policy,
+.footer_info {
+    list-style: none;
+    padding: 0;
+}
+
+.footer_menu li,
+.footer_policy li,
+.footer_info li {
+    margin: 20px 0;
+}
+
+.footer_info .box-info {
+    height: 40px;
+}
+
+.footer_menu li a,
+.footer_policy li,
+.footer_info li span {
+    text-decoration: none;
+    color: #333;
+    font-size: 14px;
+}
+
+.footer_menu li a:hover {
+    color: #8D6E6E;
+}
+
+.footer_info li h6 {
+
+    font-size: 14px;
+    height: 40px;
+    color: #333;
+    font-weight: bold;
+
+    float: left;
+    margin: 0 0 0 8px;
+    margin-right: 8px;
+
+}
+
+.footer_info .adress h6 {
+    min-width: 51px;
+}
+
+.footer_info li span {
+
+    height: auto;
+    font-size: 14px;
+    color: #8D6E6E;
+}
+
+footer .footer_policy li {
+    font-size: 14px;
+    color: #8D6E6E;
+}
+
+@media (max-width: 1018px) {
+    .footer_item a img {
+        width: 100px;
+        margin-bottom: 12px;
+    }
+
+    .footer_info .box-info {
+        height: 40px;
+
+    }
+
+    .footer_info li h6 {
+        width: 100%;
+        height: auto;
+    }
+
+    .footer_info li span {
+        width: 500px;
+        height: auto;
+        font-size: 14px;
+        color: #8D6E6E;
+    }
+}
+
+@media (min-width: 1018px) {
+    .footer_info .box-info {
+        display: flex;
+    }
+
+    .footer_info li h6 {
+        display: flex;
+    }
+}
+
+/* END Footer Trạm Nhỏ Xinh */
+/* footer Chí Minh  */

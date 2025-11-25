@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/grid.css">
+    <link rel="stylesheet" href="../css/Admin.css">
+</head>
+
+<body>
+    <div class="grid container">
+        <div class="row">
+            <div class="col l-2 st">
+                <div class="category-menu">
+                    <img src="../image/logo.png" width="100px" height="100px">
+                    <h2>Trạm Nhỏ Xinh</h2>
+                    <ul>
+                        <li><a href="../html/adminCate.html">Danh mục</a></li>
+                        <li><a href="../html/adminPro.html">Sản phẩm</a></li>
+                        <li><a href="../html/adminUser.html">Người dùng</a></li>
+                        <li><a href="../html/adminOrder.html" style="color: #8D6E6E; font-weight: 600;">Đơn hàng</a></li>
+                        <li><a href="../html/adminPost.html">Bài viết</a></li>
+                        <li><a href="../html/adminComment.html">Bình luận</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col l-10 ts">
+                <div class="header-allpage">
+                    <img src="../image/logo.png" width="57px" height="57px">
+                    <p>Admin</p>
+                </div>
+                <div class="main">
+                    <div class="main-category">
+                        <div class="main-danhmuc">
+                            <p>Xem đơn hàng</p>
+                            <a href="../html/adminOrder.html">Quay về</a>
+                        </div>
+                        <div class="main-header">
+                            <div class="right-main-header">
+                                <input type="text" placeholder="Tìm kiếm">
+                                <div class="filter"><i class="fa-solid fa-filter"></i></div>
+                                <div class="sort"><i class="fa-solid fa-arrow-down-a-z"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Body chính (Cứ sửa những cột trong bảng, nếu dư thì cứ xóa, nó tự nhảy) -->
+                    <!--không cần phải css thêm -->
+                    <div class="main-product">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th><input type="checkbox"></th>
+                                    <th>Mã</th>
+                                    <th>Hình Ảnh</th>
+                                    <th>Tên Sản Phẩm</th>
+                                    <th>Giá Sản Phẩm</th>
+                                    <th>Số lượng</th>
+                                    <th>Ghi chú</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- 1 box -->
+                                <tr>
+                                    <td><input type="checkbox"></td>
+                                    <td>#1234</td>
+                                    <td><img src="../image/imgdemo.jpg" alt="" width="100px" height="100px"></td>
+                                    <td>Tên Sản Phẩm</td>
+                                    <td>0đ</td>
+                                    <td>1</td>
+                                    <td>
+                                        <textarea name="" id="" cols="20" rows="5"></textarea>
+                                    </td>
+                                </tr>
+                                <!-- 1 box -->
+                                <tr>
+                                    <td><input type="checkbox"></td>
+                                    <td>#1234</td>
+                                    <td><img src="../image/imgdemo.jpg" alt="" width="100px" height="100px"></td>
+                                    <td>Tên Sản Phẩm</td>
+                                    <td>0đ</td>
+                                    <td>1</td>
+                                    <td>
+                                        <textarea name="" id="" cols="20" rows="3"></textarea>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
