@@ -36,11 +36,10 @@ clickDangkyOFdangnhap.addEventListener('click', function(){
     const hienRegister = document.querySelector('.main-box-register')
     hienRegister.style.display = "block"   
 })
-//END JS Đăng nhập Trạm Nhỏ Xinh 
+//END JS Đăng nhập 
 
 
-
-// JS Đăng ký Trạm Nhỏ Xinh 
+// JS Đăng ký 
 document.querySelectorAll(".re-show-password").forEach((button) => {
     button.addEventListener("click", function () {
         const passwordField = button.previousElementSibling;
@@ -85,7 +84,7 @@ clickDangnhapOFdangky.addEventListener('click', function(){
     
     
 })
-// END JS Đăng ký Trạm Nhỏ Xinh 
+// END JS Đăng ký 
 
 
 // đổi đăng nhập thành quên pass

@@ -154,11 +154,11 @@ if (isset($_GET['page'])) {
                         // Người dùng chọn Yes
                         localStorage.removeItem('userId');
                         localStorage.removeItem('danhSachThichSP');
-                        alert('Đăng xuất thành công');
+                        
                         window.location.href = 'index.php'; 
                     } else {
                         // Người dùng chọn No
-                        alert('Bạn đã hủy đăng xuất');
+                       
                         window.history.back(); // Quay lại trang trước
                     }
                 </script>";

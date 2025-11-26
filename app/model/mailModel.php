@@ -18,13 +18,13 @@ class MailModel {
             $mail->isSMTP();
             $mail->Host       = 'smtp.gmail.com';
             $mail->SMTPAuth   = true;
-            $mail->Username   = 'nastumijaki198@gmail.com'; // Email của bạn
-            $mail->Password   = 'tijk iwrc wwpe mswv';       // Mật khẩu hoặc App Password
+            $mail->Username   = 'charmcraft131@gmail.com'; // Email của bạn
+            $mail->Password   = 'uzsw tabv nkeq mmzv';       // Mật khẩu hoặc App Password
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mail->Port       = 587;
 
             // Người gửi & người nhận
-            $mail->setFrom('nastumijaki198@gmail.com', 'CHARM CRAFT');
+            $mail->setFrom('charmcraft131@gmail.com', 'CHARMCRAFT');
             $mail->addAddress($toEmail);
 
             // Nội dung email

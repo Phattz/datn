@@ -57,7 +57,7 @@ class CateAdminController
             $data['name'] = $_POST['name'];
             $data['status'] = $_POST['status'];
             $this->category->upCate($data);
-            echo '<script>alert("Đã sửa danh mục thành công")</script>';
+            
             echo '<script>location.href="?page=category"</script>';
         }
     }
@@ -70,7 +70,7 @@ class CateAdminController
             $data['status'] = $_POST['status'];
             $this->category->insertCate($data);
         }
-        echo '<script>alert("Đã thêm danh mục thành công")</script>';
+  
         echo '<script>location.href="?page=category"</script>';
     }
 

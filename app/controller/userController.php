@@ -85,7 +85,7 @@ class UserController
                     $userId = $result['id'];
                     echo "<script>
                     localStorage.setItem('userId', '$userId');
-                    alert('Đăng nhập thành công');
+                    
                 </script>";
                     echo "<script>
                     location.href='index.php';

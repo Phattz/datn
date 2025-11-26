@@ -62,7 +62,7 @@ class CartController
                         $cartItem['quantity']++; // Tăng số lượng sản phẩm trong giỏ
                         $found = true;
     
-                        echo '<script>alert("Thêm giỏ hàng thành công!");
+                        echo '<script>
                             window.location.href = "'.$_SERVER['HTTP_REFERER'].'";
                         </script>';
                         break;
@@ -72,18 +72,18 @@ class CartController
                 // Nếu sản phẩm chưa có trong giỏ, thêm mới
                 if (!$found) {
                     $_SESSION['cart'][] = $item;
-                    echo '<script>alert("Thêm giỏ hàng thành công!");
+                    echo '<script>
                             window.location.href = "'.$_SERVER['HTTP_REFERER'].'";
                         </script>';
                 }
             } else {
-                echo '<script>alert("Hết hàng. Chỉ còn lại ' . $tru . ' sản phẩm trong kho.")
+                echo '<script>
                         window.location.href = "'.$_SERVER['HTTP_REFERER'].'";
                 
                 </script>';
             }
         } else {
-            echo '<script>alert("Không có sản phẩm nào được gửi.")</script>';
+            echo '<script></script>';
         }
     }
     
@@ -274,7 +274,7 @@ class CartController
 
         // Thông báo thêm thành công và chuyển hướng lại
         echo '<script>
-            alert("Sản phẩm đã được thêm vào giỏ hàng.");
+            
             window.location.href = "' . $_SERVER['HTTP_REFERER'] . '";
         </script>';
         exit;
