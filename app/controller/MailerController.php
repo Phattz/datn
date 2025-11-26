@@ -13,8 +13,8 @@ class MailerController{
             $this->mailer->isSMTP();
             $this->mailer->Host = 'smtp.gmail.com';
             $this->mailer->SMTPAuth = true;
-            $this->mailer->Username = 'tramnhoxinh2410@gmail.com'; // Thay bằng email thật
-            $this->mailer->Password = 'tijk iwrc wwpe mswv'; // Thay bằng mật khẩu ứng dụng
+            $this->mailer->Username = ''; // Thay bằng email thật
+            $this->mailer->Password = ''; // Thay bằng mật khẩu ứng dụng
             $this->mailer->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $this->mailer->Port = 587;
         }
