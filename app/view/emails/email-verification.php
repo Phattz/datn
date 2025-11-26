@@ -6,7 +6,7 @@
         <div style="padding: 20px;">
            
             <div style="text-align: center; margin: 20px 0;">
-                <a href="http://localhost:8083/CHARMCRAFT/index.php?page=verify&code=<?=$code?>" 
+                <a href="http://localhost:3000/CHARMCRAFT/index.php?page=verify&code=<?=$code?>" 
                     style="display: inline-block; padding: 14px 28px; font-size: 16px; color: #fff; text-decoration: none; 
                            background-color: #8d6e6e; border-radius: 8px; font-weight: bold;">
                     Xác Thực Email
