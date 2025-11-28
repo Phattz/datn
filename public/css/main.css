@@ -395,7 +395,7 @@
 
 
 
-/* bố cục chính sách Trạm Nhỏ Xinh */
+/* bố cục chính sách CharmCraft */
 .policy-home {
     max-width: 380px;
     height: 150px;
@@ -415,11 +415,11 @@
     margin: 20px;
 }
 
-/* END bố cục chính sách Trạm Nhỏ Xinh */
+/* END bố cục chính sách TCharmCraft */
 
 
 
-/* REPONTIVE trang chủ Trạm Nhỏ Xinh */
+/* REPONTIVE trang chủ CharmCraft */
 @media (max-width: 745px) {
     .c-12 {
         display: flex;
@@ -437,7 +437,7 @@
 
 }
 
-/* END REPONTIVE trang chủ Trạm Nhỏ Xinh */
+/* END REPONTIVE trang chủ CharmCraft */
 
 
 
@@ -471,7 +471,7 @@
 
 
 /* footer Chí Minh  */
-/* Footer Trạm Nhỏ Xinh */
+/* Footer CharmCraft */
 footer {
     background-color: #f8f8f8;
     padding: 40px 0;
@@ -588,5 +588,5 @@ footer .footer_policy li {
     }
 }
 
-/* END Footer Trạm Nhỏ Xinh */
+/* END Footer CharmCraft */
 /* footer Chí Minh  */

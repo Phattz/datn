@@ -28,8 +28,7 @@
                         <th>Hình Ảnh</th>
                         <th>Hình Phụ</th>
                         <th>Tên Sản Phẩm</th>
-                        <th>Giá Gốc</th>
-                        <th>Giá Giảm</th>
+                        <th>Giá</th>
                         <th>Số lượng</th>
                         <th>Trạng thái</th>
                         <th>Sửa</th>
@@ -59,12 +58,10 @@
                             </td>
                             <td><?= $name ?></td>
                             <td><?= number_format($price, 0, ',', '.') ?></td>
-                            <td><?= ($salePrice == null) ? '': number_format($salePrice, 0, ',', '.') ?></td>
                             <td><?= $quantity ?></td>
                             <?php
                             if ($status === 1) echo '<td><span class="status success">Đang hoạt động</span></td>';
-                            if ($status === 2) echo '<td><span class="status pending">Tạm ngưng</span></td>';
-                            if ($status === 0) echo '<td><span class="status danger">Đã hủy</span></td>';
+                            if ($status === 0) echo '<td><span class="status danger">Ẩn</span></td>';
                             ?>
                             <td><a href="?page=editpro&id=<?= $id ?>">Sửa</a></td>
                         </tr>

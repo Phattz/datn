@@ -23,8 +23,7 @@
                 <label for="status">Trạng thái</label>
                 <select name="status" id="status" required>
                     <option value="1">Đã hoạt động</option>
-                    <option value="2">Tạm ngưng</option>
-                    <option value="3">Đã hủy</option>
+                    <option value="2">Đã ẩn</option>
                 </select>
             </div>
         </div>

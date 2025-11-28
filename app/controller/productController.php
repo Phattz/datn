@@ -10,10 +10,11 @@ class ProductController
     function __construct()
     {
         $this->products = new ProductsModel();
-        $this->category = new ProductCateModel();
+        $this->category = new CategoriesModel();
         $this->comment = new ProductCommentModel();
         $this->rating = new RatingModel();
     }
+
     function renderView($view, $data)
     {
         $view = 'app/view/' . $view . '.php';
@@ -24,10 +25,13 @@ class ProductController
     {
         if (isset($_GET['id']) && $_GET['id'] > 0) {
             $idcate = $_GET['id'];
-            $this->data['products'] = $this->products->getProCate($idcate); //lấy sản phẩm cùng danh mục
-            $this->data['prohot'] = $this->products->getProHot();  //lấy sản phẩm hot (view cao)
-            $this->data['nameCate'] = $this->category->getNameCateUser($idcate);  //lấy tên danh mục theo id
-            $this->data['cate'] = $this->category->getAllCate();
+
+            $this->data['products'] = $this->products->getProductsByCategoryWithDefaultPrice($idcate);
+
+            $this->data['prohot']    = $this->products->getProHot();
+            $this->data['nameCate']  = $this->category->getNameCateUser($idcate);
+            $this->data['cate']      = $this->category->getAllCate();
+
             return $this->renderView('product', $this->data);
         } else {
             echo 'Not found category';
@@ -37,19 +41,37 @@ class ProductController
     function viewProDetail()
     {
         if (isset($_GET['id'])) {
+
             $idpro = $_GET['id'];
-            $this->data['detail'] = $this->products->getIdPro($idpro); //lấy chi tiết sản phẩm theo id
-            $this->data['nameCate'] = $this->products->getNameCate($idpro); //lấy tên danh mục theo id sản phẩm
-            //san pham lien quan 
+
+            // Thông tin sản phẩm
+            $this->data['detail']     = $this->products->getIdPro($idpro);
+            $this->data['nameCate']   = $this->products->getNameCate($idpro);
+
+            // Các biến thể
+            $this->data['sizes']      = $this->products->getSizesByProduct($idpro);
+            $this->data['colors']     = $this->products->getColorsByProduct($idpro);
+            
+            // Sản phẩm liên quan
             $result = $this->products->getIdCate($idpro);
-            $this->data['splq'] = $this->products->getProCateById($result['idCate'], $idpro);
-            $this->data['comment'] = $this->comment->getComment($idpro); //lấy bình luận sản phẩm theo id
-            $this->data['rating'] = $this->rating->getRating($idpro); //lấy đánh giá sản phẩm
+            $this->data['splq'] = $this->products->getRelatedWithDefaultPrice($result['idCategory'], $idpro);
+
+
+            // Bình luận + đánh giá
+            $this->data['comment'] = $this->comment->getComment($idpro);
+            $this->data['rating']  = $this->rating->getRating($idpro);
+
             return $this->renderView('productDetail', $this->data);
         } else {
-            echo 'Not found product';
+            echo "Not found product";
         }
     }
+
+
+    
+    
+
+    
 
     function addComment()
     {
@@ -58,10 +80,9 @@ class ProductController
             $data['idUser'] = $_SESSION['user'];
             $data['text'] = trim($_POST['comment_text']);
             $this->comment->addComment($data);
+
             echo "<script>alert('Thêm bình luận thành công')</script>";
             echo '<script>location.href="?page=productDetail&id=' . $data['idProduct'] . '"</script>';
         }
     }
-
-
 }

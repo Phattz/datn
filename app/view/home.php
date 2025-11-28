@@ -11,7 +11,6 @@
 </head>
 
 <body>
-    <!-- Trang chủ Trạm Nhỏ Xinh của Huy -->
     <main class="grid wide">
         <section class="row">
             
@@ -41,12 +40,7 @@
                                     <span><?= $name ?></span>
                                 </div>
                                 <div class="price-product">
-                                    <?php if(!empty($salePrice)){ ?>
-                                    <span><?= number_format($salePrice) ?> đ</span>
-                                    <span> <sub><del><?= number_format($price) ?></del> đ</sub> </span>
-                                    <?php } else{ ?>
                                     <span><?= number_format($price) ?> đ</span>
-                                    <?php } ?>
                                 </div>
                             </a>
 
@@ -60,10 +54,7 @@
                                 <input type="hidden" name="product_quantity" value="1">
                                 <button type="submit" name="addToCart" class="addCart-product">Thêm vào giỏ hàng</button>
                             </form>
-                            <button class="heart-button" data-id="<?=$id?>">
-                                <i class="icon on fa-solid fa-heart"></i>
-                                <i class="icon off fa-regular fa-heart"></i>
-                            </button>
+                        
                         </div>
                     </div>
                 <?php 
@@ -105,13 +96,8 @@
                                         <span><?= $name ?></span>
                                     </div>
                                     <div class="price-product">
-                                        <?php if(!empty($salePrice)){ ?>
-                                        <span><?= number_format($salePrice) ?> đ</span>
-                                        <span> <sub><del><?= number_format($price) ?></del> đ</sub> </span>
-                                        <?php } else{ ?>
                                         <span><?= number_format($price) ?> đ</span>
-                                        <?php } ?>
-                                </div>
+                                    </div>
                                 </a>
                                  <!-- thêm giỏ hàng -->
                                 <form action="index.php?page=addToCart" method="post" class="addCart-product">
@@ -123,10 +109,7 @@
                                     <input type="hidden" name="product_quantity" value="1">
                                     <button type="submit" name="addToCart" class="addCart-product">Thêm vào giỏ hàng</button>
                                 </form>
-                                <button class="heart-button" data-id="<?=$id?>">
-                                    <i class="icon on fa-solid fa-heart"></i>
-                                    <i class="icon off fa-regular fa-heart"></i>
-                                </button>
+                             
                             </div>
                         <?php } ?>
 
@@ -136,37 +119,7 @@
             </div>
         </section>
         <section class="row">
-            <div class="title-box">
-                <h3>Bài viết mới nhất</h3>
-            </div>
-            <?php
-            $post = $data['post'];
-            foreach ($post as $item) {
-                extract($item);
-                if($status == 1){
-                ?>
-                <div class="col l-4 m-6 c-12">
-                    <a href="index.php?page=postDetail&id=<?= $id ?>">
-                        <div class="post">
-                            <div class="img-post">
-                                <img src="public/image/<?= $image ?>" alt="">
 
-                            </div>
-                            <div class="name-post">
-                                <h3><?= $title ?></h3>
-                            </div>
-                            <div class="description">
-                                <span class="textDes"><?= $description ?></span>
-                                <div class="datePost"><?= $datePost ?></div>
-
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            <?php 
-                }
-            } 
-            ?>
 
 
         </section>
@@ -193,7 +146,6 @@
 
         </section>
     </main>
-    <!-- END Trang chủ Trạm Nhỏ Xinh của Huy -->
 
 </body>
 

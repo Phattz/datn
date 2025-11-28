@@ -15,6 +15,14 @@ if (isset($_SESSION['user']) && ($_SESSION['user'] != '')) {
         ';
 }
 ?>
+<?php if (isset($_GET['verified']) && $_GET['verified'] == 1): ?>
+    <script>
+        alert("Xác thực email thành công! Bạn có thể đăng nhập.");
+        window.location.href = "index.php";
+    </script>
+<?php endif; ?>
+
+
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -65,16 +73,21 @@ if (isset($_SESSION['user']) && ($_SESSION['user'] != '')) {
                         <ul class="nav_main-menu row">
                             <li class="col l-2 m-2 c-12"><a href="index.php">Trang chủ</a></li>
                             <li class="col l-2 m-2 c-12"><a href="">Danh mục</a>
-                                <ul class="nav_drop-down">
-                                    <li><a href="index.php?page=product&id=2">Phụ kiện</a></li>
-                                    <li><a href="index.php?page=product&id=4">Vòng tay</a></li>
-                                    <li><a href="index.php?page=product&id=6">Túi len</a></li>
-                                    <li><a href="index.php?page=product&id=5">Nón len</a></li>
-                     
-                                </ul>
+                            <ul class="nav_drop-down">
+                                <?php 
+                                    // Lấy danh mục từ DB
+                                    require_once "app/model/productCateModel.php";
+                                    $cateModel = new CategoriesModel();
+                                    $allCate = $cateModel->getCate(); // lấy categories
+
+                                    foreach ($allCate as $cate) {
+                                        if ($cate['status'] == 1) {
+                                            echo '<li><a href="index.php?page=product&id=' . $cate['id'] . '">' . $cate['name'] . '</a></li>';
+                                        }
+                                    }
+                                ?>
+                            </ul>
                             </li>
-                            <li class="col l-2 m-2 c-12"><a href="index.php?page=post">Bài viết</a></li>
-                            <li class="col l-2 m-2 c-12"><a href="index.php?page=about">Giới thiệu</a></li>
                             <li class="col l-2 m-2 c-12"><a href="index.php?page=contact">Liên hệ</a></li>
                             <li class="col l-2 m-2 c-12"><a href="">Tài khoản </a>
                                 <!-- <ul class="nav_drop-down">

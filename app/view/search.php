@@ -56,7 +56,6 @@
                                             <p><?= $name ?></p>
                                             <p><?= $view ?> lượt xem</p>
                                             <p><?= $price ?> đ</p>
-                                            <p><?= $salePrice ?> đ</p>
                                         </a>
                                     </td>
                                 </tr>
@@ -90,12 +89,7 @@
                                                     <span><?= $name ?></span>
                                                 </div>
                                                 <div class="price-product">
-                                                    <?php if (!empty($salePrice)) { ?>
-                                                        <span><?= number_format($salePrice) ?> đ</span>
-                                                        <span> <sub><del><?= number_format($price) ?></del> đ</sub> </span>
-                                                    <?php } else { ?>
-                                                        <span><?= number_format($price) ?> đ</span>
-                                                    <?php } ?>
+                                                <span><?= number_format($price) ?> đ</span>
                                                 </div>
                                             </a>
 

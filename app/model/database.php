@@ -4,7 +4,7 @@ class DataBase
     private $servername = "localhost";
     private $username = "root";
     private $password = "";
-    private $dbname = "tramnhoxinh";
+    private $dbname = "datn";
     private $conn;
     private $stmt;
 
@@ -54,6 +54,9 @@ class DataBase
     public function update($sql,$param){
         $this->query($sql,$param);
     }
-
+    public function lastInsertId(){
+        return $this->conn->lastInsertId();
+    }
+    
 
 }

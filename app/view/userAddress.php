@@ -19,7 +19,6 @@
                     <ul class="user-menu">
                         <li><a href="index.php?page=userInfo">Thông tin khách hàng</a></li>
                         <li><a href="index.php?page=userOrder">Đơn hàng</a></li>
-                        <li><a href="index.php?page=userFavorite">Yêu thích</a></li>
                         <li><a href="index.php?page=userAddress">Địa chỉ</a></li>
                     </ul>
                 </div>

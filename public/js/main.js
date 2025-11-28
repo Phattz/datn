@@ -1,5 +1,5 @@
 
-// JS Slide banner sản phẩm Trạm Nhỏ Xinh 
+// JS Slide banner sản phẩm CharmCraft
 const containerSlider = document.querySelector('.slider-container');
 const slideItems = document.querySelectorAll('.slide');
 const containerDots = document.querySelector('.dots-container');
@@ -42,7 +42,7 @@ containerSlider.addEventListener('click', (e) => {
     capNhatSlider();
 });
 
-// END JS Slide banner sản phẩm Trạm Nhỏ Xinh 
+// END JS Slide banner sản phẩm CharmCraft
 
 
 
@@ -53,7 +53,7 @@ containerSlider.addEventListener('click', (e) => {
 
 
 
-// JS Sản phẩm nổi bật Trạm Nhỏ Xinh 
+// JS Sản phẩm nổi bật CharmCraft
 const nutTrai = document.querySelector('.prev-btn');
 const nutPhai = document.querySelector('.next-btn');
 const khungSanPham = document.querySelector('.box-hot-product .products-container');
@@ -113,7 +113,7 @@ khungSanPham.addEventListener('wheel', (e) => {
         lastScrollTime = currentTime;
     }
 });
-// END JS Sản phẩm nổi bật Trạm Nhỏ Xinh 
+// END JS Sản phẩm nổi bật CharmCraft
 
 
 

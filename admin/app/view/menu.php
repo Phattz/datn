@@ -22,7 +22,6 @@
                         <li><a href="?page=product" class="<?= (isset($_GET['page']) && $_GET['page'] === 'product') ? 'active' : '' ?>">Sản phẩm</a></li>
                         <li><a href="?page=user" class="<?= (isset($_GET['page']) && $_GET['page'] === 'user') ? 'active' : '' ?>">Người dùng</a></li>
                         <li><a href="?page=order" class="<?= (isset($_GET['page']) && $_GET['page'] === 'order') ? 'active' : '' ?>">Đơn hàng</a></li>
-                        <li><a href="?page=post" class="<?= (isset($_GET['page']) && $_GET['page'] === 'post') ? 'active' : '' ?>">Bài viết</a></li>
                         <li><a href="?page=comment" class="<?= (isset($_GET['page']) && $_GET['page'] === 'comment') ? 'active' : '' ?>">Bình luận</a></li>
                     </ul>
                 </div>

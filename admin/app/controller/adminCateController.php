@@ -7,7 +7,7 @@ class CateAdminController
 
     function __construct()
     {
-        $this->category = new ProductCateModel();
+        $this->category = new CategoriesModel();
         $this->product = new ProductsModel();
     }
 

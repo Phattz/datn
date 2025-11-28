@@ -250,7 +250,7 @@ header {
         width: 100%;
     }
 }
-/* Box giỏ hàng Trạm Nhỏ Xinh */
+/* Box giỏ hàng CharmCraft */
 .box-cart {
     transition: 0.7s;
     width: 400px;
@@ -468,7 +468,7 @@ header {
     }
 }
 
-/* END Box giỏ hàng Trạm Nhỏ Xinh */
+/* END Box giỏ hàng CharmCraft */
 
 
 
@@ -487,7 +487,7 @@ header {
 
 
 
-/* Box đăng nhập Trạm Nhỏ Xinh */
+/* Box đăng nhập CharmCraft */
 .main-box-login {
     display: none;
 }
@@ -740,7 +740,7 @@ form {
     }
 }
 
-/* END Box đăng nhập Trạm Nhỏ Xinh */
+/* END Box đăng nhập CharmCraft */
 
 
 
@@ -1041,7 +1041,7 @@ form {
 
 /* end quên mật khẩu */
 
-/* Box đăng ký Trạm Nhỏ Xinh */
+/* Box đăng ký CharmCraft */
 .main-box-register {
     display: none;
 }

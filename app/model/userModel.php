@@ -2,113 +2,163 @@
 class UserModel
 {
     private $db;
+
     function __construct()
     {
         $this->db = new DataBase();
     }
-    //thêm người dùng vào db
+
+    /** ======================
+     *  ĐĂNG KÝ USER
+     *  ====================== */
     public function insertUser($data, $verificationCode)
     {
-        $sql = "INSERT INTO users (email, password, name, phone, code) VALUES (?,?,?,?,?)";
-        $param = [$data['email'], $data['password'], $data['name'], $data['phone'], $verificationCode];
-        return $this->db->insert($sql, param: $param);
+        $sql = "INSERT INTO users (email, password, name, phone, code) 
+                VALUES (?,?,?,?,?)";
+        $param = [
+            $data['email'], 
+            $data['password'], 
+            $data['name'], 
+            $data['phone'], 
+            $verificationCode
+        ];
+        return $this->db->insert($sql, $param);
     }
 
-    //kiểm tra email khi đăng kí
     public function checkmail($email)
     {
-        $sql = "SELECT * FROM users WHERE email = '$email'";
-        return $this->db->getOne($sql);
+        $sql = "SELECT * FROM users WHERE email = ?";
+        return $this->db->getOne($sql, [$email]);
     }
 
-    //kiểm tra người dùng khi đăng nhập
-    public function checkUser($email, $password){
-        $sql = "SELECT * FROM users WHERE email = '$email' AND password = '$password'";
-        return $this->db->getOne($sql);
+    public function checkUser($email, $password)
+    {
+        $sql = "SELECT * FROM users WHERE email = ? AND password = ?";
+        return $this->db->getOne($sql, [$email, $password]);
     }
 
-    //kiểm tra khi ng dùng quên mật khẩu
-    function checkForgot($email,$phone){
-        $sql = "SELECT * FROM users WHERE email = '$email' AND phone = '$phone'";
-        return $this->db->getOne($sql);
+    public function checkForgot($email, $phone)
+    {
+        $sql = "SELECT * FROM users WHERE email = ? AND phone = ?";
+        return $this->db->getOne($sql, [$email, $phone]);
     }
 
-    //cập nhật mật khẩu mới
-    function updatePass($data){
-        $sql = "UPDATE users SET password =? WHERE email =? AND phone =?";
-        $param = [$data['password'], $data['email'],$data['phone'],];
-        return $this->db->update($sql, $param);
+    public function updatePass($data)
+    {
+        $sql = "UPDATE users SET password = ? WHERE email = ? AND phone = ?";
+        return $this->db->update($sql, [
+            $data['password'],
+            $data['email'],
+            $data['phone']
+        ]);
     }
 
-    //acvive người dùng
-    function verify($code) {
-        $sql = "UPDATE users SET active = 1 WHERE code = ? AND active = 0";
-        $param = [$code];
-        return $this->db->update($sql, $param);
+    /** ======================
+     *  XÁC THỰC EMAIL
+     *  ====================== */
+    public function verify($code)
+    {
+        // 1. Kiểm tra code có tồn tại hay không
+        $sql = "SELECT * FROM users WHERE code = ? AND active = 0 LIMIT 1";
+        $user = $this->db->getOne($sql, [$code]);
+
+        if (!$user) {
+            return false; // Code không tồn tại hoặc đã active
+        }
+
+        // 2. Active tài khoản
+        $sql2 = "UPDATE users SET active = 1, code = NULL WHERE id = ?";
+        $this->db->update($sql2, [$user['id']]);
+
+        return true;
     }
 
-    //cập nhật thông tin người dùng
-    function updateInfo($data){
-        $sql = "UPDATE users SET name =?, phone =?, email =? WHERE id = ?";
-        $param = [$data['name'], $data['phone'], $data['email'], $data['id']];
-        return $this->db->update($sql, $param);
+    /** ======================
+     *  CẬP NHẬT THÔNG TIN
+     *  ====================== */
+    public function updateInfo($data)
+    {
+        $sql = "UPDATE users SET name = ?, phone = ?, email = ? WHERE id = ?";
+        return $this->db->update($sql, [
+            $data['name'],
+            $data['phone'],
+            $data['email'],
+            $data['id']
+        ]);
     }
-    
-    //xóa địa chỉ người dùng
-    function deleteAddress($id){
-        $sql = "UPDATE users SET address = null WHERE id = ?";
-        $param = [$id];
-        return $this->db->delete($sql, $param);
+
+    public function deleteAddress($id)
+    {
+        $sql = "UPDATE users SET address = NULL WHERE id = ?";
+        return $this->db->update($sql, [$id]);
     }
-    //thêm địa chỉ mới 
-    function updateAddress($data,$id){
+
+    public function updateAddress($address, $id)
+    {
         $sql = "UPDATE users SET address = ? WHERE id = ?";
-        $param = [$data,$id];
-        return $this->db->delete($sql, $param);
+        return $this->db->update($sql, [$address, $id]);
     }
-    //admin
-    function getAllUser($start, $limit){
+
+    /** ======================
+     *  ADMIN
+     *  ====================== */
+    public function getAllUser($start, $limit)
+    {
         $sql = "SELECT * FROM users";
-        if($limit != 0 ){
-            $sql .=" LIMIT ".$start.",".$limit;
+        if ($limit != 0) {
+            $sql .= " LIMIT $start,$limit";
         }
         return $this->db->getAll($sql);
     }
 
-    function getUser($id){
-        $sql = "SELECT * FROM users WHERE id = $id";
-        return $this->db->getOne($sql);
+    public function getUser($id)
+    {
+        $sql = "SELECT * FROM users WHERE id = ?";
+        return $this->db->getOne($sql, [$id]);
     }
 
-    function editUser($data){
-        $sql = "UPDATE users SET email =?, name =?, role =?, active =? WHERE id =?";
-        $param = [$data['email'], $data['name'], $data['role'], $data['active'], $data['id']];
-        return $this->db->update($sql,$param);
+    public function editUser($data)
+    {
+        $sql = "UPDATE users 
+                SET email = ?, name = ?, role = ?, active = ? 
+                WHERE id = ?";
+        return $this->db->update($sql, [
+            $data['email'],
+            $data['name'],
+            $data['role'],
+            $data['active'],
+            $data['id']
+        ]);
     }
 
-    function deleteUser($id){
+    public function deleteUser($id)
+    {
         $sql = "DELETE FROM users WHERE id = ?";
-        $this->db->delete($sql, [$id]);
+        return $this->db->delete($sql, [$id]);
     }
-    
-    function getUserById($idUser){
-        $sql = "SELECT * FROM users WHERE id = $idUser";
-        return $this->db->getOne($sql);
+
+    public function getUserById($idUser)
+    {
+        $sql = "SELECT * FROM users WHERE id = ?";
+        return $this->db->getOne($sql, [$idUser]);
     }
-    function adminSearchUser($key, $start, $limit){
-        $sql ="SELECT *FROM users WHERE name like '%$key%'";
-        if($limit !=0){
-            $sql .=" LIMIT " . $start . "," . $limit;
+
+    public function adminSearchUser($key, $start, $limit)
+    {
+        $sql = "SELECT * FROM users WHERE name LIKE ?";
+        $param = ["%$key%"];
+
+        if ($limit != 0) {
+            $sql .= " LIMIT $start,$limit";
         }
-        return $this->db->getAll($sql);
+
+        return $this->db->getAll($sql, $param);
     }
-function tongUser(){
+
+    public function tongUser()
+    {
         $sql = "SELECT COUNT(*) AS tong FROM users";
         $kq = $this->db->getOne($sql);
         return $kq['tong'];
     }
-
-    
-
-    
 }

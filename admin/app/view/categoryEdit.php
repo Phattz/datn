@@ -25,8 +25,7 @@
                 <label for="status">Trạng thái</label>
                 <select name="status" id="status">
                     <option class="status success" value="1" <?= $type['status'] == 1 ? 'selected' : '' ?>>Đã hoạt động</option>
-                    <option class="status pending" value="2" <?= $type['status'] == 2 ? 'selected' : '' ?>>Tạm ngưng</option>
-                    <option class="status danger" value="3" <?= $type['status'] == 3 ? 'selected' : '' ?>>Đã hủy</option>
+                    <option class="status danger" value="2" <?= $type['status'] == 2 ? 'selected' : '' ?>>Ẩn</option>
                 </select>
             </div>
         </div>

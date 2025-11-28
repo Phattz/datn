@@ -7,7 +7,7 @@ class SearchController {
     function __construct() {
         $this->products = new ProductsModel();
         $this->search = new SearchModel();
-        $this->category = new ProductCateModel();
+        $this->category = new CategoriesModel();
     }
 
     function renderView($view, $data = []) {

@@ -119,39 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <input id="btnCOD" type="radio" name="paymentMethod" value="1">
                                 Thanh toán khi nhận hàng
                             </label>
-                            <!-- <label class="payment-radio">
-                                <input id="btnBank" type="radio" name="paymentMethod" value="2" >
-                                Thanh toán ngân hàng
-                            </label> -->
-                       
-                    <!-- thanh toans chuyen khoan -->
-                            <!-- <section id="paymentBank">
-                                <div class="row">
-                                    <div class="col l-12 qr">
-                                        <img src="public/image/QRcode.png" alt="">
-                                    </div>
-                                </div>
-                                <div class="payment_pay-credit">
-                                    <div class="fs16 mgt20 tcolor">
-                                        <p>Ngân hàng</p>
-                                    </div>
-                                    <div class="fs14 name__bank mgt16">
-                                        <p>TP Bank</p>
-                                    </div>
-                                    <div class="fs16 mgt20 tcolor">
-                                        <p>Số tài khoản</p>
-                                    </div>
-                                    <div class="fs14 name__bank mgt16">
-                                        <p>0123456789</p>
-                                    </div>
-                                    <div class="fs16 mgt20 tcolor">
-                                        <p>Tên chủ tài khoản</p>
-                                    </div>
-                                    <div class="fs14 name__bank mgt16">
-                                        <p>Trạm Nhỏ Xinh</p>
-                                    </div>
-                                </div>
-                            </section> -->
+                        
 
 
                             <div class="col l-12 paymentStep2_btn">
