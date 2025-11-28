@@ -22,7 +22,7 @@ class CateAdminController
         $view = './app/view/' . $view . '.php';
         require_once $view;
     }
-
+//testpush
     function viewCategory()
     {
         $page = isset($_GET['p']) ? (int)$_GET['p'] : 1;
