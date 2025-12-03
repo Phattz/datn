@@ -1,4 +1,4 @@
-// JS Đăng nhập Trạm Nhỏ Xinh 
+// JS Đăng nhập 
 document.querySelector(".show-password").addEventListener("click", function () {
     const passwordField = document.getElementById("password");
     const icon = this.querySelector("i");

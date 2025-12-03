@@ -148,7 +148,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         <p>Tên chủ tài khoản</p>
                                     </div>
                                     <div class="fs14 name__bank mgt16">
-                                        <p>Trạm Nhỏ Xinh</p>
+                                        <p>CHARMCRAFT</p>
                                     </div>
                                 </div>
                             </section> -->
