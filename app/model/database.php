@@ -4,7 +4,7 @@ class DataBase
     private $servername = "localhost";
     private $username = "root";
     private $password = "";
-    private $dbname = "datn";
+    private $dbname = "charmcraft";
     private $conn;
     private $stmt;
 

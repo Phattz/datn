@@ -60,7 +60,6 @@ class ProAdminController
             $data['idCate'] = $_POST['idCate'];
             $data['description'] = $_POST['description'] ?? '';
             $data['price'] = $_POST['price'];
-            $data['salePrice'] = isset($_POST['salePrice']) && $_POST['salePrice'] !== '' ? $_POST['salePrice'] : null;
             $data['quantity'] = isset($_POST['quantity']) ? (int)$_POST['quantity'] : 0;
             $data['stockQuantity'] = $data['quantity']; // Dùng cho productdetail
             $data['status'] = isset($_POST['status']) ? (int)$_POST['status'] : 1;
@@ -100,9 +99,7 @@ class ProAdminController
                     }
                 }
             }
-            // Cập nhật lại danh sách ảnh phụ (loại bỏ các giá trị rỗng)
-            $existingImages = array_filter($existingImages);
-            $data['listImages'] = !empty($existingImages) ? implode(',', $existingImages) : '';
+            
             // Cập nhật sản phẩm
             $this->product->upProduct($data);
             
@@ -137,9 +134,6 @@ class ProAdminController
             $data['name'] = $_POST['name'];
             $data['idCate'] = $_POST['idCate'];
             $data['price'] = $_POST['price'];
-            // $data['salePrice'] = $_POST['salePrice'];
-            $data['salePrice'] = isset($_POST['salePrice']) && $_POST['salePrice'] !== '' ? $_POST['salePrice'] : null;
-
             $data['quantity'] = $_POST['quantity'];
             $data['status'] = $_POST['status'];
             // Xử lý ảnh chính

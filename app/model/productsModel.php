@@ -197,6 +197,7 @@ class ProductsModel {
                 ORDER BY id ASC 
                 LIMIT 1";
         return $this->db->getOne($sql, [$productId]);
+        
     }
     
 
@@ -217,132 +218,94 @@ class ProductsModel {
     }
 
     // ADMIN – thêm sản phẩm
-    function insertPro($data){
-        // Thêm vào bảng products
-        // Lưu ý: listImages không có trong bảng products, chỉ thêm các trường cơ bản
-        $sql = "INSERT INTO products (name, description, status, image, idCategory) 
-                VALUES (?, ?, ?, ?, ?)";
-        $params = [
-            $data['name'],
-            $data['description'] ?? '',
-            $data['status'],
-            $data['image'],
-            $data['idCate'] ?? $data['idCategory'] ?? null
-        ];
-        
-        $this->db->insert($sql, $params);
+    // ADMIN – thêm sản phẩm
+function insertPro($data){
+    // Thêm vào bảng products
+    $sql = "INSERT INTO products (name, description, status, image, idCategory) 
+            VALUES (?, ?, ?, ?, ?)";
+    $params = [
+        $data['name'],
+        $data['description'] ?? '',
+        $data['status'],
+        $data['image'],
+        $data['idCate'] ?? $data['idCategory'] ?? null
+    ];
+    
+    $this->db->insert($sql, $params);
+    $idNew = $this->db->lastInsertId();
 
-        $idNew = $this->db->lastInsertId();
+    // Thêm vào bảng productdetail (không có salePrice)
+    $sql2 = "INSERT INTO productdetail (idProduct, price, stockQuantity, idColor) 
+             VALUES (?, ?, ?, ?)";
+    $params2 = [
+        $idNew,
+        $data['price'],
+        $data['stockQuantity'] ?? $data['quantity'] ?? 0,
+        $data['idColor'] ?? null
+    ];
 
-        // Thêm vào bảng productdetail
-        $sql2 = "INSERT INTO productdetail (idProduct, price";
-        $values2 = "VALUES (?, ?";
-        $params2 = [
-            $idNew,
-            $data['price']
-        ];
-        
-        // Thêm salePrice nếu có
-        if (isset($data['salePrice']) && $data['salePrice'] !== null) {
-            $sql2 .= ", salePrice";
-            $values2 .= ", ?";
-            $params2[] = $data['salePrice'];
-        }
-        
-        $sql2 .= ", stockQuantity, idColor) " . $values2 . ", ?, ?)";
-        $params2[] = $data['stockQuantity'];
-        $params2[] = $data['idColor'];
-        
-        $this->db->insert($sql2, $params2);
-    }
+    $this->db->insert($sql2, $params2);
+    return $idNew;
+}
+
+
 
     // ADMIN – cập nhật sản phẩm
-    function upProduct($data){
-        // Cập nhật bảng products
-        // Lưu ý: listImages không có trong bảng products, chỉ cập nhật các trường cơ bản
-        $sql = "
-            UPDATE products 
-            SET name = ?, description = ?, status = ?, image = ?, idCategory = ?
-            WHERE id = ?
-        ";
-        $params = [
-            $data['name'],
-            $data['description'] ?? '',
-            $data['status'],
-            $data['image'],
-            $data['idCate'] ?? $data['idCategory'] ?? null,
-            $data['id']
-        ];
-        
-        $this->db->update($sql, $params);
+function upProduct($data){
+    // Cập nhật bảng products
+    $sql = "
+        UPDATE products 
+        SET name = ?, description = ?, status = ?, image = ?, idCategory = ?
+        WHERE id = ?
+    ";
+    $params = [
+        $data['name'],
+        $data['description'] ?? '',
+        $data['status'],
+        $data['image'],
+        $data['idCate'] ?? $data['idCategory'] ?? null,
+        $data['id']
+    ];
+    
+    $this->db->update($sql, $params);
 
-        // Cập nhật bảng productdetail
-        // Đảm bảo stockQuantity luôn được lấy từ quantity hoặc stockQuantity
-        $stockQuantity = isset($data['stockQuantity']) ? (int)$data['stockQuantity'] : (isset($data['quantity']) ? (int)$data['quantity'] : 0);
-        
-        // Kiểm tra xem có salePrice và không phải null/empty
-        $hasSalePrice = isset($data['salePrice']) && $data['salePrice'] !== null && $data['salePrice'] !== '';
-        
-        // Xác định điều kiện WHERE: 
-        // - Nếu có idColor và không rỗng, cập nhật CHỈ bản ghi productdetail có idColor đó
-        // - Nếu không có idColor, cập nhật bản ghi đầu tiên (theo id ASC) - bản ghi mặc định được hiển thị khi edit
-        $whereCondition = "";
-        $whereParams = [];
-        
-        if (isset($data['idColor']) && $data['idColor'] !== null && $data['idColor'] !== '') {
-            // Cập nhật CHỈ bản ghi productdetail có idColor tương ứng với idProduct
-            // Điều này đảm bảo mỗi màu có số lượng riêng
-            $whereCondition = "WHERE idProduct = ? AND idColor = ?";
-            $whereParams = [$data['id'], $data['idColor']];
+    // Cập nhật bảng productdetail
+    $stockQuantity = isset($data['stockQuantity']) ? (int)$data['stockQuantity'] : (isset($data['quantity']) ? (int)$data['quantity'] : 0);
+
+    // Xác định điều kiện WHERE
+    $whereCondition = "";
+    $whereParams = [];
+
+    if (isset($data['idColor']) && $data['idColor'] !== null && $data['idColor'] !== '') {
+        $whereCondition = "WHERE idProduct = ? AND idColor = ?";
+        $whereParams = [$data['id'], $data['idColor']];
+    } else {
+        $sqlGetFirst = "SELECT id FROM productdetail WHERE idProduct = ? ORDER BY id ASC LIMIT 1";
+        $firstDetail = $this->db->getOne($sqlGetFirst, [$data['id']]);
+
+        if ($firstDetail && isset($firstDetail['id'])) {
+            $whereCondition = "WHERE id = ?";
+            $whereParams = [$firstDetail['id']];
         } else {
-            // Nếu không có idColor, cập nhật bản ghi đầu tiên (bản ghi mặc định)
-            // Lấy ID của productdetail đầu tiên để cập nhật chính xác
-            $sqlGetFirst = "SELECT id FROM productdetail WHERE idProduct = ? ORDER BY id ASC LIMIT 1";
-            $firstDetail = $this->db->getOne($sqlGetFirst, [$data['id']]);
-            
-            if ($firstDetail && isset($firstDetail['id'])) {
-                // Cập nhật bản ghi đầu tiên theo ID
-                $whereCondition = "WHERE id = ?";
-                $whereParams = [$firstDetail['id']];
-            } else {
-                // Fallback: nếu không tìm thấy productdetail nào, cập nhật tất cả (trường hợp hiếm)
-                $whereCondition = "WHERE idProduct = ?";
-                $whereParams = [$data['id']];
-            }
+            $whereCondition = "WHERE idProduct = ?";
+            $whereParams = [$data['id']];
         }
-        
-        // Xây dựng câu SQL UPDATE
-        if ($hasSalePrice) {
-            $sql2 = "
-                UPDATE productdetail
-                SET price = ?, salePrice = ?, stockQuantity = ?, idColor = ?
-                " . $whereCondition . "
-            ";
-            $params2 = [
-                $data['price'] ?? 0,
-                $data['salePrice'],
-                $stockQuantity,
-                $data['idColor'] ?? null
-            ];
-        } else {
-            $sql2 = "
-                UPDATE productdetail
-                SET price = ?, stockQuantity = ?, idColor = ?
-                " . $whereCondition . "
-            ";
-            $params2 = [
-                $data['price'] ?? 0,
-                $stockQuantity,
-                $data['idColor'] ?? null
-            ];
-        }
-        
-        // Merge whereParams vào params2
-        $params2 = array_merge($params2, $whereParams);
-        
-        // Thực hiện cập nhật
-        $this->db->update($sql2, $params2);
     }
+
+    // Cập nhật productdetail (không có salePrice)
+    $sql2 = "
+        UPDATE productdetail 
+        SET price = ?, stockQuantity = ?
+        $whereCondition
+    ";
+    $params2 = array_merge([
+        $data['price'],
+        $stockQuantity
+    ], $whereParams);
+
+    $this->db->update($sql2, $params2);
+}
+
 
     // Xóa sản phẩm
     function deletePro($id){

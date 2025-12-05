@@ -55,10 +55,7 @@
                 <input type="hidden" name="idPro" value="<?= $pro_detail['id'] ?? '' ?>">
             </div>
 
-            <div class="category-main-product">
-                <label for="salePrice">Giá giảm</label>
-                <input type="number" id="salePrice" name="salePrice" value="<?= $salePrice ?? '' ?>">
-            </div>
+           
 
             <div class="category-main-product">
                 <label for="quantity">Số lượng</label>
@@ -81,19 +78,8 @@
                     <option value="">-- Chọn màu --</option>
                     <?php
                     // Lưu ý: Đường dẫn require này nên kiểm tra lại nếu cấu trúc thư mục thay đổi
-                    if (file_exists('../../../app/model/colorModel.php')) {
-                        require_once '../../../app/model/colorModel.php';
-                        if (class_exists('ColorModel')) {
-                            $colorModel = new ColorModel();
-                            $colors = $colorModel->getAllColors();
-                            $currentColor = $pro_detail['idColor'] ?? null;
-                            
-                            foreach ($colors as $color) {
-                                $selected = ($color['id'] == $currentColor) ? 'selected' : '';
-                                echo '<option value="' . $color['id'] . '" ' . $selected . '>' . $color['nameColor'] . '</option>';
-                            }
-                        }
-                    }
+                    
+                
                     ?>
                 </select>
             </div>
