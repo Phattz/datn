@@ -21,10 +21,6 @@ ul.user-menu li a:hover {
     color: #8d6e6e;
 }
 
-/*Phần infoUser*/
-.productFavorite{
-    margin: 20px;
-}
 .user-menu{
     font-weight: bold;
     list-style-type: none;
@@ -82,18 +78,6 @@ ul.user-menu li a:hover {
     text-decoration: underline;
 }
 
-.main-product table a.remove-favorite {
-    color: #fff;
-    background-color: #ff4d4f;
-    padding: 8px 15px;
-    border-radius: 5px; 
-    text-decoration: none;
-}
-
-.main-product table a.remove-favorite:hover {
-    background-color: #e41e26;
-    text-decoration: none;
-}
 
 /* Kiểu cho checkbox */
 .main-product table input[type="checkbox"] {

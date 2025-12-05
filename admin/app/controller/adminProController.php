@@ -8,7 +8,7 @@ class ProAdminController
     function __construct()
     {
         $this->product = new ProductsModel();
-        $this->category = new ProductCateModel();
+        $this->category = new CategoriesModel();
     }
 
     function renderView($view, $data = null)
@@ -49,9 +49,6 @@ class ProAdminController
             $data['name'] = $_POST['name'];
             $data['idCate'] = $_POST['idCate'];
             $data['price'] = $_POST['price'];
-            // $data['salePrice'] = $_POST['salePrice'];
-            $data['salePrice'] = isset($_POST['salePrice']) && is_numeric($_POST['salePrice']) ? $_POST['salePrice'] : NULL;
-
             $data['quantity'] = $_POST['quantity'];
             $data['status'] = $_POST['status'];
             // Xử lý ảnh chính

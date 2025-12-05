@@ -1,7 +1,17 @@
-<?php
-$product = $data['detail'];
+<?php 
+$product = $data['detail']; 
 extract($product);
+
+// Danh sách màu của sản phẩm
+$colors = $data['colors'];
+
+// Chọn màu mặc định = màu đầu tiên
+$defaultColor = isset($colors[0]) ? $colors[0]['id'] : 0;
+
+// Danh sách hình
+$list = !empty($listImages) ? explode(',', $listImages) : [];
 ?>
+
 <!DOCTYPE html>
 <html lang="vi">
 
@@ -9,384 +19,257 @@ extract($product);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $name ?></title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
     <link rel="stylesheet" href="public/css/productDetail.css">
+
+    <!-- =========== TOAST CSS =========== -->
+    <style>
+        #toast-msg-fixed {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 14px 26px;
+            border-radius: 8px;
+            font-size: 16px;
+            color: #fff;
+            z-index: 999999;
+            opacity: 1;
+            transition: opacity .4s ease;
+        }
+        #toast-msg-fixed.success { background:#4CAF50; }
+        #toast-msg-fixed.error { background:#E53935; }
+        #toast-msg-fixed.hide { opacity:0; }
+    </style>
 </head>
 
 <body>
-    <main>
-        <section>
-            <div class="grid wide container">
-                <div class="row">
-                    <div class="l-12">
-                        <!--Chi tiết sản phẩm-->
-                        <?php
 
-                        if (!empty($listImages)) {
-                            // Nếu $listImages không rỗng, tách chuỗi thành mảng
-                            $list = explode(',', $listImages);
-                        } else {
-                            // Nếu $listImages rỗng, gán mảng trống
-                            $list = [];
-                        }
+<!-- =========== TOAST MESSAGE =========== -->
+<?php if (!empty($_SESSION['cart_message'])): ?>
+    <div id="toast-msg-fixed" class="<?= $_SESSION['cart_message']['type'] ?>">
+        <?= $_SESSION['cart_message']['text']; ?>
+    </div>
+    <?php unset($_SESSION['cart_message']); ?>
+<?php endif; ?>
 
-                        ?>
-                        <div class="product-detail">
-                            <div class="product-detail-thumbnails">
-                                <?php
-                                if (!empty($list)) {
-                                    $count = count($list);
-                                    for ($i = 0; $i < $count; $i++) {
-                                        // in số lượng ảnh có trong mảng
-                                        if (isset($list[$i])) {
-                                            echo "<img src='public/image/{$list[$i]}' alt='Thumbnail " . ($i + 1) . "' class='thumbnail'>";
-                                        }
-                                    }
-                                } else {
-                                    echo '';
-                                }
-                                ?>
-                            </div>
-                            <img src="public/image/<?= $image ?>" alt="Tên sản phẩm">
-                            <div class="info">
-                                <h2><?= $name ?></h2>
-                                <?php if (!empty($salePrice)) { ?>
-                                    <p class="price"><?= number_format($salePrice) ?> đ</p>
-                                    <p class="price"><del><?= number_format($price) ?> đ</del></p>
-                                <?php } else { ?>
-                                    <p class="price"><?= number_format($price) ?> </p>
-                                <?php } ?>
-                                <div class="quantity-controls">
-                                    <button class="minus"><i class="fa-solid fa-minus"></i></button>
-                                    <input type="text" id="amount" value="1">
-                                    <button class="plus"><i class="fa-solid fa-plus"></i></button>
-                                </div>
-                                <div class="description-product">
-                                    <p><?= $description ?></p>
-                                </div>
-                                <div class="cart-button">
-                                    <form action="index.php?page=addToCartInDetail" method="post"
-                                        style=" display: contents;">
-                                        <input type="hidden" name="product_quantity" class="amount" id="hidden_quantity"
-                                            value="1">
-                                        <input type="hidden" name="product_id" class="product_id" value="<?= $id ?>">
-                                        <input type="hidden" name="product_name" value="<?= $name ?>">
-                                        <input type="hidden" name="product_price" value="<?= $price ?>">
-                                        <input type="hidden" name="product_image" value="<?= $image ?>">
-                                        <input type="hidden" name="product_color" value="<?= $color ?>">
-                                        <input type="hidden" name="product_quantity" value="1">
-                                        <button type="submit" name="addToCartInDetail" class="addCart-product">Thêm vào
-                                            giỏ hàng</button>
-                                    </form>
-                                    <!-- <button>Mua ngay</button> -->
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Mô tả chi tiết sản phẩm-->
-                        <div class="">
-                            <h3 class="product-detail-title">Chi tiết sản phẩm</h3>
-                            <p class="product-detail-description"><?= $detail ?></p>
-                            <table class="product-detail-tables">
-                            <tr>
-                                <td>Loại sản phẩm: <?= $data['nameCate'][0]['name'] ?></td>
-                            </tr>
-                            <tr>
-                                <td>Chất liệu: <?= $material ?></td>
-                            </tr>
-                            <tr>
-                                <td>Kích thước: <?= $size ?></td>
-                            </tr>
-                            <tr>
-                                <td>Màu sắc: <?= $color ?></td>
-                            </tr>
-                            </table>
-                        </div>
-                 
+<script>
+// Ẩn toast sau 2 giây
+document.addEventListener("DOMContentLoaded", () => {
+    const t = document.getElementById("toast-msg-fixed");
+    if (t) {
+        setTimeout(() => {
+            t.classList.add("hide");
+            setTimeout(() => t.remove(), 400);
+        }, 2000);
+    }
+});
+</script>
+<!-- ===================================== -->
 
 
-                    <div class="l-12">
-                        <div class="review-section">
-                            <h3 class="rating-title">Đánh giá</h3>
-                            <div class="rating-summary">
-                                <div class="average-rating">
-                                    <?php
-                                    $rating = $data['rating'];
-                                    $totalStar = null;
-                                    for ($i = 0; $i < count($rating); $i++) {
-                                        $totalStar += (int) $rating[$i]['star'];
-                                        $count = count($rating);
-                                    }
-                                    $count = count($rating);
-                                    if ($count != 0) {
-                                        $star = $totalStar / $count;
+<main>
+<section>
+<div class="grid wide container">
+<div class="row">
 
-                                    } else {
-                                        $star = 0;
-                                    }
-                                    ?>
-                                    <p><?= round($star) ?></p>
-                                    <p class="review-count">Của <?= $count ?> đánh giá</p>
-                                    <span class="star-rating">
-                                        <?php
-                                        $star = round($star);
-                                        if ($star == 1) {
-                                            echo "
-                                            <i class='fa-solid fa-star'></i>
-                                            <i class='fa-regular fa-star'></i>
-                                            <i class='fa-regular fa-star'></i>
-                                            <i class='fa-regular fa-star'></i>
-                                            <i class='fa-regular fa-star'></i>
-                                            ";
-                                        } elseif ($star == 2) {
-                                            echo "
-                                            <i class='fa-solid fa-star'></i>
-                                            <i class='fa-solid fa-star'></i>
-                                            <i class='fa-regular fa-star'></i>
-                                            <i class='fa-regular fa-star'></i>
-                                            <i class='fa-regular fa-star'></i>
-                                            ";
-                                        } elseif ($star == 3) {
-                                            echo "
-                                            <i class='fa-solid fa-star'></i>
-                                            <i class='fa-solid fa-star'></i>
-                                            <i class='fa-solid fa-star'></i>
-                                            <i class='fa-regular fa-star'></i>
-                                            <i class='fa-regular fa-star'></i>
-                                            ";
-                                        } elseif ($star == 4) {
-                                            echo "
-                                            <i class='fa-solid fa-star'></i>
-                                            <i class='fa-solid fa-star'></i>
-                                            <i class='fa-solid fa-star'></i>
-                                            <i class='fa-solid fa-star'></i>
-                                            <i class='fa-regular fa-star'></i>
-                                            ";
-                                        } elseif ($star == 5) {
-                                            echo "
-                                            <i class='fa-solid fa-star'></i>
-                                            <i class='fa-solid fa-star'></i>
-                                            <i class='fa-solid fa-star'></i>
-                                            <i class='fa-solid fa-star'></i>
-                                            <i class='fa-solid fa-star'></i>
-                                            ";
-                                        } else {
-                                            echo "
-                                            <i class='fa-regular fa-star'></i>
-                                            <i class='fa-regular fa-star'></i>
-                                            <i class='fa-regular fa-star'></i>
-                                            <i class='fa-regular fa-star'></i>
-                                            <i class='fa-regular fa-star'></i>
-                                            "; // Trường hợp rating không nằm trong 1-5
-                                        }
-                                        ?>
+<div class="l-12">
 
-                                    </span>
-                                </div>
+    <div class="product-detail">
 
-                                <div class="rating-distribution">
-                                    <?php
-                                    if ($star != 0) {
+        <!-- Thumbnails -->
+        <div class="product-detail-thumbnails">
+            <?php foreach ($list as $img): ?>
+                <img src="public/image/<?= $img ?>" class="thumbnail">
+            <?php endforeach; ?>
+        </div>
 
+        <!-- Ảnh chính -->
+        <img src="public/image/<?= $image ?>" alt="<?= $name ?>">
 
-                                        $rate1 = 0;
-                                        $rate2 = 0;
-                                        $rate3 = 0;
-                                        $rate4 = 0;
-                                        $rate5 = 0;
+        <!-- INFO -->
+        <div class="info">
 
-                                        foreach ($rating as $item) {
-                                            extract($item);
-                                            if ($star == 1) {
-                                                $rate1++;
-                                            } else if ($star == 2) {
-                                                $rate2++;
-                                            } else if ($star == 3) {
-                                                $rate3++;
-                                            } else if ($star == 4) {
-                                                $rate4++;
-                                            } else {
-                                                $rate5++;
-                                            }
-                                        }
+            <h2><?= $name ?></h2>
 
-                                        $sl = count($rating);
-                                        $percent5 = ($rate5 / $sl) * 100;
-                                        $percent4 = ($rate4 / $sl) * 100;
-                                        $percent3 = ($rate3 / $sl) * 100;
-                                        $percent2 = ($rate2 / $sl) * 100;
-                                        $percent1 = ($rate1 / $sl) * 100;
-                                        ?>
-                                        
-                                    <?php } else {
-                                        echo "
-                                    <div class='rating-bar'><span>Xuất sắc</span>
-                                        <div class='bar'>
-                                            <div class='fill' style='width:0%;'></div>
-                                        </div><span>0</span>
-                                    </div>
-                                    <div class='rating-bar'><span>Tốt</span>
-                                        <div class='bar'>
-                                            <div class='fill' style='width:0%;'></div>
-                                        </div><span>0</span>
-                                    </div>
-                                    <div class='rating-bar'><span>Trung bình</span>
-                                        <div class='bar'>
-                                            <div class='fill' style='width:0%;'></div>
-                                        </div><span>0</span>
-                                    </div>
-                                    <div class='rating-bar'><span>Kém</span>
-                                        <div class='bar'>
-                                            <div class='fill' style='width:0%;'></div>
-                                        </div><span>0</span>
-                                    </div>
-                                    <div class='rating-bar'><span>Rất kém</span>
-                                        <div class='bar'>
-                                            <div class='fill' style='width:0%;'></div>
-                                        </div><span>0</span>
-                                    </div>
-                                    ";
-                                    }
+            <p class="price"><?= number_format($price) ?> đ</p>
 
-                                    ?>
-                                </div>
+            <!-- SỐ LƯỢNG -->
+            <div class="quantity-controls">
+                <button class="minus"><i class="fa-solid fa-minus"></i></button>
+                <input type="text" id="amount" value="1">
+                <button class="plus"><i class="fa-solid fa-plus"></i></button>
+            </div>
 
+            <!-- ========== CHỌN MÀU (AUTO CÓ MẶC ĐỊNH) ========== -->
+            <div class="product-options" style="margin-top: 15px;">
+                <label style="font-weight:600;font-size:16px;">Màu:</label>
 
-                            </div>
-                        </div>
-                        <!-- Phần bình luận -->
-                        <style lang="">
-                            .form-comment {
-                                width: 1225px;
-                                text-align: right;
-                            }
+                <div style="display:flex;gap:10px;flex-wrap:wrap;">
 
-                            .form-comment p {
-                                font-weight: 700;
-                                font-size: 21px;
-                                margin-left: 10px;
-                                margin-bottom: 20px;
-                                text-align: left;
-                            }
+                    <?php foreach ($colors as $c): ?>
+                        <?php $isDefault = ($c['id'] == $defaultColor); ?>
 
-                            .form-comment textarea {
-                                width: 1224px;
-                                line-height: 1.5;
-                                font-size: 17px;
-                                border: 2px solid #8D6E6E;
-                                padding: 10px;
-                                border-radius: 5px;
-                            }
+                        <label style="cursor:pointer;">
 
-                            .form-comment button {
-                                background-color: #8D6E6E;
-                                color: #FFFFFF;
-                                border: none;
-                                padding: 10px 20px;
-                                border-radius: 5px;
-                                cursor: pointer;
-                                font-size: 15px;
-                                margin-top: 10px;
-                            }
-                        </style>
-                        <?php if (isset($_SESSION['user'])): ?>
-                            <form method="POST" action="index.php?page=addComment" class="form-comment">
-                                <p>Bình Luận</p>
-                                <input type="hidden" name="idProduct" value="<?php echo $data['detail']['id']; ?>">
-                                <textarea name="comment_text" placeholder="Nhập nội dung bình luận..." required></textarea>
-                                <button type="submit">Gửi bình luận</button>
-                            </form>
-                        <?php else: ?>
-                            <p>Bạn cần đăng nhập để bình luận.</p>
-                        <?php endif; ?>
-                        <!-- hiện bình luận -->
-                        <div class="comment-section">
-                            <?php
-                            $comment = $data['comment'];
-                            foreach ($comment as $item) {
-                                extract($item);
-                                ?>
-                                <div class="comment">
-                                    <div class="user-avatar"></div>
-                                    <div class="user-review">
-                                        <p class="user-name"><?= $name ?></p>
-                                        <p><?= $text ?></p>
-                                    </div>
-                                    <p class="comment-date"><?= $dateProComment ?></p>
-                                </div>
-                            <?php } ?>
+                            <input type="radio" 
+                                   name="color"
+                                   value="<?= $c['id'] ?>"
+                                   <?= $isDefault ? 'checked' : '' ?>
+                                   style="display:none;"
+                                   onchange="resetOther(this)"
+                            >
 
-                        </div>
-                        <div class="center-button-container">
-                            <?php
-                            $slComment = count($data['comment']);
-                            if ($slComment > 3) {
-                                echo "
-                                    <button class='load-more-btn'>Xem thêm
-                                        <i class='fa-solid fa-chevron-down'></i>
-                                    </button>
-                                    ";
-                            } else {
-                                echo '';
-                            }
+                            <span onclick="selectOption(this)"
+                                  style="
+                                        padding:8px 14px;
+                                        border:2px solid <?= $isDefault ? '#8D6E6E' : '#ccc' ?>;
+                                        background: <?= $isDefault ? '#8D6E6E' : '#fff' ?>;
+                                        color: <?= $isDefault ? '#fff' : '#000' ?>;
+                                        border-radius:8px;
+                                        transition:0.2s;
+                                  ">
+                                <?= $c['nameColor'] ?>
+                            </span>
 
+                        </label>
+                    <?php endforeach; ?>
 
-                            ?>
-
-                        </div>
-                    </div>
-                    <!-- Sản phẩm liên quan-->
-
-                    <div class="col l-12">
-                        <section class="row">
-                            <div class="title-box">`
-                                <h3>Sản phẩm liên quan</h3>
-                            </div>
-                            <div class="row">
-                                <?php
-                                $relatePro = $data['splq'];
-                                foreach ($relatePro as $item) {
-                                    extract($item);
-                                    if ($status == 1) {
-                                        ?>
-                                        <div class="col l-3 m-4 c-12">
-                                            <div class="product">
-                                                <a href="index.php?page=productDetail&id=<?= $id ?>">
-                                                    <div class="img-product">
-                                                        <img src="public/image/<?= $image ?>" alt="">
-                                                    </div>
-                                                    <div class="name-product">
-                                                        <span><?= $name ?></span>
-                                                    </div>
-                                                    <div class="price-product">
-                                                        <?php if (!empty($salePrice)) { ?>
-                                                            <span><?= number_format($salePrice) ?> đ</span>
-                                                            <span> <sub><del><?= number_format($price) ?></del> đ</sub> </span>
-                                                        <?php } else { ?>
-                                                            <span><?= number_format($price) ?> đ</span>
-                                                        <?php } ?>
-                                                    </div>
-                                                </a>
-                                                <button class="addCart-product">Thêm vào giỏ hàng</button>
-                                                <button class="heart-button" data-id="<?= $id ?>">
-                                                    <i class="icon on fa-solid fa-heart"></i>
-                                                    <i class="icon off fa-regular fa-heart"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <?php
-                                    }
-                                }
-                                ?>
-
-
-                            </div>
-
-                        </section>
-                    </div>
                 </div>
             </div>
+
+            <!-- input ẩn để gửi màu -->
+            <input type="hidden" id="selected_color" name="product_color" value="<?= $defaultColor ?>">
+
+            <!-- MÔ TẢ -->
+            <div class="description-product">
+                <p><?= $description ?></p>
             </div>
+
+            <!-- ========== BUTTON ADD CART ========== -->
+            <div class="cart-button">
+
+                <form action="index.php?page=addToCartInDetail" method="post" style="display:contents;">
+
+                    <input type="hidden" name="product_id" value="<?= $id ?>">
+                    <input type="hidden" name="product_name" value="<?= $name ?>">
+                    <input type="hidden" name="product_price" value="<?= $price ?>">
+                    <input type="hidden" name="product_image" value="<?= $image ?>">
+
+                    <!-- SL -->
+                    <input type="hidden" id="hidden_quantity" name="product_quantity" value="1">
+
+                    <!-- MÀU -->
+                    <input type="hidden" id="selected_color" name="product_color" value="<?= $defaultColor ?>">
+
+                    <button type="submit" name="addToCartInDetail" class="addCart-product">
+                        Thêm vào giỏ hàng
+                    </button>
+                </form>
+
+            </div>
+        </div><!-- END info -->
+
+    </div><!-- END product-detail -->
+
+
+    <!-- CHI TIẾT -->
+    <h3 class="product-detail-title">Chi tiết sản phẩm</h3>
+    <p class="product-detail-description"><?= $description ?></p>
+
+
+    <!-- BÌNH LUẬN -->
+    <div class="comment-section">
+        <?php foreach ($data['comment'] as $c): ?>
+            <div class="comment">
+                <div class="user-avatar"></div>
+                <div class="user-review">
+                    <p class="user-name"><?= $c['name'] ?></p>
+                    <p><?= $c['text'] ?></p>
+                </div>
+                <p class="comment-date"><?= $c['dateComment'] ?></p>
+            </div>
+        <?php endforeach; ?>
+    </div>
+
+    <div class="center-button-container">
+        <?php if (count($data['comment']) > 3): ?>
+            <button class="load-more-btn">
+                Xem thêm <i class="fa-solid fa-chevron-down"></i>
+            </button>
+        <?php endif; ?>
+    </div>
+
+
+    <!-- SẢN PHẨM LIÊN QUAN -->
+    <div class="l-12">
+        <section class="row">
+            <div class="title-box">
+                <h3>Sản phẩm liên quan</h3>
+            </div>
+
+            <div class="row">
+                <?php foreach ($data['splq'] as $item): 
+                    extract($item);
+                    if ($status != 1) continue;
+                ?>
+                    <div class="col l-3 m-4 c-12">
+                        <div class="product">
+                            <a href="index.php?page=productDetail&id=<?= $id ?>">
+                                <div class="img-product">
+                                    <img src="public/image/<?= $image ?>">
+                                </div>
+                                <div class="name-product"><span><?= $name ?></span></div>
+                                <p class="price"><?= number_format($price) ?> đ</p>
+                            </a>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+
         </section>
-    </main>
+    </div>
+
+</div>
+</div>
+</div>
+</section>
+</main>
+
+
+<!-- ========== JS: chọn màu ========== -->
+<script>
+document.querySelectorAll('input[name="color"]').forEach(radio => {
+    radio.addEventListener('change', function(){
+        document.getElementById('selected_color').value = this.value;
+    });
+});
+
+function resetOther(inputElement) {
+    document.querySelectorAll('input[name="color"]').forEach(el => {
+        const span = el.nextElementSibling;
+        span.style.background = "#fff";
+        span.style.color = "#000";
+        span.style.borderColor = "#ccc";
+    });
+
+    const span = inputElement.nextElementSibling;
+    span.style.background = "#8D6E6E";
+    span.style.color = "#fff";
+    span.style.borderColor = "#8D6E6E";
+}
+
+function selectOption(span) {
+    const input = span.previousElementSibling;
+    input.checked = true;
+    input.dispatchEvent(new Event("change"));
+}
+</script>
+
+<script src="public/js/product.js"></script>
+
 </body>
-<script src="public/js/product.js"> </script>
+</html>

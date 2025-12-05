@@ -1,4 +1,4 @@
-// JS Đăng nhập 
+// JS Đăng nhập CharmCraft 
 document.querySelector(".show-password").addEventListener("click", function () {
     const passwordField = document.getElementById("password");
     const icon = this.querySelector("i");
@@ -36,10 +36,11 @@ clickDangkyOFdangnhap.addEventListener('click', function(){
     const hienRegister = document.querySelector('.main-box-register')
     hienRegister.style.display = "block"   
 })
-//END JS Đăng nhập 
+//END JS Đăng nhập CharmCraft 
 
 
-// JS Đăng ký 
+
+// JS Đăng ký CharmCraft 
 document.querySelectorAll(".re-show-password").forEach((button) => {
     button.addEventListener("click", function () {
         const passwordField = button.previousElementSibling;
@@ -84,7 +85,7 @@ clickDangnhapOFdangky.addEventListener('click', function(){
     
     
 })
-// END JS Đăng ký 
+// END JS Đăng ký CharmCraft 
 
 
 // đổi đăng nhập thành quên pass

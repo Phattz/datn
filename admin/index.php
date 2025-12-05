@@ -2,16 +2,12 @@
 require_once '../app/model/database.php';
 require_once '../app/model/productCateModel.php';
 require_once '../app/model/productsModel.php';
-require_once '../app/model/postCateModel.php';
-require_once '../app/model/postModel.php';
 require_once '../app/model/userModel.php';
 require_once '../app/model/productCommentModel.php';
 require_once '../app/model/orderModel.php';
 
 require_once 'app/controller/adminCateController.php';
 require_once 'app/controller/adminProController.php';
-require_once 'app/controller/adminPostCateController.php';
-require_once 'app/controller/adminPostController.php';
 require_once 'app/controller/adminUserController.php';
 require_once 'app/controller/adminCommentController.php';
 require_once 'app/controller/adminOrderController.php';
@@ -70,32 +66,6 @@ if (isset($_GET['page'])) {
             $deletepro = new ProAdminController();
             $deletepro->delPro();
             break;
-            //post
-        case 'post':
-            $post = new PostAdminController();
-            $post->view();
-            break;
-        case 'addPost':
-            $addPost = new PostAdminController();
-            $addPost->addPost();
-            break;
-        case 'viewEditPost':
-            $viewEditPost = new PostAdminController();
-            $viewEditPost->viewEditPost();
-            break;
-        case 'editPost':
-            $editPost = new PostAdminController();
-            $editPost->editPost();
-            break;
-        case 'deletepost':
-            $deletepost = new PostAdminController();
-            $deletepost->delPost();
-            break;
-        case 'adminSearchPost':
-            $adminSearchPost = new PostAdminController();
-            $adminSearchPost->adminSearchPost();
-            break;
-            //user
         case 'user':
             $user = new UserController();
             $user->viewUser();

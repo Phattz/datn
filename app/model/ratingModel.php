@@ -1,11 +1,19 @@
 <?php 
-class RatingModel{
+class RatingModel {
     private $db;
+
     function __construct(){
         $this->db = new DataBase();
     }
-    function getRating($idpro){
-        $sql = "SELECT * FROM rating WHERE idProduct = $idpro";
-        return $this->db->getAll($sql);
+
+    // Lấy đánh giá sản phẩm từ orderdetail
+    function getRating($idProduct){
+        $sql = "SELECT ratingStar, reviewContent
+                FROM orderdetails
+                WHERE idProductDetail = ?
+                AND ratingStar IS NOT NULL
+                ORDER BY id DESC";
+
+        return $this->db->getAll($sql, [$idProduct]);
     }
 }

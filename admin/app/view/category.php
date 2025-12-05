@@ -40,8 +40,7 @@
                             <td><?= $name ?></td>
                             <?php
                             if ($status === 1) echo '<td><span class="status success">Đang hoạt động</span></td>';
-                            if ($status === 2) echo '<td><span class="status pending">Tạm ngưng</span></td>';
-                            if ($status === 3) echo '<td><span class="status danger">Đã hủy</span></td>';
+                            if ($status === 2) echo '<td><span class="status pending">Ẩn</span></td>';
                             ?>
                             <td><a href="?page=editcate&id=<?= $id ?>">Sửa</a></td>
                         </tr>

@@ -6,7 +6,7 @@ class ProductCommentModel{
     }
     //user
     function getComment($idpro){
-        $sql = "SELECT productcomment.text, productcomment.dateProComment, products.id, users.name
+        $sql = "SELECT productcomment.text, productcomment.dateComment, products.id, users.name
          FROM productcomment 
          JOIN products ON productcomment.idProduct = products.id  
          JOIN users ON productcomment.idUser = users.id
@@ -21,31 +21,25 @@ class ProductCommentModel{
 
     public function addComment($data)
     {
-        $sql = "INSERT INTO productcomment (idProduct, idUser, text, status, dateProComment) VALUES (?,?,?, 1,NOW())";
+        $sql = "INSERT INTO productcomment (idProduct, idUser, text, status, dateComment) VALUES (?,?,?, 1,NOW())";
         $param = [$data['idProduct'], $data['idUser'], $data['text']];
         return $this->db->insert($sql, $param);
     }
     //admin
-    function getCommentAndNameUser()
-    {
-        $sql = "SELECT 
-                c.id AS commentId, 
-                c.text AS commentText, 
-                c.idProduct, 
-                c.dateProComment, 
-                c.status, 
-                u.name AS userName, 
+    function getCommentAndNameUser(){
+        $sql = "
+            SELECT 
+                c.id AS commentId,
+                c.text AS commentText,
+                c.idProduct,
+                c.dateComment,
+                u.name AS userName,
                 p.name AS productName
-            FROM 
-                productcomment c
-            JOIN 
-                users u 
-            ON 
-                c.idUser = u.id
-            JOIN 
-                products p 
-            ON 
-                c.idProduct = p.id";
+            FROM productcomment c
+            JOIN users u ON c.idUser = u.id
+            JOIN products p ON c.idProduct = p.id
+            ORDER BY c.id DESC
+        ";
         return $this->db->getAll($sql);
     }
 
@@ -53,7 +47,7 @@ class ProductCommentModel{
     {
         $sql = "
             SELECT 
-                c.id, c.text, c.dateProComment, u.name as userName
+                c.id, c.text, c.dateComment, u.name as userName
             FROM 
                 productcomment c
             JOIN 

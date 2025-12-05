@@ -10,10 +10,12 @@ class ProductController
     function __construct()
     {
         $this->products = new ProductsModel();
-        $this->category = new ProductCateModel();
+        $this->category = new CategoriesModel();
         $this->comment = new ProductCommentModel();
         $this->rating = new RatingModel();
+        $this->data = [];
     }
+
     function renderView($view, $data)
     {
         $view = 'app/view/' . $view . '.php';
@@ -24,10 +26,30 @@ class ProductController
     {
         if (isset($_GET['id']) && $_GET['id'] > 0) {
             $idcate = $_GET['id'];
-            $this->data['products'] = $this->products->getProCate($idcate); //lấy sản phẩm cùng danh mục
-            $this->data['prohot'] = $this->products->getProHot();  //lấy sản phẩm hot (view cao)
-            $this->data['nameCate'] = $this->category->getNameCateUser($idcate);  //lấy tên danh mục theo id
-            $this->data['cate'] = $this->category->getAllCate();
+
+            // Lấy SP theo danh mục
+            $list = $this->products->getProductsByCategoryWithDefaultPrice($idcate);
+
+            // Thêm idColor mặc định để tránh lỗi cart
+            foreach ($list as &$p) {
+                $variant = $this->products->getDefaultColor($p['id']);
+                $p['idColor'] = $variant['idColor'];  
+            }
+
+            $this->data['products'] = $list;
+
+            // Sản phẩm nổi bật
+            $prohot = $this->products->getHotProducts();
+            foreach ($prohot as &$item) {
+                $variant = $this->products->getDefaultColor($item['id']);
+                $item['idColor'] = $variant['idColor'];
+            }
+            $this->data['prohot'] = $prohot;
+
+            // Danh mục
+            $this->data['nameCate']  = $this->category->getNameCateUser($idcate);
+            $this->data['cate']      = $this->category->getAllCate();
+
             return $this->renderView('product', $this->data);
         } else {
             echo 'Not found category';
@@ -37,17 +59,30 @@ class ProductController
     function viewProDetail()
     {
         if (isset($_GET['id'])) {
+
             $idpro = $_GET['id'];
-            $this->data['detail'] = $this->products->getIdPro($idpro); //lấy chi tiết sản phẩm theo id
-            $this->data['nameCate'] = $this->products->getNameCate($idpro); //lấy tên danh mục theo id sản phẩm
-            //san pham lien quan 
+
+            // Tăng lượt xem
+            $this->products->increaseView($idpro);
+
+            // Chi tiết SP
+            $this->data['detail']     = $this->products->getIdPro($idpro);
+            $this->data['nameCate']   = $this->products->getNameCate($idpro);
+
+            // Màu sắc
+            $this->data['colors']     = $this->products->getColorsByProduct($idpro);
+
+            // SP liên quan
             $result = $this->products->getIdCate($idpro);
-            $this->data['splq'] = $this->products->getProCateById($result['idCate'], $idpro);
-            $this->data['comment'] = $this->comment->getComment($idpro); //lấy bình luận sản phẩm theo id
-            $this->data['rating'] = $this->rating->getRating($idpro); //lấy đánh giá sản phẩm
+            $this->data['splq'] = $this->products->getRelatedWithDefaultPrice($result['idCategory'], $idpro);
+
+            // Bình luận & đánh giá
+            $this->data['comment'] = $this->comment->getComment($idpro);
+            $this->data['rating']  = $this->rating->getRating($idpro);
+
             return $this->renderView('productDetail', $this->data);
         } else {
-            echo 'Not found product';
+            echo "Not found product";
         }
     }
 
@@ -58,10 +93,9 @@ class ProductController
             $data['idUser'] = $_SESSION['user'];
             $data['text'] = trim($_POST['comment_text']);
             $this->comment->addComment($data);
+
             echo "<script>alert('Thêm bình luận thành công')</script>";
             echo '<script>location.href="?page=productDetail&id=' . $data['idProduct'] . '"</script>';
         }
     }
-
-
 }
