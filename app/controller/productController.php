@@ -13,6 +13,7 @@ class ProductController
         $this->category = new CategoriesModel();
         $this->comment = new ProductCommentModel();
         $this->rating = new RatingModel();
+        $this->data = [];
     }
 
     function renderView($view, $data)
@@ -26,9 +27,26 @@ class ProductController
         if (isset($_GET['id']) && $_GET['id'] > 0) {
             $idcate = $_GET['id'];
 
-            $this->data['products'] = $this->products->getProductsByCategoryWithDefaultPrice($idcate);
+            // Lấy SP theo danh mục
+            $list = $this->products->getProductsByCategoryWithDefaultPrice($idcate);
 
-            $this->data['prohot']    = $this->products->getProHot();
+            // Thêm idColor mặc định để tránh lỗi cart
+            foreach ($list as &$p) {
+                $variant = $this->products->getDefaultColor($p['id']);
+                $p['idColor'] = $variant['idColor'];  
+            }
+
+            $this->data['products'] = $list;
+
+            // Sản phẩm nổi bật
+            $prohot = $this->products->getHotProducts();
+            foreach ($prohot as &$item) {
+                $variant = $this->products->getDefaultColor($item['id']);
+                $item['idColor'] = $variant['idColor'];
+            }
+            $this->data['prohot'] = $prohot;
+
+            // Danh mục
             $this->data['nameCate']  = $this->category->getNameCateUser($idcate);
             $this->data['cate']      = $this->category->getAllCate();
 
@@ -44,20 +62,21 @@ class ProductController
 
             $idpro = $_GET['id'];
 
-            // Thông tin sản phẩm
+            // Tăng lượt xem
+            $this->products->increaseView($idpro);
+
+            // Chi tiết SP
             $this->data['detail']     = $this->products->getIdPro($idpro);
             $this->data['nameCate']   = $this->products->getNameCate($idpro);
 
-            // Các biến thể
-            $this->data['sizes']      = $this->products->getSizesByProduct($idpro);
+            // Màu sắc
             $this->data['colors']     = $this->products->getColorsByProduct($idpro);
-            
-            // Sản phẩm liên quan
+
+            // SP liên quan
             $result = $this->products->getIdCate($idpro);
             $this->data['splq'] = $this->products->getRelatedWithDefaultPrice($result['idCategory'], $idpro);
 
-
-            // Bình luận + đánh giá
+            // Bình luận & đánh giá
             $this->data['comment'] = $this->comment->getComment($idpro);
             $this->data['rating']  = $this->rating->getRating($idpro);
 
@@ -66,12 +85,6 @@ class ProductController
             echo "Not found product";
         }
     }
-
-
-    
-    
-
-    
 
     function addComment()
     {

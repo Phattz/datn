@@ -1,7 +1,7 @@
 <?php
 class CateAdminController
 {
-    private $data;
+    private $data = [];
     private $category;
     private $product;
 
@@ -11,7 +11,7 @@ class CateAdminController
         $this->product = new ProductsModel();
     }
 
-    //view giao diện
+    // View mặc định
     function view($data)
     {
         require_once './app/view/category.php';
@@ -22,94 +22,95 @@ class CateAdminController
         $view = './app/view/' . $view . '.php';
         require_once $view;
     }
-//testpush
+
+    // Danh sách danh mục có phân trang
     function viewCategory()
     {
-        $page = isset($_GET['p']) ? (int)$_GET['p'] : 1;
+        $page  = isset($_GET['p']) ? (int)$_GET['p'] : 1;
         $limit = 4;
-        $totalCates = $this->category->getTotalCates();
-        $totalPages = ceil($totalCates / $limit);
-        $this->data['listcate'] = $this->category->getCatesPaginated($page, $limit);
-        $this->data['totalPages'] = $totalPages;  // Thêm dòng này
-        $this->data['currentPage'] = $page;  // Thêm dòng này nếu bạn cần sử dụng trang hiện tại trong view
+
+        $totalCates  = $this->category->getTotalCates();
+        $totalPages  = ceil($totalCates / $limit);
+
+        $this->data['listcate']    = $this->category->getCatesPaginated($page, $limit);
+        $this->data['totalPages']  = $totalPages;
+        $this->data['currentPage'] = $page;
+
         $this->renderView('category', $this->data);
     }
 
+    // View thêm danh mục
     function viewAddCate()
     {
         $this->renderView('categoryAdd');
     }
 
+    // View sửa danh mục
     function viewEditCate()
     {
-        if (isset($_GET['id']) && ($_GET['id']) > 0) {
-            $id = $_GET['id'];
+        if (isset($_GET['id']) && $_GET['id'] > 0) {
+            $id = (int)$_GET['id'];
             $this->data['type'] = $this->category->getIdCate($id);
             $this->renderView('categoryEdit', $this->data);
+            return;
         }
+
+        echo '<script>alert("Danh mục không tồn tại");location.href="?page=category";</script>';
     }
 
+    // Cập nhật danh mục
     function updateCate()
     {
         if (isset($_POST['submit'])) {
-            $data = [];
-            $data['id'] = $_POST['id'];
-            $data['name'] = $_POST['name'];
-            $data['status'] = $_POST['status'];
+            $data = [
+                'id'     => $_POST['id'],
+                'name'   => trim($_POST['name']),
+                'status' => $_POST['status'],
+            ];
+
             $this->category->upCate($data);
-            echo '<script>alert("Đã sửa danh mục thành công")</script>';
-            echo '<script>location.href="?page=category"</script>';
+
+            echo '<script>alert("Đã sửa danh mục thành công");location.href="?page=category";</script>';
         }
     }
 
-    public function addCate()
+    // Thêm danh mục
+    function addCate()
     {
         if (isset($_POST['submit'])) {
-            $data = [];
-            $data['name'] = $_POST['name'];
-            $data['status'] = $_POST['status'];
+            $data = [
+                'name'   => trim($_POST['name']),
+                'status' => $_POST['status']
+            ];
+
             $this->category->insertCate($data);
+
+            echo '<script>alert("Đã thêm danh mục thành công");location.href="?page=category";</script>';
         }
-        echo '<script>alert("Đã thêm danh mục thành công")</script>';
-        echo '<script>location.href="?page=category"</script>';
     }
 
-    // public function delCate()
-    // {
-    //     if (isset($_POST['delete_ids']) && !empty($_POST['delete_ids'])) {
-    //         $deleteIds = $_POST['delete_ids'];
-    //         // Duyệt qua từng id và xóa
-    //         foreach ($deleteIds as $id) {
-    //             $data = $this->product->get_all_pro_cate($id);
-    //             if (count($data) > 0) {
-    //                 echo '<script>alert("Không thể xóa danh mục này")</script>';
-    //             } else {
-    //                 $this->category->deleteCate($id);
-    //             }    
-    //         }
-    //         echo '<script>alert("Đã xóa danh mục thành công")</script>';
-    //         echo '<script>location.href="?page=category"</script>';
-    //     }
-    // }
-
+    // Xóa danh mục
     public function delCate()
     {
-        if (isset($_POST['delete_ids']) && !empty($_POST['delete_ids'])) {
-            $deleteIds = $_POST['delete_ids'];
-            foreach ($deleteIds as $id) {
-                // Kiểm tra nếu danh mục này còn liên kết với sản phẩm
-                $data = $this->product->get_all_pro_cate($id);
-                if (count($data) > 0) {
-                    echo '<script>alert("Không thể xóa danh mục: ' . $id . ' vì đang liên kết với sản phẩm!")</script>';
-                } else {
-                    $this->category->deleteCate($id);
-                }
-            }
-            echo '<script>alert("Đã xóa danh mục được chọn!")</script>';
-            echo '<script>location.href="?page=category"</script>';
-        } else {
-            echo '<script>alert("Vui lòng chọn ít nhất một danh mục để xóa!")</script>';
-            echo '<script>location.href="?page=category"</script>';
+        if (!isset($_POST['delete_ids']) || empty($_POST['delete_ids'])) {
+            echo '<script>alert("Vui lòng chọn ít nhất một danh mục để xóa!");location.href="?page=category";</script>';
+            return;
         }
+
+        foreach ($_POST['delete_ids'] as $id) {
+
+            // Kiểm tra danh mục còn sản phẩm không
+            $linkedProducts = $this->product->get_all_pro_cate($id);
+
+            if (count($linkedProducts) > 0) {
+                echo '<script>alert("Không thể xóa danh mục ID: ' . $id . ' vì đang liên kết với sản phẩm!");</script>';
+                continue;
+            }
+
+            // Xóa vì không còn liên kết
+            $this->category->deleteCate($id);
+        }
+
+        echo '<script>alert("Đã xử lý xóa danh mục!");location.href="?page=category";</script>';
     }
 }
