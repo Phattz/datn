@@ -80,6 +80,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     <div class="product-detail">
 
+    
+
         <!-- Thumbnails -->
         <div class="product-detail-thumbnails">
             <?php foreach ($list as $img): ?>

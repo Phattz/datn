@@ -1,46 +1,15 @@
 
 // JS Slide banner sản phẩm CharmCraft
-const containerSlider = document.querySelector('.slider-container');
-const slideItems = document.querySelectorAll('.slide');
-const containerDots = document.querySelector('.dots-container');
-const tongSoSlide = slideItems.length;
-let viTriHienTai = 0;
-for (let i = 0; i < tongSoSlide; i++) {
-    const dot = document.createElement('div');
-    dot.classList.add('dot');
-    if (i === 0) dot.classList.add('active');
-    dot.addEventListener('click', () => diChuyenDenSlide(i));
-    containerDots.appendChild(dot);
-}
-const capNhatSlider = () => {
-    containerSlider.style.transform = `translateX(-${viTriHienTai * 100}%)`;
-    document.querySelectorAll('.dot').forEach((dot, index) => {
-        dot.classList.toggle('active', index === viTriHienTai);
-    });
-};
-const diChuyenDenSlide = (index) => {
-    viTriHienTai = index;
-    capNhatSlider();
-};
-const chuyenSlideTuDong = () => {
-    viTriHienTai = (viTriHienTai + 1) % tongSoSlide;
-    capNhatSlider();
-};
-let slideInterval = setInterval(chuyenSlideTuDong, 3000);
-document.querySelector('.banner-home').addEventListener('mouseenter', () => clearInterval(slideInterval));
-document.querySelector('.banner-home').addEventListener('mouseleave', () => {
-    slideInterval = setInterval(chuyenSlideTuDong, 3000);
-});
-containerSlider.addEventListener('click', (e) => {
-    const doRongContainer = containerSlider.offsetWidth;
-    const viTriClick = e.clientX;
-    if (viTriClick < doRongContainer / 2) {
-        viTriHienTai = (viTriHienTai - 1 + tongSoSlide) % tongSoSlide;
-    } else {
-        viTriHienTai = (viTriHienTai + 1) % tongSoSlide;
-    }
-    capNhatSlider();
-});
+let index = 0;
+const images = document.querySelectorAll(".slide");
+
+setInterval(() => {
+    images[index].classList.remove("active");
+    index = (index + 1) % images.length;
+    images[index].classList.add("active");
+}, 3000);
+
+
 
 // END JS Slide banner sản phẩm CharmCraft
 

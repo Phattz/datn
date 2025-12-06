@@ -14,6 +14,13 @@ class CartController
     // ============================
     // THÊM GIỎ HÀNG (TỪ TRANG LIST)
     // ============================
+
+            // giỏ hàng
+function viewCart()
+{
+    require_once 'app/view/boxCart.php';
+}
+
     function addToCart()
     {
         if (isset($_POST['addToCart'])) {
@@ -53,6 +60,7 @@ class CartController
                 header("Location: " . $_SERVER['HTTP_REFERER']);
                 exit;
             }
+    
 
             // Tạo item
             $item = [
@@ -92,6 +100,7 @@ class CartController
                 ];
             }
 
+            $this->updateCartTotal();
             header("Location: " . $_SERVER['HTTP_REFERER']);
             exit;
         }
@@ -104,7 +113,7 @@ class CartController
     {
         if (isset($_POST['removeFromCart']) && isset($_POST['deletePro'])) {
             $id = $_POST['deletePro'];
-
+            $number = $_POST['deletenumber'];
             if (isset($_SESSION['cart'])) {
                 foreach ($_SESSION['cart'] as $key => $cartItem) {
                     if ($cartItem['id'] == $id) {
@@ -118,6 +127,7 @@ class CartController
                 "text" => "Xóa sản phẩm thành công!",
                 "type" => "success"
             ];
+            $this->updateCartTotal();
 
             header("Location: " . $_SERVER['HTTP_REFERER']);
             exit;
@@ -253,4 +263,15 @@ class CartController
             exit;
         }
     }
+    private function updateCartTotal()
+{
+    $total = 0;
+    if (isset($_SESSION['cart'])) {
+        foreach ($_SESSION['cart'] as $item) {
+            $total += $item['quantity'];
+        }
+    }
+    $_SESSION['cart_total'] = $total;
+}
+
 }

@@ -30,6 +30,7 @@
                         <th>Tên Sản Phẩm</th>
                         <th>Giá</th>
                         <th>Số lượng</th>
+                        <th>Màu sắc</th>
                         <th>Trạng thái</th>
                         <th>Sửa</th>
                     </tr>
@@ -57,8 +58,20 @@
                                 <?php endif; ?>
                             </td>
                             <td><?= $name ?></td>
-                            <td><?= number_format($price, 0, ',', '.') ?></td>
-                            <td><?= $quantity ?></td>
+                            <td><?= number_format($price, 0, ',', '.') ?> đ</td>
+                            <td><?= $stockQuantity ?? 0 ?></td>
+                            <td>
+                                <?php 
+    if (!empty($allColors) && is_array($allColors)) {
+        $colorCount = count($allColors);
+        if ($colorCount > 0) {
+            $firstColor = $allColors[0];
+            echo '<span style="background-color: #e3f2fd; padding: 4px 8px; border-radius: 3px; font-size: 12px; margin-right: 5px;">' 
+                 . htmlspecialchars($firstColor['nameColor']) . '</span>';
+        }
+    }
+    ?>
+                            </td>
                             <?php
                             if ($status === 1) echo '<td><span class="status success">Đang hoạt động</span></td>';
                             if ($status === 0) echo '<td><span class="status danger">Ẩn</span></td>';

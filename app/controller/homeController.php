@@ -25,10 +25,14 @@ class HomeController{
         $products = $this->product->getNewProducts();
 
         foreach ($products as &$p) {
-            // Lấy idColor mặc định từ biến thể đầu tiên
-            $variant = $this->product->getDefaultColor($p['id']);
-            $p['idColor'] = $variant['idColor'];
-        }
+    $variant = $this->product->getDefaultColor($p['id']);
+    if ($variant && isset($variant['idColor'])) {
+        $p['idColor'] = $variant['idColor'];
+    } else {
+        $p['idColor'] = null; // hoặc gán giá trị mặc định
+    }
+}
+
 
         $this->data['product8'] = $products;
 

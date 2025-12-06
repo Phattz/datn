@@ -51,18 +51,7 @@ class ProductsModel {
         return $this->db->getAll($sql);
     }
 
-    // Sản phẩm phân trang
-    function getProductsPaginated($start, $limit){
-        $sql = "SELECT p.*, pd.price
-                FROM products p
-                JOIN productdetail pd ON p.id = pd.idProduct
-                ORDER BY p.id DESC
-                LIMIT $start, $limit";
-
-        return $this->db->getAll($sql);
-    }
-
-    // Lấy sản phẩm nổi bật (proHot = 1, sắp theo view DESC)
+    // Lấy sản phẩm nổi bật (sắp theo view DESC)
     function getHotProducts($limit = 6){
         $sql = "SELECT 
                     p.*,
@@ -127,6 +116,11 @@ class ProductsModel {
     function getIdPro($idProduct){
         $sql = "SELECT * FROM products WHERE id = ?";
         $product = $this->db->getOne($sql, [$idProduct]);
+        
+        // Đảm bảo có idCate từ idCategory để tương thích
+        if (isset($product['idCategory']) && !isset($product['idCate'])) {
+            $product['idCate'] = $product['idCategory'];
+        }
 
         $sql2 = "
             SELECT id, price, stockQuantity, idColor
@@ -136,6 +130,11 @@ class ProductsModel {
             LIMIT 1
         ";
         $variant = $this->db->getOne($sql2, [$idProduct]);
+        
+        // Đảm bảo có quantity từ stockQuantity
+        if (isset($variant['stockQuantity']) && !isset($variant['quantity'])) {
+            $variant['quantity'] = $variant['stockQuantity'];
+        }
 
         return array_merge($product, $variant);
     }
@@ -198,6 +197,7 @@ class ProductsModel {
                 ORDER BY id ASC 
                 LIMIT 1";
         return $this->db->getOne($sql, [$productId]);
+        
     }
     
 
@@ -218,61 +218,94 @@ class ProductsModel {
     }
 
     // ADMIN – thêm sản phẩm
-    function insertPro($data){
-        $sql = "INSERT INTO products (name, description, status, image, idCate, proHot) 
-                VALUES (?, ?, ?, ?, ?, ?)";
-        $this->db->insert($sql, [
-            $data['name'],
-            $data['description'],
-            $data['status'],
-            $data['image'],
-            $data['idCate'],
-            $data['proHot']
-        ]);
+    // ADMIN – thêm sản phẩm
+function insertPro($data){
+    // Thêm vào bảng products
+    $sql = "INSERT INTO products (name, description, status, image, idCategory) 
+            VALUES (?, ?, ?, ?, ?)";
+    $params = [
+        $data['name'],
+        $data['description'] ?? '',
+        $data['status'],
+        $data['image'],
+        $data['idCate'] ?? $data['idCategory'] ?? null
+    ];
+    
+    $this->db->insert($sql, $params);
+    $idNew = $this->db->lastInsertId();
 
-        $idNew = $this->db->lastInsertId();
+    // Thêm vào bảng productdetail (không có salePrice)
+    $sql2 = "INSERT INTO productdetail (idProduct, price, stockQuantity, idColor) 
+             VALUES (?, ?, ?, ?)";
+    $params2 = [
+        $idNew,
+        $data['price'],
+        $data['stockQuantity'] ?? $data['quantity'] ?? 0,
+        $data['idColor'] ?? null
+    ];
 
-        $sql2 = "
-            INSERT INTO productdetail (idProduct, price, stockQuantity, idColor)
-            VALUES (?, ?, ?, ?)
-        ";
-        $this->db->insert($sql2, [
-            $idNew,
-            $data['price'],
-            $data['stockQuantity'],
-            $data['idColor']
-        ]);
-    }
+    $this->db->insert($sql2, $params2);
+    return $idNew;
+}
+
+
 
     // ADMIN – cập nhật sản phẩm
-    function upProduct($data){
-        $sql = "
-            UPDATE products 
-            SET name = ?, description = ?, status = ?, image = ?, idCate = ?, proHot = ?
-            WHERE id = ?
-        ";
-        $this->db->update($sql, [
-            $data['name'],
-            $data['description'],
-            $data['status'],
-            $data['image'],
-            $data['idCate'],
-            $data['proHot'],
-            $data['id']
-        ]);
+function upProduct($data){
+    // Cập nhật bảng products
+    $sql = "
+        UPDATE products 
+        SET name = ?, description = ?, status = ?, image = ?, idCategory = ?
+        WHERE id = ?
+    ";
+    $params = [
+        $data['name'],
+        $data['description'] ?? '',
+        $data['status'],
+        $data['image'],
+        $data['idCate'] ?? $data['idCategory'] ?? null,
+        $data['id']
+    ];
+    
+    $this->db->update($sql, $params);
 
-        $sql2 = "
-            UPDATE productdetail
-            SET price = ?, stockQuantity = ?, idColor = ?
-            WHERE idProduct = ?
-        ";
-        $this->db->update($sql2, [
-            $data['price'],
-            $data['stockQuantity'],
-            $data['idColor'],
-            $data['id']
-        ]);
+    // Cập nhật bảng productdetail
+    $stockQuantity = isset($data['stockQuantity']) ? (int)$data['stockQuantity'] : (isset($data['quantity']) ? (int)$data['quantity'] : 0);
+
+    // Xác định điều kiện WHERE
+    $whereCondition = "";
+    $whereParams = [];
+
+    if (isset($data['idColor']) && $data['idColor'] !== null && $data['idColor'] !== '') {
+        $whereCondition = "WHERE idProduct = ? AND idColor = ?";
+        $whereParams = [$data['id'], $data['idColor']];
+    } else {
+        $sqlGetFirst = "SELECT id FROM productdetail WHERE idProduct = ? ORDER BY id ASC LIMIT 1";
+        $firstDetail = $this->db->getOne($sqlGetFirst, [$data['id']]);
+
+        if ($firstDetail && isset($firstDetail['id'])) {
+            $whereCondition = "WHERE id = ?";
+            $whereParams = [$firstDetail['id']];
+        } else {
+            $whereCondition = "WHERE idProduct = ?";
+            $whereParams = [$data['id']];
+        }
     }
+
+    // Cập nhật productdetail (không có salePrice)
+    $sql2 = "
+        UPDATE productdetail 
+        SET price = ?, stockQuantity = ?
+        $whereCondition
+    ";
+    $params2 = array_merge([
+        $data['price'],
+        $stockQuantity
+    ], $whereParams);
+
+    $this->db->update($sql2, $params2);
+}
+
 
     // Xóa sản phẩm
     function deletePro($id){
@@ -285,6 +318,41 @@ class ProductsModel {
                 FROM products 
                 WHERE idCategory = ?";
         return $this->db->getAll($sql, [$id]);
+    }
+
+    // Đếm tổng số sản phẩm
+    function getTotalProducts(){
+        $sql = "SELECT COUNT(*) as total FROM products";
+        $result = $this->db->getOne($sql);
+        return $result['total'];
+    }
+
+    // Phân trang sản phẩm cho admin
+    function getProductsPaginated($page, $limit){
+        $start = ($page - 1) * $limit;
+        // Lấy productdetail đầu tiên cho mỗi sản phẩm để tránh duplicate
+        $sql = "
+            SELECT 
+                p.*,
+                pd.price,
+                pd.stockQuantity,
+                pd.idColor,
+                c.nameColor
+            FROM products p
+            INNER JOIN (
+                SELECT pd1.*
+                FROM productdetail pd1
+                INNER JOIN (
+                    SELECT idProduct, MIN(id) as min_id
+                    FROM productdetail
+                    GROUP BY idProduct
+                ) pd2 ON pd1.idProduct = pd2.idProduct AND pd1.id = pd2.min_id
+            ) pd ON p.id = pd.idProduct
+            LEFT JOIN colors c ON pd.idColor = c.id
+            ORDER BY p.id DESC
+            LIMIT $start, $limit
+        ";
+        return $this->db->getAll($sql);
     }
 
 }

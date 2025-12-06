@@ -1,22 +1,43 @@
 <?php
+session_start();
+// Kiểm tra đăng nhập admin (tạm thời comment, sẽ thêm sau)
+// if (!isset($_SESSION['admin']) || $_SESSION['admin']['role'] != 1) {
+//     header('Location: ../index.php');
+//     exit;
+// }
+
 require_once '../app/model/database.php';
 require_once '../app/model/productCateModel.php';
 require_once '../app/model/productsModel.php';
 require_once '../app/model/userModel.php';
 require_once '../app/model/productCommentModel.php';
 require_once '../app/model/orderModel.php';
+require_once '../app/model/bannerModel.php';
 
+require_once '../app/model/adminLogModel.php';
+
+require_once 'app/controller/adminDashboardController.php';
 require_once 'app/controller/adminCateController.php';
 require_once 'app/controller/adminProController.php';
 require_once 'app/controller/adminUserController.php';
 require_once 'app/controller/adminCommentController.php';
 require_once 'app/controller/adminOrderController.php';
+require_once 'app/controller/adminBannerController.php';
+require_once 'app/controller/adminColorController.php';
+require_once 'app/controller/adminLogController.php';
 require_once 'app/view/menu.php';
 $db = new Database();
 if (isset($_GET['page'])) {
     $page = $_GET['page'];
     switch ($page) {
-            //category
+        // Dashboard
+        case 'dashboard':
+        case '':
+            $dashboard = new AdminDashboardController();
+            $dashboard->viewDashboard();
+            break;
+            
+        //category
         case 'category':
             $category = new CateAdminController();
             $category->viewCategory();
@@ -113,12 +134,71 @@ if (isset($_GET['page'])) {
             $commentdetail = new CommentAdminController();
             $commentdetail->CmtDetail();
             break;
+            
+        // Banner
+        case 'banner':
+            $banner = new AdminBannerController();
+            $banner->viewBanner();
+            break;
+        case 'viewaddbanner':
+            $banner = new AdminBannerController();
+            $banner->viewAddBanner();
+            break;
+        case 'addbanner':
+            $banner = new AdminBannerController();
+            $banner->addBanner();
+            break;
+        case 'editbanner':
+            $banner = new AdminBannerController();
+            $banner->viewEditBanner();
+            break;
+        case 'updatebanner':
+            $banner = new AdminBannerController();
+            $banner->updateBanner();
+            break;
+        case 'deletebanner':
+            $banner = new AdminBannerController();
+            $banner->delBanner();
+            break;
+            
+        // Color
+        case 'color':
+            $color = new AdminColorController();
+            $color->viewColor();
+            break;
+        case 'viewaddcolor':
+            $color = new AdminColorController();
+            $color->viewAddColor();
+            break;
+        case 'addcolor':
+            $color = new AdminColorController();
+            $color->addColor();
+            break;
+        case 'editcolor':
+            $color = new AdminColorController();
+            $color->viewEditColor();
+            break;
+        case 'updatecolor':
+            $color = new AdminColorController();
+            $color->updateColor();
+            break;
+        case 'deletecolor':
+            $color = new AdminColorController();
+            $color->delColor();
+            break;
+            
+        // Log/Database
+        case 'log':
+            $log = new AdminLogController();
+            $log->viewLogs();
+            break;
+            
         default:
-            $category = new CateAdminController();
-            $category->viewCategory();
+            $dashboard = new AdminDashboardController();
+            $dashboard->viewDashboard();
             break;
     }
 } else {
-    $category = new CateAdminController();
-    $category->viewCategory();
+    $dashboard = new AdminDashboardController();
+    $dashboard->viewDashboard();
 }

@@ -1,6 +1,10 @@
+
 <?php
 session_start();
 ob_start();
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 // session_unset();
 //Model
 require_once 'vendor/autoload.php';
@@ -9,9 +13,8 @@ require_once 'app/model/productsModel.php';
 require_once 'app/model/userModel.php';
 require_once 'app/model/productCateModel.php';
 require_once 'app/model/productCommentModel.php';
-require_once 'app/model/postModel.php';
+
 require_once 'app/model/ratingModel.php';
-require_once 'app/model/favoriteModel.php';
 require_once 'app/model/searchModel.php';
 require_once 'app/model/orderModel.php';
 require_once 'app/model/orderItemModel.php';
@@ -23,13 +26,9 @@ require_once 'app/controller/homeController.php';
 require_once 'app/controller/paymentController.php';
 require_once 'app/controller/userController.php';
 require_once 'app/controller/productController.php';
-require_once 'app/controller/postController.php';
+
 require_once 'app/controller/mailerController.php';
 require_once 'app/controller/cartController.php';
-require_once 'app/controller/favoriteController.php';
-require_once 'app/controller/getFavoriteController.php';
-require_once 'app/controller/updateFavoriteController.php';
-require_once 'app/controller/removeFavoriteController.php';
 require_once 'app/controller/searchController.php';
 require_once 'app/controller/contactController.php';
 
@@ -52,21 +51,24 @@ if (isset($_GET['page'])) {
             $productDetail = new ProductController();
             $productDetail->viewProDetail();
             break;
+        case 'getPrice':
+            $ctrl->getPrice();
+            break;
+        
+        
+            
         // Bình Luận
         case 'addComment':
             $addComment = new ProductController();
             $addComment->addComment();
             break;
 
-        // trang bài viết
-        case 'post':
-            $post = new PostController();
-            $post->viewPost();
-            break;
-        case 'postDetail':
-            $postDetail = new PostController();
-            $postDetail->viewPostDetail();
-            break;
+    // giỏ hàng
+case 'boxCart':
+    $cart = new CartController();
+    $cart->viewCart();
+    break;
+
 
         // trang thanh toán
         case 'payment':
@@ -100,11 +102,6 @@ if (isset($_GET['page'])) {
             $cancelOrder = new UserController();
             $cancelOrder->cancelOrder();
             break;
-            //trang yêu thích sản phẩm
-        case 'userFavorite':
-            $userFavorite = new UserController();
-            $userFavorite->viewUserFavorite();
-            break;
             //trang địa chỉ người dùng
         case 'userAddress':
             $userAddress = new UserController();
@@ -133,11 +130,7 @@ if (isset($_GET['page'])) {
             $contactSendMail = new ContactController();
             $contactSendMail->handleContactForm();
             //trang giới thiệu
-        case 'about':
-            $about = new HomeController();
-            $about->viewAbout();
-            break;
-
+      
         //các chức năng
         case 'register':
             $register = new UserController();
@@ -154,11 +147,11 @@ if (isset($_GET['page'])) {
                         // Người dùng chọn Yes
                         localStorage.removeItem('userId');
                         localStorage.removeItem('danhSachThichSP');
-                        
+                        alert('Đăng xuất thành công');
                         window.location.href = 'index.php'; 
                     } else {
                         // Người dùng chọn No
-                       
+                        alert('Bạn đã hủy đăng xuất');
                         window.history.back(); // Quay lại trang trước
                     }
                 </script>";
@@ -188,24 +181,6 @@ if (isset($_GET['page'])) {
             $updateCart = new CartController();
             $updateCart->updateCart();
             break;
-
-        //thích sản phẩm
-        case 'insertFavorite':
-            $favorite = new FavoriteController();
-            $favorite->insertFavorite();
-        break;
-        case 'getFavorite':
-            $getFavorite = new GetFavoriteController();
-            $getFavorite->getFavorite();
-            break;
-        case 'capNhatTrucTiep':
-            $capNhatTrucTiep = new UpdateFavoriteController();
-            $capNhatTrucTiep->capNhatTrucTiep();
-            break;
-        case 'removeFavorite':
-            $removeFavorite = new RemoveFavoriteController();
-            $removeFavorite->removeFavorite();
-            break;
         //tìm kiếm
         case 'search':
             $search = new SearchController();
@@ -223,7 +198,7 @@ if (isset($_GET['page'])) {
             $verify = new UserController();
             $verify->verifyEmail();
             break;
-
+        
 
 
 

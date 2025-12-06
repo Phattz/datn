@@ -5,9 +5,12 @@ class adminOrderController
     // private $orderdetail;
     private $data;
 
+    private $logModel;
+
     function __construct()
     {
         $this->order = new OrderModel();
+        $this->logModel = new AdminLogModel();
         // $this->orderdetail = new OrderItemModel();
     }
 
@@ -42,7 +45,20 @@ class adminOrderController
             $status = $_POST['status'] ?? null;
             if ($orderId && isset($status)) {
                 $this->order->updateOrderStatus($orderId, $status);
-                echo '<script>alert("Đã sửa danh mục thành công")</script>';
+                
+                // Lấy thông tin đơn hàng để ghi log
+                $orderInfo = $this->order->getOrderStatus($orderId);
+                $statusText = ['Đã hủy', 'Chờ xử lý', 'Đang giao', 'Hoàn thành'][$status] ?? 'Không xác định';
+                
+                // Ghi log
+                $this->logModel->addLog([
+                    'action' => 'update',
+                    'table_name' => 'orders',
+                    'record_id' => $orderId,
+                    'description' => "Cập nhật trạng thái đơn hàng ID {$orderId} thành: {$statusText}"
+                ]);
+                
+                echo '<script>alert("Đã cập nhật trạng thái đơn hàng thành công")</script>';
                 echo '<script>location.href="?page=order"</script>';
             }
         }

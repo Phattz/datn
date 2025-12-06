@@ -2,9 +2,12 @@
 class UserController
 {
     private $userModel;
+    private $logModel;
+
     function __construct()
     {
         $this->userModel = new UserModel();
+        $this->logModel = new AdminLogModel();
     }
 
     // Hàm này để trả về Require_one
@@ -130,7 +133,16 @@ class UserController
             // thêm người dùng nếu không có lỗi
             if (empty($error['name']) && empty($error['email']) && empty($error['password']) && empty($error['rePassword'])) {
                 $data['password'] = md5($data['password']);
-                $this->userModel->insertUser($data, ''); //kh the them ng dung
+                $newId = $this->userModel->insertUser($data, ''); //kh the them ng dung
+                
+                // Ghi log
+                $this->logModel->addLog([
+                    'action' => 'add',
+                    'table_name' => 'users',
+                    'record_id' => $newId,
+                    'description' => "Thêm người dùng mới: {$data['name']} ({$data['email']}) (ID: {$newId})"
+                ]);
+                
                 echo '<script>
                         alert("Thêm người dùng thành công")
                         window.location.href = "index.php?page=user";
@@ -165,6 +177,15 @@ class UserController
             $error['email'] = (empty($data['email'])) ? 'Email không được để trống' : ((filter_var($data['email'], FILTER_VALIDATE_EMAIL) === false) ? 'Không phải là Email' : '');
             if (empty($error['name']) && empty($error['email'])) {
                 $this->userModel->editUser($data);
+                
+                // Ghi log
+                $this->logModel->addLog([
+                    'action' => 'update',
+                    'table_name' => 'users',
+                    'record_id' => $data['id'],
+                    'description' => "Cập nhật người dùng: {$data['name']} ({$data['email']}) (ID: {$data['id']})"
+                ]);
+                
                 echo '<script>
                         alert("Sửa người dùng thành công");
                         window.location.href = "index.php?page=user";
@@ -186,9 +207,19 @@ class UserController
                     // Kiểm tra xem tài khoản có tồn tại không trước khi xóa
                     $user = $this->userModel->getUser($id);
                     if ($user) {
+                        $userName = $user['name'] ?? 'N/A';
+                        $userEmail = $user['email'] ?? 'N/A';
                         
                         // Xóa tài khoản khỏi cơ sở dữ liệu
                         $this->userModel->deleteUser($id);
+                        
+                        // Ghi log
+                        $this->logModel->addLog([
+                            'action' => 'delete',
+                            'table_name' => 'users',
+                            'record_id' => $id,
+                            'description' => "Xóa người dùng: {$userName} ({$userEmail}) (ID: {$id})"
+                        ]);
                     }
                 }
                 echo '<script>
