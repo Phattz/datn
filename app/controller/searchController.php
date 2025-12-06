@@ -23,7 +23,7 @@ class SearchController {
         $trangBatDau = 1;
         $trangKetThuc = 1;
         $dataView = [];
-        $data['prohot'] = $this->products->getProHot();
+        //$data['prohot'] = $this->products->getProHot();
 
         if (isset($_GET['submitSearch'])) {
             $key = $_GET['search'];

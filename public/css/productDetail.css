@@ -394,3 +394,21 @@
     font-weight: 400;
     font-size: 24px;
 }
+.color-option {
+    padding: 8px 14px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    background: #fff;
+    color: #000;
+    cursor: pointer;
+    display: inline-block;
+    margin-right: 10px; /* tách sang phải */
+    margin-bottom: 10px; /* tách xuống dưới khi wrap */
+    transition: 0.2s;
+}
+
+.color-option.active {
+    background: #8D6E6E;
+    border-color: #8D6E6E;
+    color: #fff;
+}

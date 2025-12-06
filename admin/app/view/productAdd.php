@@ -34,10 +34,7 @@
                 <label for="">Giá sản phẩm</label>
                 <input type="text" name="price" required>
             </div>
-            <div class="category-main-product">
-                <label for="">Giá giảm</label>
-                <input type="text" name="salePrice">
-            </div>
+            
             <div class="category-main-product">
                 <label for="">Số lượng</label>
                 <input type="number" name="quantity" required>

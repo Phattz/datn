@@ -55,9 +55,16 @@ if (isset($_SESSION['user']) && ($_SESSION['user'] != '')) {
                                     id="search" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
                                 <button class="submitSearch" name="submitSearch">Tìm kiếm</button>
                             </form>
-                            <label for="cart-checkbox-icon" class="box-cart-icon"><i
-                                    class="fa-solid fa-cart-shopping"></i></label>
-                            <label for="bar-menu" class="icon-bar-menu"><i class="fa-solid fa-bars"></i></label>
+                            <a href="index.php?page=boxCart" class="box-cart-icon">
+                                <i class="fa-solid fa-cart-shopping"></i>
+                                <span class="cart-count">
+                                    <?= isset($_SESSION['cart_total']) ? $_SESSION['cart_total'] : 0 ?>
+                                </span>
+                                </a>
+
+                            
+
+                                    
                         </div>
                     </div>
                 </div>
@@ -114,120 +121,7 @@ if (isset($_SESSION['user']) && ($_SESSION['user'] != '')) {
             </div>
         </div>
     </nav>
-    <!-- giỏ hàng  -->
-    <section class=" main-box-cart">
-        <div class="col l-12 m-12 c-12 cart">
-            <input type="checkbox" id="cart-checkbox-icon" class="cart-checkbox-icon">
-            <label for="cart-checkbox-icon" class="cart-overlay" id="cart-overlay"></label>
-            <div class="box-cart">
-                <div class="cart-box-header">
-                    <h1>Giỏ hàng</h1>
-                    <div class="cart-item-header">
-                        <div class="item">
-                            <h6>Sản phẩm:
-                                <?php
-                                $totalPro = 0;
-                                if (isset($_SESSION['cart']) && is_array($_SESSION['cart']) && count($_SESSION['cart']) > 0) {
-                                    foreach ($_SESSION['cart'] as $item) {
-                                        if (isset($item['quantity']) && is_numeric($item['quantity'])) {
-                                            $totalPro += $item['quantity'];
-                                        }
-                                    }
-                                    echo '<span class="totalProduct">' . $totalPro . '</span>';
-                                } else {
-                                    echo '<span class="totalProduct">0</span>';
-                                }
-                                ?>
-                            </h6>
-                            <h6>Tổng tiền:
-                                <?php
-                                $totalPrice = 0;
-                                if (isset($_SESSION['cart']) && is_array($_SESSION['cart']) && count($_SESSION['cart']) > 0) {
-                                    foreach ($_SESSION['cart'] as $item) {
-                                        if (isset($item['price']) && is_numeric($item['price']) && isset($item['quantity']) && is_numeric($item['quantity'])) {
-                                            $totalPrice += $item['price'] * $item['quantity'];
-                                        }
-                                    }
-                                    echo '<span class="totalPrice">' . number_format($totalPrice, 0, ',', '.') . '</span> đ';
-                                } else {
-                                    echo '<span class="totalPrice">0</span> đ';
-                                }
-                                ?>
-                            </h6>
-                        </div>
-                    </div>
-                    <label for="cart-checkbox-icon" type="submit" id="cart-closeButton">
-                        <i class="fa-solid fa-xmark"></i>
-                    </label>
-                </div>
-                <!-- box sản phẩm -->
-                <?php
-                if (isset($_SESSION['cart'])) {
-                    foreach ($_SESSION['cart'] as $item) {
-                        // Kiểm tra nếu $item là một mảng
-                        if (is_array($item)) {
-                            ?>
-                            <div class="cart-box-main">
-                                <input type="hidden" name="idproduct" class="idproduct" value="<?= $item['id'] ?>">
-                                <div class="col l-3 m-3 c-3 cart-img">
-                                    <img src="public/image/<?= $item['image'] ?>" alt="">
-                                </div>
-                                <div class="col l-9 m-9 c-9 cart-container-pro">
-                                    <div class="cart-name-pro">
-                                        <h4><?= $item['name'] ?></h4>
-                                    </div>
-                                    <div class="cart-variant-pro">
-                                        <span>Thuộc tính: <?= $item['color'] ?></span>
-                                    </div>
-                                    <div class="cart-quantityANDPrice-pro">
-                                        <div class="cart-quantity">
-                                            <button class="giam" data-id="<?= $item['id'] ?>"><i
-                                                    class="fa-solid fa-minus"></i></button>
-                                            <span class="so"><?= $item['quantity'] ?></span>
-                                            <button class="tang" data-id="<?= $item['id'] ?>">
-                                                <i class="fa-solid fa-plus"></i></button>
-                                        </div>
-                                        <div class="cart-Price">
-                                        <h3 class="price"><?= number_format((int) $item['price'], 0, ',', '.') ?> đ</h3>
-                                        </div>
-                                        <form action="index.php?page=removeFromCart" method="post" class="form-deteleCart">
-                                            <input type="hidden" name="deletePro" value="<?= $item['id'] ?>">
-                                            <button class="cart-xoaProduct" name="removeFromCart">
-                                                <i class="fa-solid fa-xmark"></i>
-                                            </button>
-                                        </form>
-
-                                    </div>
-                                </div>
-                            </div>
-                            <?php
-                        }
-                    }
-                }
-                ?>
-
-                <?php
-                if (!empty($_SESSION['user'])) {
-                    
-                    ?>
-                    <div class="cart-box-footer">
-                        <a href=" 
-                            <?php if(isset($_SESSION['cart'])){ ?>
-                                index.php?page=payment 
-                            <?php }?>">
-                            <button>THANH TOÁN</button>
-                        </a>
-                    </div>
-                <?php } else { ?>
-
-                    <div class="cart-box-footer">
-                        <a href="index.php"><button>Đăng nhập để thanh toán</button></a>
-                    </div>
-                <?php } ?>
-            </div>
-        </div>
-    </section>
-    <!-- end giỏ hàng  -->
+    
     <!-- đăng nhập  -->
     <section class="row main-box-login">
         <div class="col l-12 m-12 c-12 login">

@@ -14,6 +14,13 @@ class CartController
     // ============================
     // THÊM GIỎ HÀNG (TỪ TRANG LIST)
     // ============================
+
+            // giỏ hàng
+function viewCart()
+{
+    require_once 'app/view/boxCart.php';
+}
+
     function addToCart()
     {
         if (isset($_POST['addToCart'])) {
@@ -23,6 +30,7 @@ class CartController
             $price     = $_POST['product_price'];
             $image     = $_POST['product_image'];
             $quantity  = (int)$_POST['product_quantity'];
+            $colorName = $this->product->getColorName($idColor);
 
             // Lấy tên SP
             $nameData = $this->product->getProductName($idProduct);
@@ -32,6 +40,9 @@ class CartController
             $stock = $this->product->getQuantityByColor($idProduct, $idColor);
             $stockQuantity = $stock['stockQuantity'];
 
+
+
+            
             // Kiểm tra đã có trong giỏ hay chưa
             $quantityCart = 0;
             if (isset($_SESSION['cart'])) {
@@ -53,6 +64,7 @@ class CartController
                 header("Location: " . $_SERVER['HTTP_REFERER']);
                 exit;
             }
+    
 
             // Tạo item
             $item = [
@@ -61,8 +73,10 @@ class CartController
                 'price' => $price,
                 'image' => $image,
                 'color' => $idColor,
-                'quantity' => 1
+                'colorName' => $colorName,
+                'quantity' => $quantity
             ];
+            
 
             if (!isset($_SESSION['cart'])) {
                 $_SESSION['cart'] = [];
@@ -71,9 +85,9 @@ class CartController
             $found = false;
             foreach ($_SESSION['cart'] as &$cartItem) {
                 if ($cartItem['id'] == $idProduct && $cartItem['color'] == $idColor) {
-                    $cartItem['quantity']++;
+                    $cartItem['quantity'] += $quantity;
                     $found = true;
-
+                    $cartItem['colorName'] = $colorName;
                     $_SESSION['cart_message'] = [
                         "text" => "Thêm vào giỏ hàng thành công!",
                         "type" => "success"
@@ -92,37 +106,78 @@ class CartController
                 ];
             }
 
+            $this->updateCartTotal();
             header("Location: " . $_SERVER['HTTP_REFERER']);
             exit;
         }
     }
+// tang giam gio hang 
+function increase($proId, $color) {
+    foreach ($_SESSION['cart'] as &$item) {
+        if ($item['id'] == $proId && $item['color'] == $color) {
+            $stock = $this->product->getQuantityByColor($proId, $color);
+            if ($item['quantity'] < $stock['stockQuantity']) {
+                $item['quantity']++;
+            } else {
+                $_SESSION['cart_message'] = [
+                    "text" => "Số lượng sản phẩm màu này không đủ!",
+                    "type" => "error"
+                ];
+            }
+            break;
+        }
+    }   
+    header("Location: index.php?page=boxCart");
+exit;
+    
+
+}
+
+function decrease($proId, $color) {
+    foreach ($_SESSION['cart'] as &$item) {
+        if ($item['id'] == $proId && $item['color'] == $color) {
+            $item['quantity'] = max(1, $item['quantity'] - 1);
+            break;
+        }
+    }
+    header("Location: index.php?page=boxCart");
+exit;
+
+}
+
+
+
 
     // ============================
     // XÓA SẢN PHẨM KHỎI GIỎ
     // ============================
     function removeFromCart()
-    {
-        if (isset($_POST['removeFromCart']) && isset($_POST['deletePro'])) {
-            $id = $_POST['deletePro'];
+        {
+            if (isset($_POST['removeFromCart']) && isset($_POST['deletePro']) && isset($_POST['deleteColor'])) {
 
-            if (isset($_SESSION['cart'])) {
-                foreach ($_SESSION['cart'] as $key => $cartItem) {
-                    if ($cartItem['id'] == $id) {
-                        unset($_SESSION['cart'][$key]);
-                        break;
+                $id    = $_POST['deletePro'];
+                $color = $_POST['deleteColor'];
+
+                if (isset($_SESSION['cart'])) {
+                    foreach ($_SESSION['cart'] as $key => $cartItem) {
+                        if ($cartItem['id'] == $id && $cartItem['color'] == $color) {
+                            unset($_SESSION['cart'][$key]);
+                            break;
+                        }
                     }
                 }
+
+                $_SESSION['cart_message'] = [
+                    "text" => "Xóa sản phẩm thành công!",
+                    "type" => "success"
+                ];
+                $this->updateCartTotal();
+
+                header("Location: " . $_SERVER['HTTP_REFERER']);
+                exit;
             }
-
-            $_SESSION['cart_message'] = [
-                "text" => "Xóa sản phẩm thành công!",
-                "type" => "success"
-            ];
-
-            header("Location: " . $_SERVER['HTTP_REFERER']);
-            exit;
         }
-    }
+
 
     // ============================
     // API CHECK QUANTITY
@@ -200,7 +255,7 @@ class CartController
             $price     = $_POST['product_price'];
             $image     = $_POST['product_image'];
             $quantity  = (int)$_POST['product_quantity'];
-
+            $colorName = $this->product->getColorName($idColor);
             // Lấy tên SP
             $name = $this->product->getProductName($idProduct)['name'];
 
@@ -219,13 +274,15 @@ class CartController
 
             // Tạo item
             $item = [
-                'id' => $idProduct,
-                'name' => $name,
-                'price' => $price,
-                'image' => $image,
-                'color' => $idColor,
-                'quantity' => $quantity
+                'id'        => $idProduct,
+                'name'      => $name,
+                'price'     => $price,
+                'image'     => $image,
+                'color'     => $idColor,
+                'colorName' => $colorName, // << thêm
+                'quantity'  => $quantity
             ];
+            
 
             if (!isset($_SESSION['cart'])) {
                 $_SESSION['cart'] = [];
@@ -253,4 +310,15 @@ class CartController
             exit;
         }
     }
+    private function updateCartTotal() {
+    $total = 0;
+    if (isset($_SESSION['cart'])) {
+        foreach ($_SESSION['cart'] as $item) {
+            $total += $item['quantity'];
+        }
+    }
+    $_SESSION['cart_total'] = $total;
+}
+
+
 }

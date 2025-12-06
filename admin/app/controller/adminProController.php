@@ -5,10 +5,13 @@ class ProAdminController
     private $category;
     private $data;
 
+    private $logModel;
+
     function __construct()
     {
         $this->product = new ProductsModel();
         $this->category = new CategoriesModel();
+        $this->logModel = new AdminLogModel();
     }
 
     function renderView($view, $data = null)
@@ -24,6 +27,13 @@ class ProAdminController
         $totalProducts = $this->product->getTotalProducts();
         $totalPages = ceil($totalProducts / $limit);
         $this->data['listpro'] = $this->product->getProductsPaginated($page, $limit);
+        
+        // Lấy tất cả màu sắc cho mỗi sản phẩm
+        foreach ($this->data['listpro'] as &$product) {
+            $colors = $this->product->getColorsByProduct($product['id']);
+            $product['allColors'] = $colors;
+        }
+        
         $this->data['totalPages'] = $totalPages;  // Thêm dòng này
         $this->data['currentPage'] = $page;  // Thêm dòng này nếu bạn cần sử dụng trang hiện tại trong view
         $this->renderView('product', $this->data);
@@ -48,9 +58,12 @@ class ProAdminController
             $data['id'] = $_POST['idPro'];
             $data['name'] = $_POST['name'];
             $data['idCate'] = $_POST['idCate'];
+            $data['description'] = $_POST['description'] ?? '';
             $data['price'] = $_POST['price'];
-            $data['quantity'] = $_POST['quantity'];
-            $data['status'] = $_POST['status'];
+            $data['quantity'] = isset($_POST['quantity']) ? (int)$_POST['quantity'] : 0;
+            $data['stockQuantity'] = $data['quantity']; // Dùng cho productdetail
+            $data['status'] = isset($_POST['status']) ? (int)$_POST['status'] : 1;
+            $data['idColor'] = $_POST['idColor'] ?? null;
             // Xử lý ảnh chính
             if (!empty($_FILES['image']['name'])) {
                 $data['image'] = $_FILES['image']['name']; // Lấy tên ảnh chính mới
@@ -64,41 +77,52 @@ class ProAdminController
                 $data['image'] = $_POST['image_old'];
             }
             // Xử lý danh sách ảnh phụ
+            // Lấy danh sách ảnh cũ từ hidden input (đã được cập nhật bởi JavaScript khi xóa ảnh)
+            $existingImages = !empty($_POST['listImages_old']) ? array_filter(explode(',', $_POST['listImages_old'])) : [];
+            
             if (!empty($_FILES['listImages']['name'][0])) {
                 // Kiểm tra xem số lượng ảnh tải lên có vượt quá 4 không
                 $numFiles = count($_FILES['listImages']['name']);
-                if ($numFiles > 4) {
-                    echo '<script>alert("Chỉ được tải tối đa 4 ảnh.");</script>';
+                $currentCount = count($existingImages);
+                if (($numFiles + $currentCount) > 4) {
+                    echo '<script>alert("Tổng số ảnh không được vượt quá 4 ảnh. Hiện tại có ' . $currentCount . ' ảnh, bạn chỉ có thể thêm tối đa ' . (4 - $currentCount) . ' ảnh.");</script>';
+                    echo '<script>location.href="?page=editpro&id=' . $data['id'] . '";</script>';
                     return;
                 }
-                // Lấy danh sách ảnh cũ nếu có
-                $existingImages = !empty($_POST['listImages_old']) ? explode(',', $_POST['listImages_old']) : [];
                 // Thêm các ảnh mới vào danh sách ảnh phụ
                 foreach ($_FILES['listImages']['name'] as $key => $fileName) {
-                    // Lưu ảnh mới vào thư mục image
-                    move_uploaded_file($_FILES['listImages']['tmp_name'][$key], "../public/image/" . $fileName);
-                    // Cộng ảnh mới vào danh sách ảnh
-                    $existingImages[] = $fileName;
-                }
-                // Cập nhật lại danh sách ảnh phụ
-                $data['listImages'] = implode(',', $existingImages);
-                // Các ảnh cũ sẽ không bị xóa mà chỉ được giữ lại trong thư mục image
-                if (!empty($_POST['listImages_old'])) {
-                    $oldImages = explode(',', $_POST['listImages_old']);
-                    foreach ($oldImages as $oldImage) {
-                        $oldImagePath = "../public/image/" . $oldImage;
-                        if (file_exists($oldImagePath)) {
-                            // Ảnh cũ không bị xóa
-                            // unlink($oldImagePath);
-                        }
+                    if (!empty($fileName)) {
+                        // Lưu ảnh mới vào thư mục image
+                        move_uploaded_file($_FILES['listImages']['tmp_name'][$key], "../public/image/" . $fileName);
+                        // Cộng ảnh mới vào danh sách ảnh
+                        $existingImages[] = $fileName;
                     }
                 }
-            } else {
-                // Nếu không có ảnh phụ mới, giữ lại ảnh cũ
-                $data['listImages'] = $_POST['listImages_old'];
             }
+            
             // Cập nhật sản phẩm
-            $this->product->upProduct($data);
+           // Sau khi cập nhật bảng products
+$this->product->upProduct($data);
+
+// Cập nhật tồn kho cho productdetail
+// if (!empty($data['idColor'])) {
+//     $this->product->updateStockByProductAndColor($data['id'], $data['idColor'], $data['stockQuantity']);
+// }
+// Cập nhật tồn kho cho productdetail
+if (!empty($_POST['idDetail'])) {
+    $this->product->updateStock($_POST['idDetail'], $_POST['stockQuantity']);
+}
+
+
+            
+            // Ghi log
+            $this->logModel->addLog([
+                'action' => 'update',
+                'table_name' => 'products',
+                'record_id' => $data['id'],
+                'description' => "Cập nhật sản phẩm: {$data['name']} (ID: {$data['id']})"
+            ]);
+            
             echo '<script>alert("Cập nhật thành công");</script>';
             echo '<script>location.href="?page=product";</script>';
         }
@@ -122,9 +146,6 @@ class ProAdminController
             $data['name'] = $_POST['name'];
             $data['idCate'] = $_POST['idCate'];
             $data['price'] = $_POST['price'];
-            // $data['salePrice'] = $_POST['salePrice'];
-            $data['salePrice'] = isset($_POST['salePrice']) && $_POST['salePrice'] !== '' ? $_POST['salePrice'] : null;
-
             $data['quantity'] = $_POST['quantity'];
             $data['status'] = $_POST['status'];
             // Xử lý ảnh chính
@@ -153,7 +174,30 @@ class ProAdminController
                 $data['listImages'] = null;
             }
             // Thêm vào cơ sở dữ liệu
-            $this->product->insertPro($data);
+$newId = $this->product->insertPro($data);
+
+// thêm tồn kho cho productdetail
+if (!empty($_POST['idColor'])) {
+    $idColor = $_POST['idColor'];
+    $stockQuantity = $_POST['quantity'];
+    $price = $_POST['price'];
+
+    $this->product->insertProductDetail([
+        'idProduct' => $newId,
+        'idColor' => $idColor,
+        'stockQuantity' => $stockQuantity,
+        'price' => $price
+    ]);
+}
+            
+            // Ghi log
+            $this->logModel->addLog([
+                'action' => 'add',
+                'table_name' => 'products',
+                'record_id' => $newId,
+                'description' => "Thêm sản phẩm mới: {$data['name']} (ID: {$newId})"
+            ]);
+            
             echo '<script>alert("Thêm sản phẩm thành công!");</script>';
             echo '<script>location.href="?page=product";</script>';
         }
@@ -166,6 +210,8 @@ class ProAdminController
             foreach ($deleteIds as $id) {
                 // Lấy thông tin sản phẩm
                 $product = $this->product->getIdPro($id);
+                $productName = $product['name'] ?? 'N/A';
+                
                 // Xóa ảnh chính
                 if (!empty($product['image'])) {
                     $imagePath = "../public/image/" . $product['image'];
@@ -179,10 +225,34 @@ class ProAdminController
                 }
                 // Xóa sản phẩm
                 $this->product->deletePro($id);
+                
+                // Ghi log
+                $this->logModel->addLog([
+                    'action' => 'delete',
+                    'table_name' => 'products',
+                    'record_id' => $id,
+                    'description' => "Xóa sản phẩm: {$productName} (ID: {$id})"
+                ]);
             }
             // Redirect hoặc thông báo thành công
             echo '<script>alert("Sản phẩm đã được xóa.")</script>';
             echo '<script>location.href="?page=product"</script>';
         }
     }
+
+public function increaseStock($idDetail) {
+    $detail = $this->product->getDetailById($idDetail);
+    $newQty = $detail['stockQuantity'] + 1;
+    $this->product->updateStock($idDetail, $newQty);
 }
+
+public function decreaseStock($idDetail) {
+    $detail = $this->product->getDetailById($idDetail);
+    $newQty = max(0, $detail['stockQuantity'] - 1);
+    $this->product->updateStock($idDetail, $newQty);
+}
+    
+
+
+}
+

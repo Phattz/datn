@@ -58,6 +58,11 @@
 
     <!-- ============================================================= -->
     <main class="grid wide">
+       <div class="slider">
+    <img src="public/image/banner-4.png" class="slide active">
+    <img src="public/image/banner-5.png" class="slide">
+    <img src="public/image/banner-6.jpg" class="slide">
+</div>
 
         <!-- SẢN PHẨM MỚI -->
         <section class="row">

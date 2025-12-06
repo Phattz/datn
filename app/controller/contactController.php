@@ -19,7 +19,7 @@ class ContactController{
             $message = $_POST['message'];
 
             // Địa chỉ email admin nhận thông tin
-            $adminEmail = 'tramnhoxinh2410@gmail.com';
+            $adminEmail = 'charmcraft123@gmail.com';
 
             // Nội dung email gửi tới admin
             $emailContent = '

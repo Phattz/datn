@@ -5,10 +5,13 @@ class CateAdminController
     private $category;
     private $product;
 
+    private $logModel;
+
     function __construct()
     {
         $this->category = new CategoriesModel();
         $this->product = new ProductsModel();
+        $this->logModel = new AdminLogModel();
     }
 
     // View mặc định
@@ -69,6 +72,14 @@ class CateAdminController
             ];
 
             $this->category->upCate($data);
+            
+            // Ghi log
+            $this->logModel->addLog([
+                'action' => 'update',
+                'table_name' => 'categories',
+                'record_id' => $data['id'],
+                'description' => "Cập nhật danh mục: {$data['name']} (ID: {$data['id']})"
+            ]);
 
             echo '<script>alert("Đã sửa danh mục thành công");location.href="?page=category";</script>';
         }
@@ -83,7 +94,15 @@ class CateAdminController
                 'status' => $_POST['status']
             ];
 
-            $this->category->insertCate($data);
+            $newId = $this->category->insertCate($data);
+            
+            // Ghi log
+            $this->logModel->addLog([
+                'action' => 'add',
+                'table_name' => 'categories',
+                'record_id' => $newId,
+                'description' => "Thêm danh mục mới: {$data['name']} (ID: {$newId})"
+            ]);
 
             echo '<script>alert("Đã thêm danh mục thành công");location.href="?page=category";</script>';
         }
@@ -107,8 +126,20 @@ class CateAdminController
                 continue;
             }
 
+            // Lấy thông tin danh mục trước khi xóa
+            $cate = $this->category->getIdCate($id);
+            $cateName = $cate['name'] ?? 'N/A';
+            
             // Xóa vì không còn liên kết
             $this->category->deleteCate($id);
+            
+            // Ghi log
+            $this->logModel->addLog([
+                'action' => 'delete',
+                'table_name' => 'categories',
+                'record_id' => $id,
+                'description' => "Xóa danh mục: {$cateName} (ID: {$id})"
+            ]);
         }
 
         echo '<script>alert("Đã xử lý xóa danh mục!");location.href="?page=category";</script>';

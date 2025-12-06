@@ -33,6 +33,22 @@ require_once 'app/controller/searchController.php';
 require_once 'app/controller/contactController.php';
 
 require_once 'app/view/header.php';
+// tang giam so luong 
+$ctrl = $_GET['ctrl'] ?? null;
+$act  = $_GET['act'] ?? null;
+
+if ($ctrl == 'cart') {
+    $cart = new CartController();
+    if ($act == 'increase') {
+        $cart->increase($_GET['proId'], $_GET['color']);
+    } elseif ($act == 'decrease') {
+        $cart->decrease($_GET['proId'], $_GET['color']);
+    } elseif ($act == 'viewCart') {
+        $cart->viewCart();
+    }
+}
+
+
 $db = new DataBase();
 if (isset($_GET['page'])) {
     $page = $_GET['page'];
@@ -63,7 +79,12 @@ if (isset($_GET['page'])) {
             $addComment->addComment();
             break;
 
-    
+    // giỏ hàng
+case 'boxCart':
+    $cart = new CartController();
+    $cart->viewCart();
+    break;
+
 
         // trang thanh toán
         case 'payment':
