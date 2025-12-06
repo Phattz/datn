@@ -78,6 +78,7 @@ if (isset($_GET['page'])) {
             $addComment = new ProductController();
             $addComment->addComment();
             break;
+        
 
     // giỏ hàng
 case 'boxCart':
@@ -185,6 +186,11 @@ case 'boxCart':
             $checkQuantity = new CartController();
             $checkQuantity->checkQuantity();
             break;
+        case 'getPriceByColor':
+            $pc = new ProductController();
+            $pc->getPriceByColor();
+            break;
+            
         case 'removeFromCart':
             $removeFromCart = new CartController();
             $removeFromCart->removeFromCart();

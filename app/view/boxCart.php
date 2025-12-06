@@ -71,13 +71,20 @@
                     <tr>
                         <!-- Hình ảnh -->
                         <td class="cart-image">
-                            <img src="public/image/<?= $item['image'] ?>" alt="<?= $item['name'] ?>">
+                            <a href="index.php?page=productDetail&id=<?= $item['id'] ?>">
+                                <img src="public/image/<?= $item['image'] ?>" alt="<?= $item['name'] ?>">
+                            </a>
                         </td>
 
                         <!-- Tên sản phẩm -->
                         <td class="cart-name">
-                            <p class="product-name"><?= $item['name'] ?></p>
+                            <p class="product-name">
+                                <a href="index.php?page=productDetail&id=<?= $item['id'] ?>">
+                                    <?= $item['name'] ?>
+                                </a>
+                            </p>
                         </td>
+
                         <!-- màu sắc -->
                         <td class="cart-color">
                             <p class="product-color">

@@ -412,3 +412,59 @@
     border-color: #8D6E6E;
     color: #fff;
 }
+
+/* FORM BÌNH LUẬN */
+.comment-form {
+    margin-top: 30px;
+    padding: 20px;
+    border-radius: 10px;
+    background: #fafafa;
+    border: 1px solid #ddd;
+}
+
+.comment-title {
+    font-size: 20px;
+    margin-bottom: 15px;
+    font-weight: 600;
+    color: #333;
+}
+
+.comment-form label {
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 6px;
+    font-size: 14px;
+    color: #555;
+}
+
+.comment-input,
+.comment-textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+    box-sizing: border-box;
+}
+
+.comment-textarea {
+    height: 120px;
+    resize: vertical;
+}
+
+.comment-submit {
+    margin-top: 10px;
+    background: #8D6E6E;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+.comment-submit:hover {
+    background: #6b5555;
+}

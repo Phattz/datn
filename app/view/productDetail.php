@@ -163,7 +163,34 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
         <?php endforeach; ?>
     </div>
+    <!-- SẢN PHẨM LIÊN QUAN -->
+    <div class="l-12">
+        <section class="row">
+            <div class="title-box">
+                <h3>Sản phẩm liên quan</h3>
+            </div>
 
+            <div class="row">
+                <?php foreach ($data['splq'] as $item): 
+                    extract($item);
+                    if ($status != 1) continue;
+                ?>
+                    <div class="col l-3 m-4 c-12">
+                        <div class="product">
+                            <a href="index.php?page=productDetail&id=<?= $id ?>">
+                                <div class="img-product">
+                                    <img src="public/image/<?= $image ?>">
+                                </div>
+                                <div class="name-product"><span><?= $name ?></span></div>
+                                <p class="price"><?= number_format($price) ?> đ</p>
+                            </a>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+
+        </section>
+    </div>
 </div></div></div>
 </section>
 </main>

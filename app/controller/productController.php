@@ -3,7 +3,7 @@ class ProductController
 {
     private $products;
     private $category;
-    private $comment;
+    private $productComment;
     private $rating;
     private $data;
 
@@ -11,7 +11,7 @@ class ProductController
     {
         $this->products = new ProductsModel();
         $this->category = new CategoriesModel();
-        $this->comment = new ProductCommentModel();
+        $this->productComment  = new ProductCommentModel();
         $this->rating = new RatingModel();
         $this->data = [];
     }
@@ -77,7 +77,7 @@ class ProductController
             $this->data['splq'] = $this->products->getRelatedWithDefaultPrice($result['idCategory'], $idpro);
 
             // Bình luận & đánh giá
-            $this->data['comment'] = $this->comment->getComment($idpro);
+            $this->data['comment'] = $this->productComment->getComment($idpro);
             $this->data['rating']  = $this->rating->getRating($idpro);
 
             return $this->renderView('productDetail', $this->data);
@@ -88,14 +88,41 @@ class ProductController
 
     function addComment()
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $data['idProduct'] = $_POST['idProduct'];
-            $data['idUser'] = $_SESSION['user'];
-            $data['text'] = trim($_POST['comment_text']);
-            $this->comment->addComment($data);
+        if (isset($_POST['sendComment'])) {
 
-            echo "<script>alert('Thêm bình luận thành công')</script>";
-            echo '<script>location.href="?page=productDetail&id=' . $data['idProduct'] . '"</script>';
+            $idProduct = $_POST['idProduct'];
+            $text = $_POST['text'];
+
+            // Nếu đã đăng nhập → dùng idUser + name từ session
+            if (!empty($_SESSION['user'])) {
+
+                $idUser = $_SESSION['user']['id'];
+                $userName = $_SESSION['user']['name'];
+
+            } else {
+                // Khách vãng lai
+                $idUser = 0; // mặc định 0 = guest
+                $userName = $_POST['guestName'];
+            }
+
+            // Lưu bình luận
+            $data = [
+                'idProduct' => $idProduct,
+                'idUser'    => $idUser,
+                'text'      => $text,
+                'guestName' => $userName
+            ];
+
+            $this->productComment->addComment($data);
+
+            $_SESSION['cart_message'] = [
+                "text" => "Gửi bình luận thành công!",
+                "type" => "success"
+            ];
+
+            header("Location: " . $_SERVER['HTTP_REFERER']);
+            exit;
         }
     }
+    
 }
