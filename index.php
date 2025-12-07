@@ -186,11 +186,6 @@ case 'boxCart':
             $checkQuantity = new CartController();
             $checkQuantity->checkQuantity();
             break;
-        case 'getPriceByColor':
-            $pc = new ProductController();
-            $pc->getPriceByColor();
-            break;
-            
         case 'removeFromCart':
             $removeFromCart = new CartController();
             $removeFromCart->removeFromCart();

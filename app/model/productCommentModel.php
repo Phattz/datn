@@ -32,18 +32,19 @@ class ProductCommentModel {
     // ============================
     public function addComment($data)
     {
-        $sql = "INSERT INTO productcomment (idProduct, idUser, guestName, text, status, dateComment) 
-                VALUES (?,?,?,?,1,NOW())";
-
+        $sql = "INSERT INTO productcomment (idProduct, idUser, guestName, text, dateComment) 
+                VALUES (?, ?, ?, ?, NOW())";
+    
         $param = [
             $data['idProduct'],
             $data['idUser'],
             $data['guestName'],
             $data['text']
         ];
-
+    
         return $this->db->insert($sql, $param);
     }
+    
 
 
 

@@ -85,44 +85,43 @@ class ProductController
             echo "Not found product";
         }
     }
-
     function addComment()
     {
         if (isset($_POST['sendComment'])) {
-
+    
             $idProduct = $_POST['idProduct'];
             $text = $_POST['text'];
-
-            // Nếu đã đăng nhập → dùng idUser + name từ session
+    
             if (!empty($_SESSION['user'])) {
-
-                $idUser = $_SESSION['user']['id'];
-                $userName = $_SESSION['user']['name'];
-
+                // Đã đăng nhập → session chỉ chứa ID
+                $idUser = $_SESSION['user'];
+                $guestName = null;
             } else {
-                // Khách vãng lai
-                $idUser = 0; // mặc định 0 = guest
-                $userName = $_POST['guestName'];
+                // Khách
+                $idUser = null;
+                $guestName = $_POST['guestName'];
             }
-
-            // Lưu bình luận
+    
             $data = [
                 'idProduct' => $idProduct,
                 'idUser'    => $idUser,
+                'guestName' => $guestName,
                 'text'      => $text,
-                'guestName' => $userName
             ];
-
+    
             $this->productComment->addComment($data);
-
+    
             $_SESSION['cart_message'] = [
                 "text" => "Gửi bình luận thành công!",
                 "type" => "success"
             ];
-
+    
             header("Location: " . $_SERVER['HTTP_REFERER']);
             exit;
         }
     }
+    
+    
+    
     
 }

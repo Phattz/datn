@@ -1,5 +1,11 @@
 <?php  
 $product = $data['detail']; 
+$userName = "";
+if (!empty($_SESSION['user'])) {
+    $userModel = new UserModel();
+    $u = $userModel->getUserById($_SESSION['user']);
+    $userName = $u['name'];
+}
 extract($product);
 
 // Danh sách màu
@@ -49,6 +55,7 @@ $list = !empty($listImages) ? explode(',', $listImages) : [];
 </head>
 
 <body>
+
 
 <?php if (!empty($_SESSION['cart_message'])): ?>
     <div id="toast-msg-fixed" class="<?= $_SESSION['cart_message']['type'] ?>">
@@ -101,9 +108,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
             <!-- CHỌN MÀU -->
             <div class="product-options" style="margin-top: 15px;">
-                <label style="font-weight:600;font-size:16px;">Màu:</label>
+                <label style="font-weight:600;font-size:25px;">Màu:</label>
 
-                <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top: 5px;">
                     <?php foreach ($colors as $c): ?>
                         <?php $isDefault = ($c['id'] == $defaultColor); ?>
 
@@ -149,20 +156,73 @@ document.addEventListener("DOMContentLoaded", () => {
 
         </div>
     </div>
+<!-- BÌNH LUẬN -->
+<div class="comment-wrapper">
+    <h3>Bình luận:</h3>
 
-    <!-- BÌNH LUẬN -->
     <div class="comment-section">
-        <?php foreach ($data['comment'] as $c): ?>
-            <div class="comment">
-                <div class="user-avatar"></div>
-                <div class="user-review">
-                    <p class="user-name"><?= $c['name'] ?></p>
-                    <p><?= $c['text'] ?></p>
+        <?php if (!empty($data['comment'])): ?>
+            <?php foreach ($data['comment'] as $c): ?>
+                <div class="comment">
+                    <div class="user-review">
+                        <p class="user-name">
+                            <?= !empty($c['name']) ? $c['name'] : $c['guestName'] ?>
+                        </p>
+                        <p><?= $c['text'] ?></p>
+                    </div>
+
+                    <p class="comment-date"><?= $c['dateComment'] ?></p>
                 </div>
-                <p class="comment-date"><?= $c['dateComment'] ?></p>
-            </div>
-        <?php endforeach; ?>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <p>Chưa có bình luận nào.</p>
+        <?php endif; ?>
     </div>
+
+    <!-- FORM GỬI BÌNH LUẬN -->
+    <div class="comment-form">
+        <h3 class="comment-title">Viết bình luận</h3>
+
+        <form action="index.php?page=addComment" method="post">
+            <input type="hidden" name="idProduct" value="<?= $id ?>">
+
+            <?php if (!empty($_SESSION['user'])): ?>
+                <label for="userName">Tên của bạn:</label>
+                <input id="userName"
+                    type="text"
+                    class="comment-input"
+                    value="<?= $userName ?>"
+                    readonly
+                    style="background:#eee; cursor:not-allowed;">
+
+                <input type="hidden" name="idUser" value="<?= $_SESSION['user'] ?>">
+                <input type="hidden" name="guestName" value="<?= $userName ?>">
+
+            <?php else: ?>
+                <label for="guestName">Tên của bạn:</label>
+                <input id="guestName"
+                    type="text"
+                    name="guestName"
+                    class="comment-input"
+                    required
+                    placeholder="Nhập tên của bạn">
+            <?php endif; ?>
+
+            <label for="commentText">Bình luận:</label>
+            <textarea id="commentText"
+                    name="text"
+                    class="comment-textarea"
+                    required
+                    placeholder="Nhập nội dung bình luận..."></textarea>
+
+            <button type="submit" name="sendComment" class="comment-submit">
+                Gửi bình luận
+            </button>
+        </form>
+    </div>
+</div>
+
+
     <!-- SẢN PHẨM LIÊN QUAN -->
     <div class="l-12">
         <section class="row">
