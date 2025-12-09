@@ -7,114 +7,159 @@
     <title>Thanh toán</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <link rel="stylesheet" href="public/css/payment.css">
-
 </head>
 
 <body>
-    <!-- header -->
-    <!-- payment -->
-    <main class="payment">
-        <div class="grid wide">
-            <div class="row">
-                <div class="col l-12 payment__title">
-                    <p class="payment__title-text">Thanh toán</p>
-                </div>
-                <div class="col l-6 payment__product">
-                    <?php
-                    $tongsp = null;
-                    if (isset($_SESSION['cart'])) {
-                        foreach ($_SESSION['cart'] as $item) {
-                            extract($item);
 
-                            ?>
-                            <div class="payment__product-item row">
-                                <div class="col l-6 payment__product-item-left">
-                                    <img src="public/image/<?= $image ?>" alt="<?= $image ?>">
-                                    <p><?= $name ?></p>
-                                    <input type="hidden" name="idProduct" value="<?= $id ?>">
-                                </div>
-                                <div class="col l-6 "
-                                    style="display: flex; align-items: center; justify-content: space-around;">
-                                    <span class="payment__item-action-quantity">
-                                        <input type="text" id="quantity" value="<?= $quantity ?>">
-                                    </span>
-                                    <span class="payment__item-price">
-                                        <p>
-                                            <?php
-                                            $tong1sp = $price * $quantity;
-                                            $tongsp += $tong1sp;
-                                            echo number_format($tong1sp) . ' đ';
-                                            ?>
-                                        </p>
-                                    </span>
-                                    <!-- <span class="payment__item-action">
-                                        <i class="fa-regular fa-circle-xmark"></i>
-                                    </span> -->
-                                </div>
-                            </div>
+<main class="payment">
+    <div class="grid wide">
+        <div class="row">
+
+            <!-- TIÊU ĐỀ -->
+            <div class="col l-12 payment__title">
+                <p class="payment__title-text">Thanh toán</p>
+            </div>
+
+            <!-- BÊN TRÁI — DANH SÁCH SẢN PHẨM -->
+            <div class="col l-6 payment__product">
+                <?php
+                $tongsp = 0;
+                if (isset($_SESSION['cart'])) {
+                    foreach ($_SESSION['cart'] as $item) {
+                        extract($item);
+                        $tong1sp = $price * $quantity;
+                        $tongsp += $tong1sp;
+                ?>
+
+                <div class="payment__product-item row">
+
+                    <!-- CỘT 1: HÌNH -->
+                    <div class="col l-3 product-img">
+                        <img src="public/image/<?= $image ?>" 
+                            alt="<?= $image ?>"
+                            style="width:80px; height:80px; object-fit:cover; border-radius:6px; display:block; margin-top: 30px;">
+                    </div>
+
+
+                    <!-- CỘT 2: TÊN + MÀU -->
+                    <div class="col l-4 product-info">
+
+                        <p class="product-name" 
+                            style="font-weight:700; margin-bottom:15px; line-height:20px;">
+                            <?= $name ?>
+                        </p>
+
+                        <p class="product-color" 
+                            style="margin-top:5px; line-height:20px;">
+                            <span style="font-weight:700;">Màu:</span>
+                            <?= $colorName ?>
+                        </p>
+
+
+                    </div>
+
+
+                    <!-- CỘT 3: SỐ LƯỢNG -->
+                    <div class="col l-2 product-qty"
+                        style="display:flex; flex-direction:column; align-items:center; justify-content:center;">
+
+                        <span style="font-weight:700; font-size:14px; margin-bottom:19px;">
+                            Số lượng:
+                        </span>
+
+                        <input type="text"
+                            value="<?= $quantity ?>"
+                            readonly
+                            style="
+                                text-align:center;
+                                border:none;
+                                outline:none;
+                                background:transparent;
+                                font-size:14px;
+                            ">
+                    </div>
+
+
+
+
+                    <!-- CỘT 4: GIÁ -->
+                    <div class="col l-3 product-price">
+                    <span style="font-weight:700;">Số tiền:</span><br>
+
+                    <span style= "display:block; margin-top: 20px; font-size:16px;"><?= number_format($tong1sp) ?> đ</span>
+                    </div>
+
+                </div>
+
+                <?php
+                    }
+                }
+                ?>
+            </div>
+
+            <!-- BÊN PHẢI: FORM THÔNG TIN -->
+            <div class="col l-6 payment__infomation "style="margin-top: 40px;">
+                <p>Thông tin thanh toán</p>
+
+                <div class="payment__info">
+                    <form action="index.php?page=paymentStep2" method="post">
+
+                        <?php
+                        if (isset($_SESSION['order'])) {
+                            foreach ($_SESSION['order'] as $order) {
+                                extract($order);
+                        ?>
+                            <label for="name">Tên người nhận</label>
+                            <input type="text" name="name" value="<?= $name ?>" required>
+
+                            <label for="phone">Số điện thoại người nhận</label>
+                            <input type="text" name="phone" value="<?= $phone ?>" required>
+
+                        <?php
+                            }
+                        } else {
+                        ?>
+                            <label for="name">Tên người nhận</label>
+                            <input type="text" name="name" placeholder="Họ và tên" required>
+
+                            <label for="phone">Số điện thoại người nhận</label>
+                            <input type="text" name="phone" placeholder="Số điện thoại" pattern="^0\d{9}$" required>
                         <?php
                         }
-                    }
-                    ?>
+                        ?>
 
-                </div>
-                <div class="col l-6 payment__infomation">
-                    <p>Thông tin thanh toán</p>
-                    <div class="payment__info">
-                        <form action="index.php?page=paymentStep2" method="post">
-                            <?php
-                            if (isset($_SESSION['order'])) {
-                                foreach ($_SESSION['order'] as $order) {
-                                    extract($order);
+                        <label for="address">Địa chỉ</label>
+                        <textarea name="address" placeholder="Vui lòng nhập địa chỉ cụ thể" required></textarea>
 
-                                    ?>
-                                    <label for="name">Tên người nhận</label>
-                                    <input type="text" name="name" value="<?=$name?>" required />
-
-                                    <label for="phone">Số điện thoại người nhận</label>
-                                    <input type="text" name="phone" value="<?=$phone?>" required />
-                                    <?php
-                                }
-                            } else {
-                                ?>
-                                <label for="name">Tên người nhận</label>
-                                <input type="text" name="name" placeholder="Họ và tên" required />
-
-                                <label for="phone">Số điện thoại người nhận</label>
-                                <input type="text" name="phone" placeholder="Số điện thoại" pattern="^0\d{9}$" required />
-                            <?php } ?>
-                            <label for="address">Địa chỉ</label>
-                            <textarea name="address" placeholder="Vui lòng nhập địa chỉ cụ thể" rows="2" cols="10"
-                                required></textarea> <br>
-
-                            <label for="note">Ghi chú</label>
-                            <textarea name="noteUser" placeholder="Nhập ghi chú" rows="4" cols="10"></textarea> <br>
-
-                            <div class="payment__infomation-summary">
-                                <div class="summary-item">
-                                    <span>Sản phẩm</span>
-                                    <span><?= number_format($tongsp) ?> đ</span>
-                                </div>
-                                <div class="summary-item">
-                                    <span>Vận chuyển</span>
-                                    <span>0đ</span>
-                                </div>
-                                <div class="summary-item total">
-                                    <strong>Tổng cộng</strong>
-                                    <strong><?= number_format($tongsp) ?> đ</strong>
-                                    <input type="hidden" name="totalPrice" value="<?= $tongsp ?>">
-                                </div>
+                        <div class="payment__infomation-summary">
+                            <div class="summary-item">
+                                <span>Sản phẩm</span>
+                                <span><?= number_format($tongsp) ?> đ</span>
                             </div>
 
-                            <button name="payment" class="payment-button">Thanh toán</button>
-                        </form>
-                    </div>
+                            <div class="summary-item">
+                                <span>Vận chuyển</span>
+                                <span>0 đ</span>
+                            </div>
+
+                            <div class="summary-item total">
+                                <strong>Tổng cộng</strong>
+                                <strong><?= number_format($tongsp) ?> đ</strong>
+                            </div>
+
+                            <input type="hidden" name="totalPrice" value="<?= $tongsp ?>">
+                        </div>
+
+                        <button name="payment" class="payment-button">Thanh toán</button>
+
+                    </form>
                 </div>
             </div>
-        </div>
-    </main>
 
-    <!-- footer -->
+        </div>
+    </div>
+</main>
+
 </body>
 
 </html>

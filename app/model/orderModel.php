@@ -7,10 +7,46 @@ class OrderModel{
     //user
     // sửa insert bởi session
     function insertOrder($data){
-        $sql = "INSERT INTO orders (id, totalPrice, noteUser, name, address, phone, payment, idUser) VALUES (?,?,?,?,?,?,?,?)";
-        $param = [$data['id'],$data['totalPrice'], $data['noteUser'], $data['name'], $data['address'], $data['phone'], $data['payment'],$data['idUser']];
+        $sql = "INSERT INTO orders (
+                    shippingAddress, 
+                    idVoucher, 
+                    receiverPhone, 
+                    receiverName, 
+                    idPayment,
+                    totalPrice, 
+                    orderStatus,
+                    idUser
+                ) VALUES (?,?,?,?,?,?,?,?)";
+    
+        $param = [
+            $data['shippingAddress'],
+            $data['idVoucher'],
+            $data['receiverPhone'],
+            $data['receiverName'],
+            $data['idPayment'],
+            $data['totalPrice'],
+            $data['orderStatus'],
+            $data['idUser']
+        ];
+    
         return $this->db->insert($sql, $param);
     }
+    function insertOrderDetail($data){
+        $sql = "INSERT INTO orderdetails (idOrder, idProductDetail, quantity, priceItem)
+                VALUES (?, ?, ?, ?)";
+    
+        $param = [
+            $data['idOrder'],
+            $data['idProductDetail'],
+            $data['quantity'],
+            $data['priceItem']
+        ];
+    
+        return $this->db->insert($sql, $param);
+    }
+    
+    
+    
     function getOrder(){
         $sql = "SELECT * FROM orders";
         return $this->db->getAll($sql);

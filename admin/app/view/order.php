@@ -42,7 +42,6 @@
                         <td><?= $address ?></td>
                         <td><?= $phone ?></td>
                         <td><?= date('H:i:s d/m/Y', strtotime($dateOrder)) ?></td>
-                        <td><?= $noteUser ?></td>
                         <?php
                         if ($status == 0) echo '<td><span class="status danger">Đã hủy</span></td>';
                         if ($status == 1) echo '<td><span class="status pending">Chờ xác nhận</span></td>';

@@ -31,7 +31,8 @@ function viewCart()
             $image     = $_POST['product_image'];
             $quantity  = (int)$_POST['product_quantity'];
             $colorName = $this->product->getColorName($idColor);
-
+            $productDetail = $this->product->getProductDetailByColor($idProduct, $idColor);
+            
             // Lấy tên SP
             $nameData = $this->product->getProductName($idProduct);
             $name = $nameData['name'];
@@ -68,15 +69,15 @@ function viewCart()
 
             // Tạo item
             $item = [
-                'id' => $idProduct,
-                'name' => $name,
-                'price' => $price,
-                'image' => $image,
-                'color' => $idColor,
-                'colorName' => $colorName,
-                'quantity' => $quantity
+                'id'               => $idProduct,
+                'idProductDetail'  => $productDetail['id'],
+                'name'             => $name,
+                'price'            => $productDetail['price'],
+                'image'            => $image,
+                'color'            => $idColor,
+                'colorName'        => $colorName,
+                'quantity'         => $quantity
             ];
-            
 
             if (!isset($_SESSION['cart'])) {
                 $_SESSION['cart'] = [];
@@ -258,7 +259,7 @@ exit;
             $colorName = $this->product->getColorName($idColor);
             // Lấy tên SP
             $name = $this->product->getProductName($idProduct)['name'];
-
+            $productDetail = $this->product->getProductDetailByColor($idProduct, $idColor);
             // Tồn kho
             $stock = $this->product->getQuantityByColor($idProduct, $idColor);
             $stockQuantity = $stock['stockQuantity'];
@@ -274,13 +275,14 @@ exit;
 
             // Tạo item
             $item = [
-                'id'        => $idProduct,
-                'name'      => $name,
-                'price'     => $price,
-                'image'     => $image,
-                'color'     => $idColor,
-                'colorName' => $colorName, // << thêm
-                'quantity'  => $quantity
+                'id'               => $idProduct,
+                'idProductDetail'  => $productDetail['id'],
+                'name'             => $name,
+                'price'            => $productDetail['price'],
+                'image'            => $image,
+                'color'            => $idColor,
+                'colorName'        => $colorName,
+                'quantity'         => $quantity
             ];
             
 

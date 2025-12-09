@@ -184,6 +184,16 @@ class ProductsModel {
     
         return $res ? $res['nameColor'] : "";
     }
-    
+    public function getProductDetailByColor($idProduct, $idColor)
+{
+    $sql = "SELECT pd.*, c.nameColor
+            FROM productdetail pd
+            JOIN colors c ON pd.idColor = c.id
+            WHERE pd.idProduct = ? AND pd.idColor = ?
+            LIMIT 1";
+    return $this->db->getOne($sql, [$idProduct, $idColor]);
+}
+
+
     
 }

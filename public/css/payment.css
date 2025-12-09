@@ -126,4 +126,6 @@
     transform: scale(0.95);
 
 }
-
+.product-price,.product-info{
+    padding: 40px 0;
+}

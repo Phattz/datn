@@ -5,16 +5,18 @@ class OrderItemModel{
         $this->db = new DataBase();
     }
     function insertOrderItem($data){
-        $sql = "INSERT INTO orderdetails 
-                (idOrder, idProductDetail, quantity, priceItem)
-                VALUES (?, ?, ?, ?)";
-
-        return $this->db->insert($sql, [
+        $sql = "INSERT INTO orderdetails (idOrder, idProductDetail, quantity, priceItem)
+                VALUES (?,?,?,?)";
+    
+        $param = [
             $data['idOrder'],
-            $data['idProductDetail'],   // nối đúng với productdetail
+            $data['idProductDetail'],
             $data['quantity'],
             $data['priceItem']
-        ]);
+        ];
+    
+        return $this->db->insert($sql, $param);
     }
+    
     
 }

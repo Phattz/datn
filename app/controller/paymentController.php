@@ -22,7 +22,6 @@ class PaymentController{
             $name = $_POST['name'];
             $phone = $_POST['phone'];
             $address = $_POST['address'];
-            $noteUser = $_POST['noteUser'];
             $idUser = $_SESSION['user']; // ID của người dùng
 
     
@@ -32,7 +31,6 @@ class PaymentController{
                 'phone' => $phone,
                 'address' => $address,
                 'totalPrice' => $totalPrice,
-                'noteUser' => $noteUser,
                 'idUser' => $idUser,
             ];
     
@@ -67,86 +65,66 @@ class PaymentController{
     }
 
     function createOrder(){
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submitOrder'])) {
-            if (isset($_POST['paymentMethod'])) {
-                $orderId = count($this->order->getIdOrder())+1;
 
-                $paymentMethod = $_POST['paymentMethod'];
-        
-                if ($paymentMethod === '1') {
-                    $payment = 1;
-                    //thêm vào bảng orders
-                    if(isset($_SESSION['order']) && isset($_SESSION['cart'])){
-                        // Lưu dữ liệu đơn hàng vào db
-                        $dataOrder = [
-                            'totalPrice' => $_SESSION['order'][0]['totalPrice'],
-                            'noteUser' => $_SESSION['order'][0]['noteUser'],
-                            'name' => $_SESSION['order'][0]['name'],
-                            'phone' => $_SESSION['order'][0]['phone'],
-                            'idUser' => $_SESSION['order'][0]['idUser'],
-                            'address' => $_SESSION['order'][0]['address'],
-                            'payment' => $payment,
-                            'id' => $orderId
-                        ];
-                        $this->order->insertOrder($dataOrder);
-                    }
-                    //thêm vào bảng orderitems
-                    if(isset($_SESSION['order']) && isset($_SESSION['cart'])){
-                        foreach ($_SESSION['cart'] as $item) {
-                            $dataOrderItem = [
-                                'idProduct' => $item['id'],
-                                'quantity' => $item['quantity'],
-                                'priceItem' => $item['price'],
-                                'idOrder' => $orderId,
-                            ];
-                            $this->orderItem->insertOrderItem($dataOrderItem);
-                        }
-                    }
-                } elseif ($paymentMethod === '2') {
-                    $payment = 2;
-                    if(isset($_SESSION['order']) && isset($_SESSION['cart'])){
-                        // Lưu dữ liệu đơn hàng vào db
-                        $dataOrder = [
-                            'totalPrice' => $_SESSION['order'][0]['totalPrice'],
-                            'noteUser' => $_SESSION['order'][0]['noteUser'],
-                            'name' => $_SESSION['order'][0]['name'],
-                            'phone' => $_SESSION['order'][0]['phone'],
-                            'idUser' => $_SESSION['order'][0]['idUser'],
-                            'address' => $_SESSION['order'][0]['address'],
-                            'payment' => $payment,
-                            'id' => $orderId
-                        ];
-                        $this->order->insertOrder($dataOrder);
-                    }
-                    //thêm vào bảng orderitems
-                    if(isset($_SESSION['order']) && isset($_SESSION['cart'])){
-                        foreach ($_SESSION['cart'] as $item) {
-                            $dataOrderItem = [
-                                'idProduct' => $item['id'],
-                                'quantity' => $item['quantity'],
-                                'priceItem' => $item['price'],
-                                'idOrder' => $orderId,
-                            ];
-                            $this->orderItem->insertOrderItem($dataOrderItem);
-                        }
-                    }
-                    
-                }
-                echo "<script>alert('Đặt hàng thành công')</script>";
-                echo "<script>location.href='index.php?page=index.php';</script>";
-                unset($_SESSION['cart']);
-            } else {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submitOrder'])) {
+    
+            if (!isset($_POST['paymentMethod'])) {
                 echo "<script>alert('Vui lòng chọn phương thức thanh toán')</script>";
-                echo "<script>
-                location.href='index.php?page=payment';
-            </script>";
+                echo "<script>location.href='index.php?page=payment';</script>";
+                exit;
             }
+    
+            if (!isset($_SESSION['order']) || !isset($_SESSION['cart'])) {
+                echo "<script>alert('Không có thông tin đơn hàng');</script>";
+                echo "<script>location.href='index.php?page=cart';</script>";
+                exit;
+            }
+    
+            $paymentMethod = $_POST['paymentMethod'];
+            $paymentMethod = intval($paymentMethod);
+    
+            // LẤY DỮ LIỆU TỪ SESSION ORDER
+            $orderSession = $_SESSION['order'][0];
+    
+            $dataOrder = [
+                "shippingAddress" => $orderSession['address'],
+                "idVoucher"       => null,
+                "receiverPhone"   => $orderSession['phone'],
+                "receiverName"    => $orderSession['name'],
+                "idPayment"       => $paymentMethod,
+                "totalPrice"      => $orderSession['totalPrice'],
+                "orderStatus"     => 1, // pending
+                "idUser"          => $orderSession['idUser']
+            ];
+            
+            // TẠO ĐƠN HÀNG → TRẢ VỀ orderId
+            $orderId = $this->order->insertOrder($dataOrder);
+    
+            // LƯU CHI TIẾT ĐƠN HÀNG
+            foreach ($_SESSION['cart'] as $item) {
+    
+                $dataOrderItem = [
+                    "idOrder"         => $orderId,
+                    "idProductDetail" => $item['idProductDetail'],  // GIỜ ĐÃ CÓ
+                    "quantity"        => $item['quantity'],
+                    "price"           => $item['price']
+                ];
+    
+                $this->orderItem->insertOrderItem($dataOrderItem);
+            }
+    
+            // XOÁ GIỎ HÀNG
+            unset($_SESSION['cart']);
+            unset($_SESSION['order']);
+    
+            echo "<script>alert('Đặt hàng thành công')</script>";
+            echo "<script>location.href='index.php?page=index.php';</script>";
         }
-        
+    }
+    
     }
     
     
    
     
     
-}
