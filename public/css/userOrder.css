@@ -61,8 +61,10 @@ ul.user-menu li a:hover {
 /* Kiểu dáng cho các ô trong bảng */
 .main-product table td,
 .main-product table th {
-    padding: 30px 15px;
+    padding: 16px 15px; /* hợp lý và cân bằng hơn */
+    vertical-align: middle; /* CHỐT: căn giữa chữ theo chiều dọc */
 }
+
 
 /* Kiểu cho trạng thái */
 .status {
@@ -104,4 +106,54 @@ ul.user-menu li a:hover {
 .main-product table tbody tr:hover {
     background-color: #f1f1f1;
     transition: background-color 0.2s ease;
+}
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 140px;        
+    height: 36px;        
+    padding: 0 14px;
+    
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+    text-align: center;
+
+    line-height: normal; 
+}
+
+/* Chờ xác nhận */
+.status-pending {
+    background: #fff3cd;
+    color: #856404;
+}
+
+/* Đã hủy */
+.status-cancel {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+/* Đang vận chuyển */
+.status-shipping {
+    background: #d1ecf1;
+    color: #0c5460;
+}
+
+/* Đã giao */
+.status-done {
+    background: #d4edda;
+    color: #155724;
+}
+
+.table-action-link {
+    white-space: nowrap; /* Không cho xuống dòng */
+    display: inline-block;
+}
+.cancel-order {
+    white-space: nowrap;   /* Giữ 1 dòng */
+    display: inline-block; 
 }

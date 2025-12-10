@@ -54,6 +54,11 @@ foreach ($_SESSION['cart'] as $pro) {
         <div class="col l-3" style="display:flex; flex-direction:column; align-items:flex-end; text-align:right;">
             <span style="font-size:14px;">Số lượng: <?= $quantity ?> cái</span>
         </div>
+        <!-- Hidden gửi dữ liệu qua trang Order -->
+        <input type="hidden" name="idProduct[]" value="<?= $id ?>">
+        <input type="hidden" name="salePrice[]" value="<?= $price ?>">
+        <input type="hidden" name="quantityItem[]" value="<?= $quantity ?>">
+
 
     </div>
 <?php } ?>
@@ -135,12 +140,12 @@ foreach ($_SESSION['cart'] as $pro) {
                                 <!-- NHÓM PHƯƠNG THỨC THANH TOÁN -->
                                 <div class="payment-method-group">
 
-                                    <label class="payment-radio">
+                                    <label class="payment-method-radio">
                                         <input type="radio" name="paymentMethod" value="1" required>
                                         <span>Thanh toán khi nhận hàng</span>
                                     </label>
 
-                                    <label class="payment-radio">
+                                    <label class="payment-method-radio">
                                         <input type="radio" name="paymentMethod" value="2" required>
                                         <span>Chuyển khoản ngân hàng</span>
                                     </label>

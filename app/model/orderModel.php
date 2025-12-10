@@ -13,10 +13,11 @@ class OrderModel{
                     receiverPhone, 
                     receiverName, 
                     idPayment,
-                    totalPrice, 
+                    totalPrice,
+                    dateOrder,
                     orderStatus,
                     idUser
-                ) VALUES (?,?,?,?,?,?,?,?)";
+                ) VALUES (?,?,?,?,?,?,?,?,?)";
     
         $param = [
             $data['shippingAddress'],
@@ -25,6 +26,7 @@ class OrderModel{
             $data['receiverName'],
             $data['idPayment'],
             $data['totalPrice'],
+            $data['dateOrder'],
             $data['orderStatus'],
             $data['idUser']
         ];
@@ -32,14 +34,14 @@ class OrderModel{
         return $this->db->insert($sql, $param);
     }
     function insertOrderDetail($data){
-        $sql = "INSERT INTO orderdetails (idOrder, idProductDetail, quantity, priceItem)
+        $sql = "INSERT INTO orderdetails (idOrder, idProductDetail, quantity, salePrice)
                 VALUES (?, ?, ?, ?)";
     
         $param = [
             $data['idOrder'],
             $data['idProductDetail'],
             $data['quantity'],
-            $data['priceItem']
+            $data['salePrice']
         ];
     
         return $this->db->insert($sql, $param);
@@ -57,15 +59,19 @@ class OrderModel{
     }
     //lấy đơn hàng theo id user
     function getOrderByIdUser($idUser){
-        $sql = "SELECT * FROM orders WHERE idUser = $idUser";
-        return $this->db->getAll($sql);
+        $sql = "SELECT id, receiverName, receiverPhone, totalPrice, dateOrder, orderStatus 
+                FROM orders 
+                WHERE idUser = ?
+                ORDER BY dateOrder DESC";
+        return $this->db->getAll($sql, [$idUser]);
     }
+    
 
     function cancelOrder($id){
-        $sql = "UPDATE orders SET status = 0 WHERE id = ?";
-        $param = [$id];
-        return $this->db->update($sql, $param);
+        $sql = "UPDATE orders SET orderStatus = 0 WHERE id = ?";
+        return $this->db->update($sql, [$id]);
     }
+    
     //admin
     function getOrderDetail(){
         $sql = "SELECT * FROM orderitems";
@@ -78,24 +84,27 @@ class OrderModel{
 
     public function getOrderDetailsWithImages($idOrder)
     {
-        $sql = "SELECT
-                    oi.id, 
-                    oi.quantity, 
-                    oi.priceItem, 
+        $sql = "SELECT 
+                    od.quantity,
+                    od.salePrice,
                     p.name AS productName,
-                    p.image,
-                    o.status AS orderStatus,-- Lấy trạng thái đơn hàng từ bảng orders
-                    o.totalPrice
-                FROM 
-                    orderitems oi
-                JOIN 
-                    products p ON oi.idProduct = p.id
-                JOIN
-                    orders o ON oi.idOrder = o.id  -- Kết hợp bảng orders
-                WHERE 
-                    oi.idOrder = :idOrder";
-        return $this->db->getAll($sql, ['idOrder' => $idOrder]);
+                    p.image AS productImage,
+                    c.nameColor AS colorName,
+                    o.totalPrice,
+                    o.orderStatus,
+                    o.dateOrder
+                FROM orderdetails od
+                JOIN productdetail pd ON od.idProductDetail = pd.id
+                JOIN products p ON pd.idProduct = p.id
+                JOIN colors c ON pd.idcolor = c.id
+                JOIN orders o ON od.idOrder = o.id
+                WHERE od.idOrder = ?";
+                
+        return $this->db->getAll($sql, [$idOrder]);
     }
+
+    
+
 
     public function updateOrderStatus($orderId, $status)
     {
@@ -106,9 +115,15 @@ class OrderModel{
 
     public function getOrderStatus($idOrder)
     {
-        $sql = "SELECT status FROM orders WHERE id = :idOrder";
+        $sql = "SELECT orderStatus FROM orders WHERE id = :idOrder";
         $result = $this->db->getOne($sql, ['idOrder' => $idOrder]);
-        return $result['status'] ?? null; // Trả về trạng thái hoặc null nếu không tồn tại
+        return $result['orderStatus'] ?? null;
+    }
+
+        public function isOrderBelongToUser($idOrder, $idUser)
+    {
+        $sql = "SELECT id FROM orders WHERE id = ? AND idUser = ?";
+        return $this->db->getOne($sql, [$idOrder, $idUser]) ? true : false;
     }
 
     

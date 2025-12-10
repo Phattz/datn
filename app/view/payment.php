@@ -104,32 +104,35 @@
                 <div class="payment__info">
                     <form action="index.php?page=paymentStep2" method="post">
 
-                        <?php
+                    <?php
+                        // Ưu tiên: lấy từ session ORDER (nếu là bước quay lại)
+                        // Nếu không có → lấy thông tin User đã lưu
+                        $nameValue = "";
+                        $phoneValue = "";
+                        $addressValue = "";
+
                         if (isset($_SESSION['order'])) {
-                            foreach ($_SESSION['order'] as $order) {
-                                extract($order);
-                        ?>
-                            <label for="name">Tên người nhận</label>
-                            <input type="text" name="name" value="<?= $name ?>" required>
-
-                            <label for="phone">Số điện thoại người nhận</label>
-                            <input type="text" name="phone" value="<?= $phone ?>" required>
-
-                        <?php
-                            }
-                        } else {
-                        ?>
-                            <label for="name">Tên người nhận</label>
-                            <input type="text" name="name" placeholder="Họ và tên" required>
-
-                            <label for="phone">Số điện thoại người nhận</label>
-                            <input type="text" name="phone" placeholder="Số điện thoại" pattern="^0\d{9}$" required>
-                        <?php
+                            $order = $_SESSION['order'][0];
+                            $nameValue = $order['name'];
+                            $phoneValue = $order['phone'];
+                            $addressValue = $order['address'];
+                        
+                        } elseif (isset($data['userInfo'])) {
+                            $nameValue = $data['userInfo']['name'];
+                            $phoneValue = $data['userInfo']['phone'];
+                            $addressValue = $data['userInfo']['address'];
                         }
                         ?>
 
+                        <label for="name">Tên người nhận</label>
+                        <input type="text" name="name" value="<?= $nameValue ?>" placeholder="Họ và tên" required>
+
+                        <label for="phone">Số điện thoại người nhận</label>
+                        <input type="text" name="phone" value="<?= $phoneValue ?>" placeholder="Số điện thoại" pattern="^0\d{9}$" required>
+
                         <label for="address">Địa chỉ</label>
-                        <textarea name="address" placeholder="Vui lòng nhập địa chỉ cụ thể" required></textarea>
+                        <textarea name="address" required><?= $addressValue ?></textarea>
+
 
                         <div class="payment__infomation-summary">
                             <div class="summary-item">

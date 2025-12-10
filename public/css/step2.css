@@ -145,15 +145,17 @@
   }
 
 
-  .payment-radio{
-    padding: 10px;
+  .payment-method-radio{
+    padding: 20px;
     margin: 10px;
     border: 1px solid #8d6e6e;
+    display: flex;
   }
   input[type="radio"]{
     padding: 10px;
     cursor: pointer;
     align-items: center;
+    margin-right: 10px;
   }
   input[type="radio"]:checked{
     background-color: #8d6e6e;

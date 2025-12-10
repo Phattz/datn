@@ -155,4 +155,24 @@ form button[name="removeFromCart"]:hover {
     .checkout-btn {
         width: 100%;
     }
+    .popup-dangnhap {
+        width: 100%;
+    }
+}
+
+.popup-dangnhap {
+    display: inline-block;
+    margin-top: 20px;
+    background-color: #808080;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 4px;
+    font-size: 15px;
+}
+
+.popup-dangnhap:hover {
+     color: #fff;
+        border-radius: 4px;
+        background-color: #8D6E6E;
+        box-shadow: 0 4px 12px rgba(90, 88, 88, 0.6);
 }

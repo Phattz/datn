@@ -4,7 +4,7 @@ session_start();
 ob_start();
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-
+date_default_timezone_set('Asia/Ho_Chi_Minh');
 // session_unset();
 //Model
 require_once 'vendor/autoload.php';
@@ -80,11 +80,11 @@ if (isset($_GET['page'])) {
             break;
         
 
-    // giỏ hàng
-case 'boxCart':
-    $cart = new CartController();
-    $cart->viewCart();
-    break;
+            // giỏ hàng
+        case 'boxCart':
+            $cart = new CartController();
+            $cart->viewCart();
+            break;
 
 
         // trang thanh toán
@@ -133,7 +133,11 @@ case 'boxCart':
             $updateAddress->updateAddress();
             break;
 
-        
+        case 'orderDetail':
+            $userController = new UserController();
+            $userController->viewOrderDetail();
+            break;
+            
         
         
 

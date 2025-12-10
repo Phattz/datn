@@ -7,12 +7,26 @@ class PaymentController{
         $this->orderItem = new OrderItemModel();
     }
 
-    function renderView($view){
-        $view = 'app/view/'.$view.'.php';
-        require_once $view;
+    function renderView($view, $data = []) {
+        extract($data);
+        require_once 'app/view/'.$view.'.php';
     }
     function viewPayment(){
-        return $this->renderView('payment');
+
+        $data = [];
+
+        // Nếu user đã đăng nhập → lấy thông tin user
+        if (isset($_SESSION['user'])) {
+            $userId = $_SESSION['user'];
+
+            require_once 'app/model/userModel.php';
+            $userModel = new UserModel();
+
+            $userInfo = $userModel->getUserById($userId);
+            $data['userInfo'] = $userInfo;
+        }
+
+        return $this->renderView('payment', $data);
     }
  
 
@@ -93,6 +107,7 @@ class PaymentController{
                 "receiverName"    => $orderSession['name'],
                 "idPayment"       => $paymentMethod,
                 "totalPrice"      => $orderSession['totalPrice'],
+                "dateOrder"       => date("Y-m-d H:i:s"),
                 "orderStatus"     => 1, // pending
                 "idUser"          => $orderSession['idUser']
             ];
@@ -102,16 +117,17 @@ class PaymentController{
     
             // LƯU CHI TIẾT ĐƠN HÀNG
             foreach ($_SESSION['cart'] as $item) {
-    
+
                 $dataOrderItem = [
                     "idOrder"         => $orderId,
-                    "idProductDetail" => $item['idProductDetail'],  // GIỜ ĐÃ CÓ
+                    "idProductDetail" => $item['idProductDetail'],
                     "quantity"        => $item['quantity'],
-                    "price"           => $item['price']
+                    "salePrice"       => $item['price']  // GIÁ TỪ GIỎ HÀNG
                 ];
-    
+            
                 $this->orderItem->insertOrderItem($dataOrderItem);
             }
+            
     
             // XOÁ GIỎ HÀNG
             unset($_SESSION['cart']);
@@ -123,8 +139,4 @@ class PaymentController{
     }
     
     }
-    
-    
-   
-    
-    
+ 

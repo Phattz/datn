@@ -45,22 +45,28 @@
                                     <td><?=$dateOrder?></td>
                                     <td>
                                         <?php
-                                        if($status == 1){
-                                            echo "<span>Chờ xác nhận</span>";
-                                        }else if($status == 0){
-                                            echo "<span>Đã hủy đơn</span>";
-                                        }else if($status == 2){
-                                            echo "<span>Đang vận chuyển</span>";
-                                        }else{
-                                            echo "<span>Đã giao</span>";
+                                        if ($orderStatus == 1) {
+                                            echo "<span class='status-badge status-pending'>Chờ xác nhận</span>";
+                                        } else if ($orderStatus == 0) {
+                                            echo "<span class='status-badge status-cancel'>Đã hủy đơn</span>";
+                                        } else if ($orderStatus == 2) {
+                                            echo "<span class='status-badge status-shipping'>Đang vận chuyển</span>";
+                                        } else {
+                                            echo "<span class='status-badge status-done'>Đã giao</span>";
                                         }
                                         ?>
                                         <!-- <span>Chờ xác nhận</span> -->
                                     </td>
-                                    <td><a href="">Xem chi tiết</a></td>
+                                    <td><a class="table-action-link" href="index.php?page=orderDetail&id=<?= $id ?>">Xem chi tiết</a></td>
                                     <?php
-                                    if($status == 1){
-                                        echo '<td><a href="index.php?page=cancelOrder&id='.$id.'" class="cancel-order">Hủy đơn hàng</a></td>';
+                                    if($orderStatus == 1){
+                                        echo '<td>
+                                                <a href="index.php?page=cancelOrder&id='.$id.'" 
+                                                class="cancel-order"
+                                                onclick="return confirm(\'Bạn có chắc chắn muốn hủy đơn hàng này không?\')">
+                                                Hủy đơn hàng
+                                                </a>
+                                            </td>';
                                     }else{
                                         echo '<td></td>';
                                     }

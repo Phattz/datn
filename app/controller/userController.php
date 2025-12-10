@@ -87,13 +87,26 @@ class UserController
             }
 
             // Đăng nhập thành công
-            $_SESSION['user'] = $result['id'];
+            // Đăng nhập thành công
+        $_SESSION['user'] = $result['id'];
 
-            if ($result['role'] == 1) {
-                echo "<script>alert('Đăng nhập Admin thành công!');location.href='admin/index.php';</script>";
-            } else {
-                echo "<script>alert('Đăng nhập thành công!');location.href='index.php';</script>";
-            }
+        // Nếu có URL muốn quay lại (ví dụ giỏ hàng)
+        if (!empty($_SESSION['redirect_after_login'])) {
+            $back = $_SESSION['redirect_after_login'];
+            unset($_SESSION['redirect_after_login']);
+            echo "<script>alert('Đăng nhập thành công!');location.href='$back';</script>";
+            return;
+        }
+
+        // Admin
+        if ($result['role'] == 1) {
+            echo "<script>alert('Đăng nhập Admin thành công!');location.href='admin/index.php';</script>";
+            return;
+        }
+
+        // Người dùng thường (mặc định)
+        echo "<script>alert('Đăng nhập thành công!');location.href='index.php';</script>";
+
         }
     }
 
@@ -231,4 +244,45 @@ class UserController
             echo "<script>alert('Cập nhật địa chỉ thành công');location.href='index.php?page=userAddress';</script>";
         }
     }
+    function viewOrderDetail() {
+
+        // YÊU CẦU USER ĐĂNG NHẬP
+        if (!isset($_SESSION['user'])) {
+            echo "<script>alert('Vui lòng đăng nhập để xem chi tiết đơn hàng');</script>";
+            echo "<script>location.href='index.php?page=cart';</script>";
+            exit;
+        }
+    
+        // KIỂM TRA ID ĐƠN HÀNG
+        if (!isset($_GET['id'])) {
+            header("Location: index.php?page=userOrder");
+            exit;
+        }
+    
+        $idOrder = $_GET['id'];
+        $idUser  = $_SESSION['user']; // lấy id user đang login
+    
+        $orderModel = new OrderModel();
+    
+        // KIỂM TRA ĐƠN HÀNG CÓ THUỘC VỀ USER KHÔNG
+        if (!$orderModel->isOrderBelongToUser($idOrder, $idUser)) {
+            echo "<script>alert('Bạn không có quyền xem đơn hàng này');</script>";
+            echo "<script>location.href='index.php?page=userOrder';</script>";
+            exit;
+        }
+    
+        // LẤY CHI TIẾT ĐƠN HÀNG
+        $orderItems = $orderModel->getOrderDetailsWithImages($idOrder);
+    
+        if (!$orderItems) {
+            echo "<script>alert('Đơn hàng không tồn tại');</script>";
+            echo "<script>location.href='index.php?page=userOrder';</script>";
+            exit;
+        }
+    
+        $data['orderItems'] = $orderItems;
+    
+        return $this->renderView('orderDetail', $data);
+    }
+    
 }
