@@ -1,0 +1,129 @@
+.payment{
+    margin: 50px 0;
+}
+
+.payment__title{
+    display: flex;
+    justify-items: left;
+}
+
+.payment__title-text{
+    font-size: 30px;
+    font-weight: bold;
+}
+/* sản phẩm thanh toán */
+.payment__product{
+    margin-top: 32px;
+}
+
+.payment__product-item{
+    border-bottom: 1px solid #8d6e6e6e;
+    height: 150px;
+}
+/* ô bên trái sản phẩm*/
+.payment__product-item .payment__product-item-left{
+    display: flex;
+    align-items: center;
+}
+.payment__product-item .payment__product-item-left img{
+    width: 100px;
+    height: 100px;
+}
+
+.payment__product-item .payment__product-item-left p{
+    font-size: 16;
+    margin-left: 20px;
+
+}
+/* ô bên phải sản phẩm */
+.payment__item-action-quantity{
+    display: flex;
+}
+
+#quantity{
+    width: 40px;
+    text-align: center;
+    border: 1px solid #f6f6f6;
+    pointer-events: none;
+    user-select: none;
+}
+
+.payment__item-action i{
+    cursor: pointer;
+}
+
+/* thông tin thanh toán */
+.payment__infomation p {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.payment__info{
+    display: flex;
+    justify-content: center;
+}
+
+.payment__infomation label {
+    display: block;
+    margin: 15px 0 5px;
+    font-size: 16px;
+    color: #666;
+    font-weight: bold;
+    text-align: left;
+
+}
+
+/* Input và Textarea */
+.payment__infomation input[type="text"],
+.payment__infomation textarea {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+
+/* Tóm tắt thanh toán */
+.payment__infomation-summary {
+    margin-top: 20px;
+    font-size: 16px;
+    color: #666;
+}
+
+.payment__infomation-summary .summary-item {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+}
+
+.payment__infomation-summary .total {
+    font-weight: bold;
+    color: #000;
+}
+
+/* Nút Thanh toán */
+.payment-button {
+    width: 100%;
+    padding: 15px;
+    background-color: #808080;
+    color: #fff;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s;
+}
+
+.payment-button:hover {
+    background-color: #8d6e6e;
+}
+.payment-button:active {
+    transform: scale(0.95);
+
+}
+
