@@ -94,6 +94,7 @@
                                     <input type="hidden" name="product_price" value="<?= $item['price'] ?>">
                                     <input type="hidden" name="product_image" value="<?= $item['image'] ?>">
                                     <input type="hidden" name="product_color" value="<?= $item['idColor'] ?>">
+                                    <input type="hidden" name="product_detail_id">
                                     <input type="hidden" name="product_quantity" value="1">
 
                                     <button type="submit" name="addToCart" class="addCart-product">

@@ -31,7 +31,7 @@ class AdminDashboardController {
         // Tính tổng doanh thu
         $totalRevenue = 0;
         foreach ($allOrders as $order) {
-            if ($order['status'] != 0) { // Không tính đơn đã hủy
+            if ($order['orderStatus'] != 0) { // Không tính đơn đã hủy
                 $totalRevenue += $order['totalPrice'];
             }
         }
@@ -44,7 +44,7 @@ class AdminDashboardController {
         $this->data['cancelledOrders'] = 0;
         
         foreach ($allOrders as $order) {
-            switch($order['status']) {
+            switch($order['orderStatus']) {
                 case 0: $this->data['cancelledOrders']++; break;
                 case 1: $this->data['pendingOrders']++; break;
                 case 2: $this->data['shippingOrders']++; break;

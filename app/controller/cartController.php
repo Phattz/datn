@@ -23,96 +23,109 @@ function viewCart()
     require_once 'app/view/boxCart.php';
 }
 
-    function addToCart()
-    {
-        if (isset($_POST['addToCart'])) {
+function addToCart()
+{
+    if (isset($_POST['addToCart'])) {
 
-            $idProduct = $_POST['product_id'];
-            $idColor   = $_POST['product_color']; 
-            $price     = $_POST['product_price'];
-            $image     = $_POST['product_image'];
-            $quantity  = (int)$_POST['product_quantity'];
-            $colorName = $this->product->getColorName($idColor);
+        $idProduct = $_POST['product_id'];
+        $idColor   = $_POST['product_color']; 
+        $price     = $_POST['product_price'];
+        $image     = $_POST['product_image'];
+        $quantity  = (int)$_POST['product_quantity'];
+        $colorName = $this->product->getColorName($idColor);
 
-            // Lấy tên SP
-            $nameData = $this->product->getProductName($idProduct);
-            $name = $nameData['name'];
+        // Lấy tên SP
+        $nameData = $this->product->getProductName($idProduct);
+        $name = $nameData['name'];
 
-            // Lấy tồn kho theo màu
-            $stock = $this->product->getQuantityByColor($idProduct, $idColor);
-            $stockQuantity = $stock['stockQuantity'];
+        /* ===== LẤY idProductDetail THEO idProduct + idColor ===== */
+        $idProductDetail = null;
 
+        // Nếu form có gửi sẵn idProductDetail thì ưu tiên dùng
+        if (!empty($_POST['product_detail_id'])) {
+            $idProductDetail = (int)$_POST['product_detail_id'];
+        } else {
+            // Nếu không có thì truy vấn từ bảng productdetail
+            $productDetail = $this->product->getProductDetailId($idProduct, $idColor);
+            if ($productDetail && isset($productDetail['id'])) {
+                $idProductDetail = $productDetail['id'];
+            }
+        }
+        // =========================================================
 
+        // Lấy tồn kho theo màu
+        $stock = $this->product->getQuantityByColor($idProduct, $idColor);
+        $stockQuantity = $stock['stockQuantity'];
 
-            
-            // Kiểm tra đã có trong giỏ hay chưa
-            $quantityCart = 0;
-            if (isset($_SESSION['cart'])) {
-                foreach ($_SESSION['cart'] as $cart) {
-                    if ($cart['id'] == $idProduct && $cart['color'] == $idColor) {
-                        $quantityCart = $cart['quantity'];
-                        break;
-                    }
+        // Kiểm tra đã có trong giỏ hay chưa
+        $quantityCart = 0;
+        if (isset($_SESSION['cart'])) {
+            foreach ($_SESSION['cart'] as $cart) {
+                if ($cart['id'] == $idProduct && $cart['color'] == $idColor) {
+                    $quantityCart = $cart['quantity'];
+                    break;
                 }
             }
+        }
 
-            $available = $stockQuantity - $quantityCart;
+        $available = $stockQuantity - $quantityCart;
 
-            if ($available < 1) {
-                $_SESSION['cart_message'] = [
-                    "text" => "Hết hàng! Chỉ còn $stockQuantity sản phẩm trong kho.",
-                    "type" => "error"
-                ];
-                header("Location: " . $_SERVER['HTTP_REFERER']);
-                exit;
-            }
-    
-
-            // Tạo item
-            $item = [
-                'id' => $idProduct,
-                'name' => $name,
-                'price' => $price,
-                'image' => $image,
-                'color' => $idColor,
-                'colorName' => $colorName,
-                'quantity' => $quantity
+        if ($available < 1) {
+            $_SESSION['cart_message'] = [
+                "text" => "Hết hàng! Chỉ còn $stockQuantity sản phẩm trong kho.",
+                "type" => "error"
             ];
-            
+            header("Location: " . $_SERVER['HTTP_REFERER']);
+            exit;
+        }
 
-            if (!isset($_SESSION['cart'])) {
-                $_SESSION['cart'] = [];
-            }
+        // Tạo item (CHỈ THÊM idProductDetail, KHÔNG ĐỔI CÁC TRƯỜNG KHÁC)
+        $item = [
+            'idProductDetail' => $idProductDetail,   // <<-------- THÊM TRƯỜNG NÀY
+            'id'        => $idProduct,
+            'name'      => $name,
+            'price'     => $price,
+            'image'     => $image,
+            'color'     => $idColor,
+            'colorName' => $colorName,
+            'quantity'  => $quantity
+        ];
 
-            $found = false;
-            foreach ($_SESSION['cart'] as &$cartItem) {
-                if ($cartItem['id'] == $idProduct && $cartItem['color'] == $idColor) {
-                    $cartItem['quantity'] += $quantity;
-                    $found = true;
-                    $cartItem['colorName'] = $colorName;
-                    $_SESSION['cart_message'] = [
-                        "text" => "Thêm vào giỏ hàng thành công!",
-                        "type" => "success"
-                    ];
+        if (!isset($_SESSION['cart'])) {
+            $_SESSION['cart'] = [];
+        }
 
-                    header("Location: " . $_SERVER['HTTP_REFERER']);
-                    exit;
-                }
-            }
-
-            if (!$found) {
-                $_SESSION['cart'][] = $item;
+        $found = false;
+        foreach ($_SESSION['cart'] as &$cartItem) {
+            if ($cartItem['id'] == $idProduct && $cartItem['color'] == $idColor) {
+                $cartItem['quantity'] += $quantity;
+                $found = true;
+                $cartItem['colorName'] = $colorName;
                 $_SESSION['cart_message'] = [
                     "text" => "Thêm vào giỏ hàng thành công!",
                     "type" => "success"
                 ];
-            }
 
-            $this->updateCartTotal();
-            header("Location: " . $_SERVER['HTTP_REFERER']);
-            exit;
+                $this->updateCartTotal();
+                header("Location: " . $_SERVER['HTTP_REFERER']);
+                exit;
+            }
         }
+
+        if (!$found) {
+            $_SESSION['cart'][] = $item;
+            $_SESSION['cart_message'] = [
+                "text" => "Thêm vào giỏ hàng thành công!",
+                "type" => "success"
+            ];
+        }
+
+        $this->updateCartTotal();
+        header("Location: " . $_SERVER['HTTP_REFERER']);
+        exit;
     }
+}
+
 // tang giam gio hang 
 function increase($proId, $color) {
     foreach ($_SESSION['cart'] as &$item) {

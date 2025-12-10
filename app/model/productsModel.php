@@ -328,8 +328,20 @@ public function updateStock($idDetail, $newQty) {
     ]);
 }
 
+function getDefaultDetail($idProduct) {
+    $sql = "SELECT id, idColor, price 
+            FROM productdetail 
+            WHERE idProduct = ?
+            ORDER BY idColor ASC
+            LIMIT 1";
+    return $this->db->getOne($sql, [$idProduct]);
+}
 
-
-
+function getDefaultImage($idProduct) {
+    $sql = "SELECT image FROM productimages 
+            WHERE idProduct = ? 
+            LIMIT 1";
+    return $this->db->getOne($sql, [$idProduct])['image'];
+}
     
 }
