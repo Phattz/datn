@@ -45,7 +45,7 @@
                         <ul class="footer_info">
                            <li><span><h6>Địa chỉ:</h6><p>QTSC 9 Building, Đ. Tô Ký, Tân Chánh Hiệp, Quận 12, Hồ Chí Minh</p></span></li>
                             <li><span><h6>Số điện thoại:</h6><p>+84 969894160</p></span></li>
-                            <li><span><h6>Email:</h6><p>charmcarft123@gmail.com</p></span></li>
+                            <li><span><h6>Email:</h6><p>charmcraft123@gmail.com</p></span></li>
                             <li><span><h6>Thời gian làm việc:</h6><p>8h sáng - 17h chiều</p></span></li>
 
 
