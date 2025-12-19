@@ -14,7 +14,7 @@ require_once 'app/model/productsModel.php';
 require_once 'app/model/userModel.php';
 require_once 'app/model/productCateModel.php';
 require_once 'app/model/productCommentModel.php';
-
+require_once 'app/model/postModel.php';
 require_once 'app/model/ratingModel.php';
 require_once 'app/model/searchModel.php';
 require_once 'app/model/orderModel.php';
@@ -32,7 +32,7 @@ require_once 'app/controller/mailerController.php';
 require_once 'app/controller/cartController.php';
 require_once 'app/controller/searchController.php';
 require_once 'app/controller/contactController.php';
-
+require_once 'app/controller/postController.php';
 $page = $_GET['page'] ?? null;
 $ctrl = $_GET['ctrl'] ?? null;
 // Xử lý đăng nhập/đăng ký Google bằng Ajax, tránh render header/footer
@@ -72,7 +72,11 @@ if (isset($_GET['page'])) {
             $home = new HomeController();
             $home->viewHome();
             break;
-
+        //trang giới thiệu
+        case 'about':
+        $controller = new HomeController();
+        $controller->about();
+        break;
         // trang sản phẩm
         case 'product':
             $product = new ProductController();
@@ -115,7 +119,15 @@ if (isset($_GET['page'])) {
             $cart = new CartController();
             $cart->viewCart();
             break;
-
+        case 'postDetail':
+            $postDetail = new PostController();
+            $postDetail->viewPostDetail();
+            break;
+            // trang bài viết
+        case 'post':
+            $post = new PostController();
+            $post->viewPost();
+            break;
 
         // trang thanh toán
         case 'payment':
@@ -193,19 +205,9 @@ if (isset($_GET['page'])) {
             break;
         case 'logout':
             session_unset();
-            echo "<script>
-                    if (confirm('Bạn có chắc chắn muốn đăng xuất không?')) {
-                        // Người dùng chọn Yes
-                        localStorage.removeItem('userId');
-                        localStorage.removeItem('danhSachThichSP');
-                        alert('Đăng xuất thành công');
-                        window.location.href = 'index.php'; 
-                    } else {
-                        // Người dùng chọn No
-                        alert('Bạn đã hủy đăng xuất');
-                        window.history.back(); // Quay lại trang trước
-                    }
-                </script>";
+              session_destroy();
+            header("Location: index.php");
+            exit;
             break;
         case 'forgotPass':
             $forgotPass = new UserController();

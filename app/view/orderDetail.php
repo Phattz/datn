@@ -145,12 +145,21 @@
 
                     <!-- NÚT HỦY ĐƠN -->
                     <?php if ($orderInfo['orderStatus'] == 1): ?>
-                        <a href="index.php?page=cancelOrder&id=<?= $_GET['id'] ?>" 
-                        class="cancel-btn"
-                        onclick="return confirm('Bạn có chắc muốn hủy đơn hàng này không?');">
-                        Hủy đơn hàng
-                        </a>
+                       <div class="order-action-right">
+                            <button class="cancel-btn"
+                                onclick="openCancelOrderConfirm(<?= $_GET['id'] ?>)">
+                                Hủy đơn hàng
+                            </button>
+                        </div>
                     <?php endif; ?>
+                    <!-- CONFIRM HỦY ĐƠN -->
+                    <div id="cancel-order-confirm" class="cancel-toast hide">
+                        <span>Bạn có chắc chắn muốn hủy đơn hàng này không?</span>
+                        <div class="cancel-toast-actions">
+                            <button id="cancel-order-yes">Xác nhận</button>
+                            <button id="cancel-order-no">Hủy</button>
+                        </div>
+                    </div>
 
                     <!-- QUAY LẠI -->
                     <a href="index.php?page=userOrder" class="back-button">← Quay lại đơn hàng</a>
@@ -246,7 +255,35 @@ s.addEventListener("mouseenter", function () {
 document.querySelector(".stars").addEventListener("mouseleave", function () {
 updateStars(currentRating);
 });
+let cancelOrderId = null;
 
+function openCancelOrderConfirm(orderId) {
+    cancelOrderId = orderId;
+    const box = document.getElementById('cancel-order-confirm');
+    if (box) box.classList.remove('hide');
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    const box = document.getElementById('cancel-order-confirm');
+    const yesBtn = document.getElementById('cancel-order-yes');
+    const noBtn  = document.getElementById('cancel-order-no');
+
+    if (!box || !yesBtn || !noBtn) return;
+
+    // Hủy popup
+    noBtn.onclick = () => {
+        box.classList.add('hide');
+        cancelOrderId = null;
+    };
+
+    // Xác nhận hủy
+    yesBtn.onclick = () => {
+        if (cancelOrderId) {
+            window.location.href =
+                'index.php?page=cancelOrder&id=' + cancelOrderId;
+        }
+    };
+});
 
 
     </script>

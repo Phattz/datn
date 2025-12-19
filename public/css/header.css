@@ -1467,3 +1467,92 @@ form {
     width: 100%;
     max-width: 380px;
 }
+/* ===== CONFIRM POPUP (logout + hủy đơn) ===== */
+.cancel-toast {
+    position: fixed;
+    top: 160px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #fff;
+    padding: 18px 24px;
+    border-radius: 10px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+    z-index: 99999;
+    min-width: 360px;
+    text-align: center;
+
+    /* QUAN TRỌNG */
+    display: none;   /* 👈 mặc định ẨN */
+}
+
+/* Khi JS remove class hide */
+.cancel-toast:not(.hide) {
+    display: block;
+}
+
+/* Class ẩn */
+.cancel-toast.hide {
+    display: none;
+}
+
+/* =========================
+   CONFIRM POPUP (LOGOUT)
+   ========================= */
+   .cancel-toast {
+    position: fixed;
+    top: 160px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #fff;
+    padding: 18px 24px;
+    border-radius: 10px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+    z-index: 99999;
+    min-width: 360px;
+    text-align: center;
+    display: none; /* QUAN TRỌNG */
+}
+
+.cancel-toast:not(.hide) {
+    display: block;
+}
+
+.cancel-toast span {
+    display: block;
+    font-size: 15px;
+    color: #333;
+    margin-bottom: 16px;
+}
+
+.cancel-toast-actions {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+}
+
+.cancel-toast-actions button {
+    padding: 8px 18px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+    min-width: 90px;
+}
+
+/* Nút xác nhận */
+#logout-yes {
+    background: #E53935;
+    color: #fff;
+}
+#logout-yes:hover {
+    background: #c62828;
+}
+
+/* Nút hủy */
+#logout-no {
+    background: #e0e0e0;
+    color: #333;
+}
+#logout-no:hover {
+    background: #d5d5d5;
+}

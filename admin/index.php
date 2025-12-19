@@ -14,7 +14,8 @@ require_once '../app/model/userModel.php';
 require_once '../app/model/productCommentModel.php';
 require_once '../app/model/orderModel.php';
 require_once '../app/model/bannerModel.php';
-
+require_once '../app/model/postModel.php';
+require_once '../app/model/postCateModel.php';
 require_once '../app/model/adminLogModel.php';
 
 require_once 'app/controller/adminDashboardController.php';
@@ -26,6 +27,7 @@ require_once 'app/controller/adminOrderController.php';
 require_once 'app/controller/adminBannerController.php';
 require_once 'app/controller/adminColorController.php';
 require_once 'app/controller/adminLogController.php';
+require_once 'app/controller/adminPostController.php';
 require_once 'app/view/menu.php';
 $db = new Database();
 if (isset($_GET['page'])) {
@@ -198,6 +200,31 @@ if (isset($_GET['page'])) {
         default:
             $dashboard = new AdminDashboardController();
             $dashboard->viewDashboard();
+            break;
+        //post
+        case 'post':
+            $post = new PostAdminController();
+            $post->view();
+            break;
+        case 'addPost':
+            $addPost = new PostAdminController();
+            $addPost->addPost();
+            break;
+        case 'viewEditPost':
+            $viewEditPost = new PostAdminController();
+            $viewEditPost->viewEditPost();
+            break;
+        case 'editPost':
+            $editPost = new PostAdminController();
+            $editPost->editPost();
+            break;
+        case 'deletepost':
+            $deletepost = new PostAdminController();
+            $deletepost->delPost();
+            break;
+        case 'adminSearchPost':
+            $adminSearchPost = new PostAdminController();
+            $adminSearchPost->adminSearchPost();
             break;
     }
 } else {

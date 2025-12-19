@@ -24,8 +24,8 @@
         <div style="background-color: #f1f1f1; padding: 10px; text-align: center; font-size: 14px; color: #666;">
             <p style="margin: 0;">CharmCraft</p>
             <p style="margin: 0;">📍 QTSC 9, CVPM Quang Trung, Quận 12, TP. Hồ Chí Minh</p>
-            <p style="margin: 0;">📞 0933661897 | 🌐 
-                <a href="https://CharmCraft.name.vn" style="color: #8d6e6e; text-decoration: none;">CharmCraft.name.vn</a>
+            <p style="margin: 0;">📞 0969894160 | 🌐 
+                <a href="https://charmcraft.click" style="color: #8d6e6e; text-decoration: none;">charmcraft.click</a>
             </p>
         </div>
     </div>

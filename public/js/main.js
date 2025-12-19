@@ -277,7 +277,18 @@ function hamCapNhat() {
         capNhatTongTien.textContent = totalPrice
     }
 }
+function showToast(message, type = 'success') {
+    const toast = document.getElementById('toast-message');
+    if (!toast) return;
 
+    toast.textContent = message;
+    toast.className = 'toast-message ' + type;
+    toast.style.display = 'block';
+
+    setTimeout(() => {
+        toast.style.display = 'none';
+    }, 2500);
+}
 
 
 

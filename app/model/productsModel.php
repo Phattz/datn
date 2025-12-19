@@ -338,5 +338,14 @@ public function decreaseStock($idDetail, $quantity)
                 WHERE id = ?";
         return $this->db->update($sql, [(int)$quantity, $idDetail]);
     }
+public function getAllProducts($search = '', $page = 1, $limit = 10) {
+    $offset = ($page - 1) * $limit;
 
+    $sql = "SELECT * FROM products
+            WHERE name LIKE ?
+            ORDER BY status DESC, id DESC
+            LIMIT $offset, $limit";
+
+    return $this->db->query($sql, ["%$search%"])->fetchAll(PDO::FETCH_ASSOC);
+}
 }

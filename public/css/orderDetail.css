@@ -374,3 +374,112 @@
 .modal-actions .cancel:hover {
     background: #b3b3b3;
 }
+
+.order-action-right {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+/* NÚT HỦY ĐƠN – TO HƠN */
+.order-action-right .cancel-btn {
+    padding: 12px 26px;    
+    font-size: 15px;
+    border-radius: 8px;
+}
+/* ===== NÚT HỦY ĐƠN ===== */
+.cancel-btn,
+.cancel-order {
+    display: inline-block;
+    background: #ff4d4f;
+    color: #fff;
+    padding: 8px 18px;
+    border-radius: 6px;
+    font-weight: 600;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.2s ease;
+}
+
+.cancel-btn:hover,
+.cancel-order:hover {
+    background: #e41e26;
+}
+/* ===== CONFIRM CANCEL ORDER ===== */
+.cancel-toast {
+    position: fixed;
+    top: 160px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #fff;
+    padding: 18px 24px;
+    border-radius: 10px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+    z-index: 99999;
+    min-width: 360px;
+    text-align: center;
+    animation: cancelFadeIn .25s ease;
+}
+
+.cancel-toast.hide {
+    display: none;
+}
+
+.cancel-toast span {
+    display: block;
+    font-size: 15px;
+    color: #333;
+    margin-bottom: 16px;
+}
+
+.cancel-toast-actions {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+}
+
+.cancel-toast-actions button {
+    padding: 8px 18px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+    min-width: 90px;
+    transition: 0.2s ease;
+}
+
+/* Nút xác nhận */
+#cancel-yes,
+#cancel-order-yes {
+    background: #E53935;
+    color: #fff;
+}
+
+#cancel-yes:hover,
+#cancel-order-yes:hover {
+    background: #c62828;
+}
+
+/* Nút hủy */
+#cancel-no,
+#cancel-order-no {
+    background: #e0e0e0;
+    color: #333;
+}
+
+#cancel-no:hover,
+#cancel-order-no:hover {
+    background: #d5d5d5;
+}
+@keyframes cancelFadeIn {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+    }
+}

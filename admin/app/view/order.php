@@ -57,7 +57,9 @@
                     <th>Số điện thoại</th>
                     <th>Ngày tạo đơn</th>
                     <th>Trạng thái</th>
+                    <th>Ngày hoàn thành</th>
                     <th>Xem</th>
+                    
                 </tr>
             </thead>
             
@@ -77,8 +79,14 @@ usort($data['listord'], function($a, $b) use ($orderPriority) {
     $statusB = $orderPriority[$b['orderStatus']] ?? 99;
 
     if ($statusA === $statusB) {
-        // Nếu cùng trạng thái thì sắp xếp theo ngày tạo đơn (mới nhất trước)
-        return strtotime($b['dateOrder']) <=> strtotime($a['dateOrder']);
+        // Nếu cùng trạng thái
+        if ($statusA === 1) {
+            // Với đơn chờ xác nhận: sắp xếp theo ngày cũ trước
+            return strtotime($a['dateOrder']) <=> strtotime($b['dateOrder']);
+        } else {
+            // Các trạng thái khác: sắp xếp theo ngày mới trước
+            return strtotime($b['dateOrder']) <=> strtotime($a['dateOrder']);
+        }
     }
     return $statusA <=> $statusB;
 });
@@ -90,6 +98,7 @@ usort($data['listord'], function($a, $b) use ($orderPriority) {
     $phone       = $item['receiverPhone'] ?? '';
     $dateOrder   = $item['dateOrder'] ?? '';
     $orderStatus = isset($item['orderStatus']) ? (int)$item['orderStatus'] : null;
+    $completedAt = $item['completed_at'] ?? null;
 ?>
 <tr>
     <td><?= htmlspecialchars($id) ?></td>
@@ -104,6 +113,13 @@ usort($data['listord'], function($a, $b) use ($orderPriority) {
         if ($orderStatus === 2) echo '<span class="status success">Đang vận chuyển</span>';
         if ($orderStatus === 3) echo '<span class="status done">Đã giao</span>';
         ?>
+    </td>
+     <td>
+    <?php if (!empty($completedAt)): ?>
+        <?= date('H:i:s d/m/Y', strtotime($completedAt)) ?>
+    <?php else: ?>
+        <span style="color:#999;">—</span>
+    <?php endif; ?>
     </td>
     <td><a href="?page=orderDetail&id=<?= urlencode($id) ?>">Xem</a></td>
 </tr>

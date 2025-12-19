@@ -37,7 +37,7 @@
                 </div>
 
                 <div class="col l-4 contact-info">
-                    <h2>Thông Tin CHARM CARFT</h2>
+                    <h2>Thông tin CHARM CARFT</h2>
 
                     <div class="noidung">
                         <p><strong>CHARM CARFT</strong> - Gửi gắm yêu thương qua từng món đồ handmade.</p>

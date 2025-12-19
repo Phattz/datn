@@ -10,7 +10,22 @@
 </head>
 
 <body>
+<?php if (!empty($_SESSION['cart_message'])): ?>
+    <div id="toast-msg-fixed" class="<?= $_SESSION['cart_message']['type'] ?>">
+        <?= $_SESSION['cart_message']['text']; ?>
+    </div>
+    <?php unset($_SESSION['cart_message']); ?>
+<?php endif; ?>
 
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const el = document.getElementById("toast-msg-fixed");
+    if (el) {
+        setTimeout(() => el.classList.add("hide"), 1600);
+        setTimeout(() => el.remove(), 2000);
+    }
+});
+</script>
     <main class="inforUser">
         <section>
             <div class="grid wide container">

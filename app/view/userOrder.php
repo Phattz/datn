@@ -8,6 +8,22 @@
     <link rel="stylesheet" href="public/css/userOrder.css">
 </head>
 <body>
+    <?php if (!empty($_SESSION['cart_message'])): ?>
+    <div id="toast-msg-fixed" class="<?= $_SESSION['cart_message']['type'] ?>">
+        <?= $_SESSION['cart_message']['text']; ?>
+    </div>
+    <?php unset($_SESSION['cart_message']); ?>
+<?php endif; ?>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const el = document.getElementById("toast-msg-fixed");
+    if (el) {
+        setTimeout(() => el.classList.add("hide"), 1600);
+        setTimeout(() => el.remove(), 2000);
+    }
+});
+</script>
 
     <main class="productCart">
         <div class="grid wide container">
@@ -61,10 +77,8 @@
                                     <?php
                                     if($orderStatus == 1){
                                         echo '<td>
-                                                <a href="index.php?page=cancelOrder&id='.$id.'" 
-                                                class="cancel-order"
-                                                onclick="return confirm(\'Bạn có chắc chắn muốn hủy đơn hàng này không?\')">
-                                                Hủy đơn hàng
+                                                <a href="#" class="cancel-order" data-id="'.$id.'" onclick="openCancelConfirm(event, this)">
+                                                    Hủy đơn hàng
                                                 </a>
                                             </td>';
                                     }else{
@@ -81,6 +95,34 @@
 
         </div>
     </main>
+    <div id="cancel-confirm-toast" class="cancel-toast hide">
+    <span>Bạn có chắc chắn muốn hủy đơn hàng này?</span>
+    <div class="cancel-toast-actions">
+        <button id="cancel-yes">Xác nhận</button>
+        <button id="cancel-no">Không</button>
+    </div>
+</div>
 </body>
+<script>
+let cancelId = null;
+
+function openCancelConfirm(e, el) {
+    e.preventDefault();
+    cancelId = el.dataset.id;
+    document.getElementById('cancel-confirm-toast').classList.remove('hide');
+}
+
+// Không hủy
+document.getElementById('cancel-no').onclick = () => {
+    document.getElementById('cancel-confirm-toast').classList.add('hide');
+    cancelId = null;
+};
+
+// Xác nhận hủy
+document.getElementById('cancel-yes').onclick = () => {
+    if (!cancelId) return;
+    window.location.href = 'index.php?page=cancelOrder&id=' + cancelId;
+};
+</script>
 
 </html>

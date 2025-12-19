@@ -1,3 +1,54 @@
+<style>
+        #toast-msg-fixed {
+            position: fixed;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 14px 26px;
+            top: 150px;
+            border-radius: 8px;
+            font-size: 16px;
+            color: #fff;
+            z-index: 99999;
+            transition: opacity .4s ease;
+            
+        }
+        #toast-msg-fixed.success { background:#4CAF50; }
+        #toast-msg-fixed.error { background:#E53935; }
+        #toast-msg-fixed.hide { opacity:0; }
+
+        .color-option.active {
+            background: #8D6E6E !important;
+            color: #fff !important;
+            border-color: #8D6E6E !important;
+        }
+        .user-name {
+            font-size: 16px;
+            margin-bottom: 4px;
+            font-weight: bold;
+        }
+
+        .comment-text {
+            margin: 0 0 5px 0;
+        }
+    </style>
+
+
+<?php if (!empty($_SESSION['cart_message'])): ?>
+    <div id="toast-msg-fixed" class="<?= $_SESSION['cart_message']['type'] ?>">
+        <?= $_SESSION['cart_message']['text']; ?>
+    </div>
+    <?php unset($_SESSION['cart_message']); ?>
+<?php endif; ?>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const el = document.getElementById("toast-msg-fixed");
+    if (el) {
+        setTimeout(() => el.classList.add("hide"), 1600);
+        setTimeout(() => el.remove(), 2000);
+    }
+});
+</script>
 <div class="main">
     <div class="main-category">
         <div class="main-danhmuc">
@@ -78,7 +129,7 @@
 
     <!-- Đơn hàng mới nhất -->
     <div style="background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin: 20px 0;">
-        <h3 style="margin-top: 0;">5 đơn hàng mới nhất</h3>
+        <h3 style="margin-top: 0;">Đơn hàng cần chú ý</h3>
         <div class="main-product">
             <table>
                 <thead>
@@ -116,7 +167,49 @@
                         </tr>
                     <?php endif; ?>
                 </tbody>
+                
             </table>
+            <h3>Thống kê theo ngày</h3>
+<table>
+    <tr>
+        <th>Ngày</th>
+        <th>Đơn hoàn thành</th>
+        <th>Doanh thu hoàn thành</th>
+        <th>Đơn hủy</th>
+        <th>Doanh thu hủy</th>
+    </tr>
+    <?php foreach($data['dailyStats'] as $day => $stat): ?>
+        <tr>
+            <td><?= $day ?></td>
+            <td><?= $stat['completedOrders'] ?></td>
+            <td><?= number_format($stat['completedRevenue'], 0, ',', '.') ?> VND</td>
+            <td><?= $stat['cancelledOrders'] ?></td>
+            <td><?= number_format($stat['cancelledRevenue'], 0, ',', '.') ?> VND</td>
+        </tr>
+    <?php endforeach; ?>
+</table>
+
+<h3>Thống kê theo tháng</h3>
+<table>
+    <tr>
+        <th>Tháng</th>
+        <th>Đơn hoàn thành</th>
+        <th>Doanh thu hoàn thành</th>
+        <th>Đơn hủy</th>
+        <th>Doanh thu hủy</th>
+    </tr>
+    <?php foreach($data['monthlyStats'] as $month => $stat): ?>
+        <tr>
+            <td><?= $month ?></td>
+            <td><?= $stat['completedOrders'] ?></td>
+            <td><?= number_format($stat['completedRevenue'], 0, ',', '.') ?> VND</td>
+            <td><?= $stat['cancelledOrders'] ?></td>
+            <td><?= number_format($stat['cancelledRevenue'], 0, ',', '.') ?> VND</td>
+        </tr>
+    <?php endforeach; ?>
+</table>
+
+
         </div>
     </div>
 </div>

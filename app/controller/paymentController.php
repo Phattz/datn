@@ -35,9 +35,12 @@ class PaymentController{
  
     function viewPaymentStep2() {
         if (empty($_SESSION['user'])) {
-            echo "<script>alert('Vui lòng đăng nhập trước khi thanh toán');</script>";
-            echo "<script>location.href='index.php';</script>";
-            return;
+           $_SESSION['cart_message'] = [
+                'text' => 'Vui lòng đăng nhập trước khi thanh toán',
+                'type' => 'error'
+            ];
+            header("Location: index.php");
+            exit;
         }
         if (isset($_POST['payment'])) {
             $name = $_POST['name'];
@@ -65,9 +68,12 @@ class PaymentController{
                 $voucher = $voucherModel->getActiveByCode($voucherCode);
 
                 if (!$voucher) {
-                    echo "<script>alert('Voucher không hợp lệ hoặc đã hết hạn');</script>";
-                    echo "<script>location.href='index.php?page=payment';</script>";
-                    return;
+                     $_SESSION['cart_message'] = [
+                        'text' => 'Voucher không hợp lệ hoặc đã hết hạn',
+                        'type' => 'error'
+                    ];
+                    header("Location: index.php?page=payment");
+                    exit;
                 }
 
                 $value = $voucherModel->extractValue($voucher);
@@ -125,22 +131,31 @@ class PaymentController{
 
     function createOrder(){
         if (empty($_SESSION['user'])) {
-            echo "<script>alert('Vui lòng đăng nhập trước khi đặt hàng');</script>";
-            echo "<script>location.href='index.php';</script>";
-            return;
+             $_SESSION['cart_message'] = [
+                'text' => 'Vui lòng đăng nhập trước khi đặt hàng',
+                'type' => 'error'
+            ];
+            header("Location: index.php");
+            exit;
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submitOrder'])) {
     
             if (!isset($_POST['paymentMethod'])) {
-                echo "<script>alert('Vui lòng chọn phương thức thanh toán')</script>";
-                echo "<script>location.href='index.php?page=payment';</script>";
+                $_SESSION['cart_message'] = [
+                    'text' => 'Vui lòng chọn phương thức thanh toán',
+                    'type' => 'error'
+                ];
+                header("Location: index.php?page=payment");
                 exit;
             }
     
             if (!isset($_SESSION['order']) || !isset($_SESSION['cart'])) {
-                echo "<script>alert('Không có thông tin đơn hàng');</script>";
-                echo "<script>location.href='index.php?page=cart';</script>";
+               $_SESSION['cart_message'] = [
+                    'text' => 'Không có thông tin đơn hàng',
+                    'type' => 'error'
+                ];
+                header("Location: index.php?page=cart");
                 exit;
             }
     
@@ -198,8 +213,12 @@ class PaymentController{
             unset($_SESSION['order']);
             $_SESSION['cart_total'] = 0;
     
-            echo "<script>alert('Đặt hàng thành công (COD)')</script>";
-            echo "<script>location.href='index.php?page=index.php';</script>";
+             $_SESSION['cart_message'] = [
+                'text' => 'Đặt hàng thành công',
+                'type' => 'success'
+            ];
+            header("Location: index.php");
+            exit;
         }
     }
 
@@ -287,11 +306,19 @@ class PaymentController{
                 unset($_SESSION['order']);
                 $_SESSION['cart_total'] = 0;
 
-                echo "<script>alert('Thanh toán VNPAY thành công!');</script>";
-                echo "<script>location.href='index.php?page=userOrder';</script>";
+               $_SESSION['cart_message'] = [
+                    'text' => 'Thanh toán VNPAY thành công!',
+                    'type' => 'success'
+                ];
+                header("Location: index.php?page=userOrder");
+                exit;
             } else {
-                echo "<script>alert('Thanh toán thất bại hoặc bị hủy');</script>";
-                echo "<script>location.href='index.php?page=cart';</script>";
+                 $_SESSION['cart_message'] = [
+                    'text' => 'Thanh toán thất bại hoặc bị hủy',
+                    'type' => 'error'
+                ];
+                header("Location: index.php?page=cart");
+                exit;
             }
         } else {
             echo "Sai chữ ký bảo mật";

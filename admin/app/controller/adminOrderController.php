@@ -115,7 +115,7 @@ public function submitOrder() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
         $orderId = $_POST['id'] ?? null;
         $status  = $_POST['status'] ?? null;
-
+        $status  = isset($_POST['status']) ? (int)$_POST['status'] : null;
         if ($orderId && isset($status)) {
             // Gọi hàm trong model
             $this->order->updateOrderStatus($orderId, $status);
@@ -147,12 +147,27 @@ public function submitOrder() {
 
         if ($order && $order['status'] == 1) { // chỉ cho hủy khi đang chờ xác nhận
             $this->order->updateOrderStatus($orderId, 0); // 0 = đã hủy
-            echo "<script>alert('Đã hủy đơn hàng thành công')</script>";
+             $_SESSION['cart_message'] = [
+                'text' => 'Đã hủy đơn hàng thành công',
+                'type' => 'success'
+            ];
         } else {
-            echo "<script>alert('Không thể hủy đơn hàng đã xác nhận hoặc đang xử lý')</script>";
+            $_SESSION['cart_message'] = [
+                'text' => 'Không thể hủy đơn hàng đã xác nhận hoặc đang xử lý',
+                'type' => 'error'
+            ];
         }
 
-        echo "<script>location.href='?page=order';</script>";
+        header("Location: index.php?page=order");
+        exit;
+        
+
+          $_SESSION['cart_message'] = [
+        'text' => 'Yêu cầu không hợp lệ',
+        'type' => 'error'
+    ];
+    header("Location: index.php?page=order");
+    exit;
     }
 }
 

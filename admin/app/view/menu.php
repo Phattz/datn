@@ -27,6 +27,7 @@
                         <li><a href="?page=order" class="<?= (isset($_GET['page']) && $_GET['page'] === 'order') ? 'active' : '' ?>"><i class="fa-solid fa-shopping-cart"></i> Đơn hàng</a></li>
                         <li><a href="?page=user" class="<?= (isset($_GET['page']) && $_GET['page'] === 'user') ? 'active' : '' ?>"><i class="fa-solid fa-users"></i> Người dùng</a></li>
                         <li><a href="?page=comment" class="<?= (isset($_GET['page']) && $_GET['page'] === 'comment') ? 'active' : '' ?>"><i class="fa-solid fa-comments"></i> Bình luận</a></li>
+                        <li><a href="?page=post" class="<?= (isset($_GET['page']) && $_GET['page'] === 'post') ? 'active' : '' ?>"><i class="fa fa-file-text"></i> Bài viết</a></li>
                         <li><a href="?page=banner" class="<?= (isset($_GET['page']) && $_GET['page'] === 'banner') ? 'active' : '' ?>"><i class="fa-solid fa-image"></i> Banner</a></li>
                         <li><a href="?page=color" class="<?= (isset($_GET['page']) && $_GET['page'] === 'color') ? 'active' : '' ?>"><i class="fa-solid fa-palette"></i> Màu sắc</a></li>
                         <li><a href="?page=log" class="<?= (isset($_GET['page']) && $_GET['page'] === 'log') ? 'active' : '' ?>"><i class="fa-solid fa-database"></i> Database Log</a></li>

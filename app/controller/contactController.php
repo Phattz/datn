@@ -1,24 +1,29 @@
 <?php
-class ContactController{
-    private $mail;
-    function __construct(){
-        $this->mail = new MailModel();
 
+class ContactController
+{
+    private $mail;
+
+    public function __construct()
+    {
+        $this->mail = new MailModel();
     }
-    function renderView($view){
-        $view = 'app/view/'.$view.'.php';
+
+    public function renderView($view)
+    {
+        $view = 'app/view/' . $view . '.php';
         require_once $view;
     }
 
-    public function handleContactForm() {
+    public function handleContactForm()
+    {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Lấy thông tin từ form
+
             $name = $_POST['name'];
             $email = $_POST['email'];
             $subject = $_POST['subject'];
             $message = $_POST['message'];
 
-            // Địa chỉ email admin nhận thông tin
             $adminEmail = 'charmcraft123@gmail.com';
 
             // Nội dung email gửi tới admin
@@ -61,21 +66,27 @@ class ContactController{
 
             ';
 
-            // Sử dụng MailModel để gửi email
-            $mail = new MailModel();
-            $result = $mail->sendMail($adminEmail, $subject, $emailContent);
+            $result = $this->mail->sendMail($adminEmail, $subject, $emailContent);
 
-            // Thông báo kết quả
             if ($result === true) {
-                echo "<script>alert('Cảm ơn bạn đã liên hệ với chúng tôi')</script>";
-                 echo "<script>location.href='index.php';</script>";
+                $_SESSION['cart_message'] = [
+                    'text' => 'Cảm ơn bạn đã liên hệ với chúng tôi',
+                    'type' => 'success'
+                ];
             } else {
-                echo "Lỗi khi gửi email: $result";
+                $_SESSION['cart_message'] = [
+                    'text' => 'Lỗi khi gửi email. Vui lòng thử lại sau.',
+                    'type' => 'error'
+                ];
             }
+
+            header('Location: index.php');
+            exit;
         }
     }
 
-    function viewContact(){
+    public function viewContact()
+    {
         return $this->renderView('contact');
     }
 }

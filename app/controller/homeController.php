@@ -62,4 +62,7 @@ class HomeController{
         // ============================
         return $this->renderView('home', $this->data);
     }
+    public function about() {
+        require_once 'app/view/about.php';
+    }
 }

@@ -934,3 +934,17 @@
     .rating-summary { font-size: 16px; gap:6px; }
     .rating-stars-avg { letter-spacing: 1px; }
 }
+/* Ẩn spinner của input number */
+
+/* Chrome, Edge, Safari */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    appearance: textfield;      /* chuẩn */
+    -moz-appearance: textfield; /* Firefox */
+}

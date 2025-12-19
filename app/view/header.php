@@ -3,7 +3,9 @@ if (isset($_SESSION['user']) && ($_SESSION['user'] != '')) {
     $login = '
         <ul class="nav_drop-down">
             <li><a href="index.php?page=userInfo">Tài khoản</a></li>
-            <li><a href="index.php?page=logout" >Đăng xuất</a></li>
+             <a href="#" class="logout-link" onclick="openLogoutConfirm(event)">
+            Đăng xuất
+        </a>
         </ul>
         ';
 } else {
@@ -74,7 +76,11 @@ $googleClientId = getenv('GOOGLE_CLIENT_ID') ?: '991055090704-v6juu3g2bsuj7olv0p
                                     </button>
                                     <ul class="account-dropdown">
                                         <li><a href="index.php?page=userOrder">Trang cá nhân</a></li>
-                                        <li><a href="index.php?page=logout" class="logout-link">Đăng xuất</a></li>
+                                          <li>
+                                            <a href="#" class="logout-link" onclick="openLogoutConfirm(event)">
+                                                Đăng xuất
+                                            </a>
+                                        </li>
                                     </ul>
                                 <?php else: ?>
                                     <a href="#" class="account-link dangnhap">
@@ -116,9 +122,9 @@ $googleClientId = getenv('GOOGLE_CLIENT_ID') ?: '991055090704-v6juu3g2bsuj7olv0p
                                 ?>
                             </ul>
                             </li>
+                            <li class="col l-2 m-2 c-12"><a href="index.php?page=about">Giới thiệu</a></li>
                             <li class="col l-2 m-2 c-12"><a href="index.php?page=contact">Liên hệ</a></li>
-                            <li class="col l-2 m-2 c-12"><a href="">Bài viết</a>
-                               
+                             <li class="col l-2 m-2 c-12"><a href="index.php?page=post">Bài viết</a></li>
                        
 
                             </li>
@@ -320,10 +326,45 @@ $googleClientId = getenv('GOOGLE_CLIENT_ID') ?: '991055090704-v6juu3g2bsuj7olv0p
 
         </div>
     </section>
-
+<!-- CONFIRM LOGOUT -->
+<div id="logout-confirm" class="cancel-toast hide">
+    <span>Bạn có chắc chắn muốn đăng xuất không?</span>
+    <div class="cancel-toast-actions">
+        <button id="logout-yes">Đăng xuất</button>
+        <button id="logout-no">Hủy</button>
+    </div>
+</div>
     
 
 </body>
+<script>
+    function openLogoutConfirm(e) {
+    e.preventDefault();
+    const box = document.getElementById('logout-confirm');
+    if (box) {
+        box.classList.remove('hide');
+    }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const logoutBox = document.getElementById('logout-confirm');
+        const logoutNo  = document.getElementById('logout-no');
+        const logoutYes = document.getElementById('logout-yes');
+
+        if (!logoutBox || !logoutNo || !logoutYes) return;
+
+        // Bấm HỦY → đóng popup, KHÔNG logout
+        logoutNo.onclick = () => {
+            logoutBox.classList.add('hide');
+        };
+
+        // Bấm XÁC NHẬN → logout thật
+        logoutYes.onclick = () => {
+            window.location.href = 'index.php?page=logout';
+        };
+    });
+
+</script>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <script src="public/js/header.js"></script>
 <script src="public/js/google-auth.js"></script>

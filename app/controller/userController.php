@@ -64,39 +64,63 @@ class UserController
     {
         if (isset($_POST['dangnhap'])) {
 
-            $email = $_POST['email'];
+ 
+            $email = trim($_POST['email']);
             $password = md5($_POST['mklogin']);
 
             $result = $this->user->checkUser($email, $password);
 
             if (!is_array($result)) {
-                echo "<script>alert('Sai email hoặc mật khẩu');location.href='index.php';</script>";
-                return;
+                $_SESSION['cart_message'] = [
+                    'text' => 'Sai email hoặc mật khẩu',
+                    'type' => 'error'
+                ];
+                header("Location: index.php");
+                exit;
             }
 
             // Tài khoản chưa active
             if ($result['active'] == 0) {
-                echo "<script>alert('Bạn chưa xác nhận tài khoản. Vui lòng kiểm tra email.');location.href='index.php';</script>";
-                return;
+                $_SESSION['cart_message'] = [
+                    'text' => 'Bạn chưa xác thực email. Vui lòng kiểm tra hộp thư.',
+                    'type' => 'warning'
+                ];
+                header("Location: index.php");
+                exit;
             }
 
             // Tài khoản bị khoá
             if ($result['active'] == 2) {
-                echo "<script>alert('Tài khoản đã bị khóa');location.href='index.php';</script>";
-                return;
+                $_SESSION['cart_message'] = [
+                    'text' => 'Tài khoản đã bị khóa',
+                    'type' => 'error'
+                ];
+                header("Location: index.php");
+                exit;
             }
 
             // Đăng nhập thành công
             // Đăng nhập thành công
-        $_SESSION['user'] = $result['id'];
+       $_SESSION['user'] = $result['id'];
 
-        // Nếu có URL muốn quay lại (ví dụ giỏ hàng)
-        if (!empty($_SESSION['redirect_after_login'])) {
-            $back = $_SESSION['redirect_after_login'];
-            unset($_SESSION['redirect_after_login']);
-            echo "<script>alert('Đăng nhập thành công!');location.href='$back';</script>";
-            return;
-        }
+            // Admin
+            if ($result['role'] == 1) {
+                $_SESSION['cart_message'] = [
+                    'text' => 'Đăng nhập Admin thành công',
+                    'type' => 'success'
+                ];
+                header("Location: admin/index.php");
+                exit;
+            }
+            // Người dùng thường
+            $_SESSION['cart_message'] = [
+                'text' => 'Đăng nhập thành công',
+                'type' => 'success'
+            ];
+            header("Location: index.php");
+            exit;
+        
+    
 
         // Admin
         if ($result['role'] == 1) {
@@ -223,9 +247,13 @@ class UserController
             $password = md5($_POST['forgot-password']);
             $repass = md5($_POST['forgot-Repassword']);
 
-            if ($password !== $repass) {
-                echo "<script>alert('Mật khẩu không trùng khớp');location.href='index.php';</script>";
-                return;
+              if ($password !== $repass) {
+                $_SESSION['cart_message'] = [
+                    'text' => 'Mật khẩu không trùng khớp',
+                    'type' => 'error'
+                ];
+                header("Location: index.php");
+                exit;
             }
 
             if ($this->user->checkForgot($email, $phone)) {
@@ -236,9 +264,19 @@ class UserController
                     'password' => $password
                 ]);
 
-                echo "<script>alert('Cập nhật mật khẩu thành công');location.href='index.php';</script>";
+                 $_SESSION['cart_message'] = [
+                    'text' => 'Cập nhật mật khẩu thành công',
+                    'type' => 'success'
+                ];
+                header("Location: index.php");
+                exit;
             } else {
-                echo "<script>alert('Email hoặc số điện thoại không đúng');location.href='index.php';</script>";
+                 $_SESSION['cart_message'] = [
+                    'text' => 'Email hoặc số điện thoại không đúng',
+                    'type' => 'error'
+                ];
+                header("Location: index.php");
+                exit;
             }
         }
     }
@@ -257,9 +295,12 @@ class UserController
             exit();
         }
 
-        echo "<h3 style='color:red;text-align:center;margin-top:40px;'>
-                Liên kết xác minh không hợp lệ hoặc đã hết hạn.
-              </h3>";
+        $_SESSION['cart_message'] = [
+            'text' => 'Liên kết xác minh không hợp lệ hoặc đã hết hạn.',
+            'type' => 'error'
+        ];
+         header("Location: index.php");
+        exit;
     }
 
     /* ========================
@@ -280,18 +321,30 @@ class UserController
         if (isset($_POST['update-btn'])) {
 
             if (empty($_POST['name']) || empty($_POST['email']) || empty($_POST['phone'])) {
-                echo "<script>alert('Vui lòng nhập đầy đủ thông tin');location.href='index.php?page=userInfo';</script>";
-                return;
+               $_SESSION['cart_message'] = [
+                    'text' => 'Vui lòng nhập đầy đủ thông tin',
+                    'type' => 'error'
+                ];
+                header("Location: index.php?page=userInfo");
+                exit;
             }
 
             if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
-                echo "<script>alert('Email không hợp lệ');location.href='index.php?page=userInfo';</script>";
-                return;
+               $_SESSION['cart_message'] = [
+                    'text' => 'Email không hợp lệ',
+                    'type' => 'error'
+                ];
+                header("Location: index.php?page=userInfo");
+                exit;
             }
 
             if (!preg_match('/^[0-9]{10}$/', $_POST['phone'])) {
-                echo "<script>alert('Số điện thoại phải có 10 chữ số');location.href='index.php?page=userInfo';</script>";
-                return;
+                $_SESSION['cart_message'] = [
+                    'text' => 'Số điện thoại phải có 10 chữ số',
+                    'type' => 'error'
+                ];
+                header("Location: index.php?page=userInfo");
+                exit;
             }
 
             $this->user->updateInfo([
@@ -301,7 +354,12 @@ class UserController
                 'phone' => $_POST['phone']
             ]);
 
-            echo "<script>alert('Cập nhật thành công');location.href='index.php?page=userInfo';</script>";
+            $_SESSION['cart_message'] = [
+                'text' => 'Cập nhật thông tin thành công',
+                'type' => 'success'
+            ];
+            header("Location: index.php?page=userInfo");
+            exit;
         }
     }
 
@@ -316,11 +374,29 @@ class UserController
 
     function cancelOrder()
     {
+        if (!isset($_SESSION['user'])) {
+            header("Location: index.php");
+            exit;
+        }
+
         if (isset($_GET['id'])) {
-            $this->order->cancelOrder($_GET['id']);
-            echo "<script>alert('Hủy đơn thành công');location.href='index.php?page=userOrder';</script>";
+             $orderId = (int)$_GET['id'];
+
+            // Hủy đơn
+            $this->order->cancelOrder($orderId);
+
+            // Toast
+            $_SESSION['cart_message'] = [
+                'text' => 'Hủy đơn hàng thành công',
+                'type' => 'success'
+            ];
+
+            // Redirect chuẩn
+            header("Location: index.php?page=userOrder");
+            exit;
         }
     }
+
 
     function viewUserAddress()
     {
@@ -332,23 +408,64 @@ class UserController
 
     function deleteAddress()
     {
-        if (isset($_GET['id'])) {
-            $this->user->deleteAddress($_GET['id']);
-            echo "<script>alert('Xóa địa chỉ thành công');location.href='index.php?page=userAddress';</script>";
-        }
+        if (!isset($_SESSION['user'])) {
+                header("Location: index.php");
+                exit;
+            }
+
+            if (isset($_GET['id'])) {
+                $this->user->deleteAddress($_GET['id']);
+
+                $_SESSION['cart_message'] = [
+                    'text' => 'Xóa địa chỉ thành công',
+                    'type' => 'success'
+                ];
+
+                header("Location: index.php?page=userAddress");
+                exit;
+            }
     }
 
-    function updateAddress()
-    {
-        if (isset($_GET['id'])) {
-            $this->user->updateAddress($_POST['newAddress'], $_GET['id']);
-            echo "<script>alert('Cập nhật địa chỉ thành công');location.href='index.php?page=userAddress';</script>";
+   function updateAddress()
+        {
+            if (!isset($_SESSION['user'])) {
+                header("Location: index.php");
+                exit;
+            }
+        
+            if (isset($_POST['updateAddress'])) {
+        
+                if (empty($_POST['newAddress'])) {
+                    $_SESSION['cart_message'] = [
+                        'text' => 'Vui lòng nhập địa chỉ',
+                        'type' => 'error'
+                    ];
+                    header("Location: index.php?page=userAddress");
+                    exit;
+                }
+        
+                $this->user->updateAddress(
+                    trim($_POST['newAddress']),
+                    $_GET['id']
+                );
+        
+                $_SESSION['cart_message'] = [
+                    'text' => 'Lưu địa chỉ thành công',
+                    'type' => 'success'
+                ];
+        
+                header("Location: index.php?page=userAddress");
+                exit;
+            }
         }
-    }
     public function viewOrderDetail()
-{
+    {
     if (!isset($_GET['id'])) {
-        echo "<script>alert('Đơn hàng không tồn tại'); window.location='index.php?page=userOrder';</script>";
+        $_SESSION['cart_message'] = [
+            'text' => 'Đơn hàng không tồn tại',
+            'type' => 'error'
+        ];
+        header("Location: index.php?page=userOrder");
         exit;
     }
 
@@ -356,10 +473,14 @@ class UserController
     $idUser = $_SESSION['user'];
 
     $orderModel = new OrderModel();
-
+    
     // Kiểm tra đơn hàng có thuộc user không
     if (!$orderModel->isOrderBelongToUser($idOrder, $idUser)) {
-        echo "<script>alert('Bạn không có quyền xem đơn này'); window.location='index.php?page=userOrder';</script>";
+         $_SESSION['cart_message'] = [
+            'text' => 'Đơn hàng không tồn tại',
+            'type' => 'error'
+        ];
+        header("Location: index.php?page=userOrder");
         exit;
     }
 
@@ -367,7 +488,11 @@ class UserController
     $orderItems = $orderModel->getOrderDetailsWithImages($idOrder);
 
     if (!$orderItems) {
-        echo "<script>alert('Đơn hàng không tồn tại'); window.location='index.php?page=userOrder';</script>";
+         $_SESSION['cart_message'] = [
+            'text' => 'Đơn hàng không tồn tại',
+            'type' => 'error'
+        ];
+        header("Location: index.php?page=userOrder");
         exit;
     }
 
@@ -392,7 +517,8 @@ public function submitRating() {
               </script>";
         exit;
     }
+
+
+}
 }
 
-    
-}

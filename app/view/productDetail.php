@@ -33,7 +33,7 @@ $list = !empty($listImages) ? explode(',', $listImages) : [];
     <style>
         #toast-msg-fixed {
             position: fixed;
-            top: 20px;
+            top: 150px;
             left: 50%;
             transform: translateX(-50%);
             padding: 14px 26px;
@@ -135,7 +135,7 @@ document.addEventListener('DOMContentLoaded', function() {
             alert("Số lượng không được nhỏ hơn " + min);
             amountInput.value = min;
         } else if (value > max) {
-            alert("Số lượng vượt quá tồn kho (" + max + ")");
+            showToast("Số lượng vượt quá tồn kho (" + max + ")", "error");
             amountInput.value = max;
         }
 
@@ -179,7 +179,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     <?php endforeach; ?>
                 </div>
             </div>
+  <!-- HIỂN THỊ TỒN KHO THEO MÀU -->
+            <div id="color-stock-info" style="margin-top:8px;font-size:15px;">
+                <span style="color:#555;">Số lượng còn lại:</span>
+                <strong id="color-stock-value" style="margin-left:5px;">
+                    <?= $detail['stockQuantity'] ?>
+                </strong>
 
+            </div>
             <!-- MÔ TẢ -->
             <div class="description-product">
                 <p><?= $description ?></p>
@@ -464,7 +471,27 @@ let productId = <?= $id ?>;
 
 const amount = document.getElementById("amount");
 const hidden_quantity = document.getElementById("hidden_quantity");
+function updateStockColor(stock) {
+    const stockText = document.getElementById("color-stock-value");
+    if (!stockText) return;
 
+    if (stock === 0) {
+        stockText.textContent = "Hết hàng";
+        stockText.style.color = "#d32f2f"; // đỏ
+    }
+    else if (stock <= 10) {
+        stockText.textContent = stock;
+        stockText.style.color = "#d32f2f"; // đỏ
+    }
+    else if (stock <= 15) {
+        stockText.textContent = stock;
+        stockText.style.color = "#f57c00"; // cam
+    }
+    else {
+        stockText.textContent = stock;
+        stockText.style.color = "#2e7d32"; // xanh
+    }
+}
 // =============================
 // CHỌN MÀU
 // =============================
@@ -502,11 +529,41 @@ document.querySelectorAll('input[name="color"]').forEach(radio => {
         hidden_quantity.value = 1;
 
         if (stock === 0) {
-            alert("Màu này đã hết hàng!");
+           showToast("Màu này đã hết hàng!", "error");
+        }
+        // ===== HIỂN THỊ SỐ LƯỢNG THEO MÀU =====
+    // ===== HIỂN THỊ SỐ LƯỢNG THEO MÀU =====
+        const stockText = document.getElementById("color-stock-value");
+
+        if (stockText) {
+            if (stock === 0) {
+                stockText.textContent = "Hết hàng";
+                stockText.style.color = "#d32f2f"; // đỏ
+            } 
+            else if (stock <= 10) {
+                stockText.textContent = stock;
+                stockText.style.color = "#d32f2f"; // đỏ
+            } 
+            else if (stock <= 15) {
+                stockText.textContent = stock;
+                stockText.style.color = "#f57c00"; // cam
+            } 
+            else {
+                stockText.textContent = stock;
+                stockText.style.color = "#2e7d32"; // xanh
+            }
         }
     });
 });
-
+document.addEventListener("DOMContentLoaded", function () {
+    const stockText = document.getElementById("color-stock-value");
+    if (stockText) {
+        const initialStock = parseInt(stockText.textContent);
+        if (!isNaN(initialStock)) {
+            updateStockColor(initialStock);
+        }
+    }
+});
 
 // =============================
 // TĂNG GIẢM SỐ LƯỢNG
@@ -529,7 +586,23 @@ document.querySelector(".minus").addEventListener("click", function(){
     }
 });
 </script>
+<script>
+function showToast(message, type = 'error') {
+    // Xóa toast cũ nếu có
+    const old = document.getElementById('toast-msg-fixed');
+    if (old) old.remove();
 
+    const toast = document.createElement('div');
+    toast.id = 'toast-msg-fixed';
+    toast.className = type;
+    toast.textContent = message;
+
+    document.body.appendChild(toast);
+
+    setTimeout(() => toast.classList.add('hide'), 1600);
+    setTimeout(() => toast.remove(), 2000);
+}
+</script>
 
 </body>
 </html>
