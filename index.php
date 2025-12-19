@@ -142,7 +142,11 @@ if (isset($_GET['page'])) {
             $paymentStep2 = new PaymentController();
             $paymentStep2->viewPaymentStep2();
             break;
-
+        //tra cứu đơn
+        case 'trackOrder':
+            require_once 'app/controller/OrderController.php';
+            (new OrderController())->trackOrder();
+            break;
             // trang thông tin người dùng
         case 'userInfo':
             $userInfo = new UserController();
@@ -161,6 +165,15 @@ if (isset($_GET['page'])) {
             $cancelOrder = new UserController();
             $cancelOrder->cancelOrder();
             break;
+        case 'cancelTrackOrder':
+            require_once 'app/controller/orderController.php';
+            (new orderController())->cancelOrder();
+            break;
+        case 'trackOrderDetail':
+            require_once 'app/controller/orderController.php';
+            $controller = new orderController();
+            $controller->trackOrderDetail();
+                break;
             //trang địa chỉ người dùng
         case 'userAddress':
             $userAddress = new UserController();

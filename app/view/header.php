@@ -1,20 +1,24 @@
 <?php
-if (isset($_SESSION['user']) && ($_SESSION['user'] != '')) {
+if (isset($_SESSION['user']) && $_SESSION['user'] != 1000) {
+    // USER ĐĂNG NHẬP THẬT
     $login = '
         <ul class="nav_drop-down">
             <li><a href="index.php?page=userInfo">Tài khoản</a></li>
-             <a href="#" class="logout-link" onclick="openLogoutConfirm(event)">
-            Đăng xuất
-        </a>
+            <li>
+                <a href="#" class="logout-link" onclick="openLogoutConfirm(event)">
+                    Đăng xuất
+                </a>
+            </li>
         </ul>
-        ';
+    ';
 } else {
+    // CHƯA ĐĂNG NHẬP HOẶC KHÁCH VÃNG LAI
     $login = '
         <ul class="nav_drop-down">
             <li><a href="#" class="dangnhap">Đăng nhập</a></li>
             <li><a href="#" class="dangky">Đăng ký</a></li>
         </ul>
-        ';
+    ';
 }
 ?>
 <?php if (isset($_GET['verified']) && $_GET['verified'] == 1): ?>
@@ -69,7 +73,7 @@ $googleClientId = getenv('GOOGLE_CLIENT_ID') ?: '991055090704-v6juu3g2bsuj7olv0p
                                 </span>
                                 </a>
                               <div class="account-wrapper">
-                                <?php if (isset($_SESSION['user'])): ?>
+                              <?php if (isset($_SESSION['user']) && $_SESSION['user'] != 1000): ?>  
                                     <button type="button" class="account-link account-toggle">
                                         <i class="fa-regular fa-user"></i>
                                         <span>Tài khoản</span>
@@ -125,7 +129,8 @@ $googleClientId = getenv('GOOGLE_CLIENT_ID') ?: '991055090704-v6juu3g2bsuj7olv0p
                             <li class="col l-2 m-2 c-12"><a href="index.php?page=about">Giới thiệu</a></li>
                             <li class="col l-2 m-2 c-12"><a href="index.php?page=contact">Liên hệ</a></li>
                              <li class="col l-2 m-2 c-12"><a href="index.php?page=post">Bài viết</a></li>
-                       
+                            <li class="col l-2 m-2 c-12" ><a href="index.php?page=trackOrder">Tra cứu đơn hàng</a></li>
+
 
                             </li>
                         </ul>

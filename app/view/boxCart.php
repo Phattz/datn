@@ -128,9 +128,21 @@ $_SESSION['redirect_after_login'] = "index.php?page=boxCart";
                 <p>Tổng cộng (<?= $totalPro ?> sản phẩm): <strong><?= number_format($totalPrice, 0, ',', '.') ?> ₫</strong></p>
                 <?php if (!empty($_SESSION['user'])): ?>
                     <a href="index.php?page=payment"><button class="checkout-btn">Mua hàng</button></a>
-                <?php else: ?>
-                    <a href="index.php?page=login&redirect=boxCart" class="popup-dangnhap">Đăng nhập để thanh toán</a>
-                <?php endif; ?>
+                    <?php else: ?>
+                        <div class="cart-action-not-login">
+
+                            <!-- MUA NGAY: KHÔNG CẦN LOGIN -->
+                            <a href="index.php?page=payment" class="cart-btn">
+                                Mua ngay
+                            </a>
+
+                            <!-- ĐĂNG NHẬP: MỞ POPUP LOGIN Ở HEADER -->
+                            <a href="javascript:void(0)" class="cart-btn popup-dangnhap">
+                                Đăng nhập để thanh toán
+                            </a>
+
+                        </div>
+                    <?php endif; ?>
             </div>
         <?php else: ?>
             <p class="empty-cart">Giỏ hàng trống.</p>

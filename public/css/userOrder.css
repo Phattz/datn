@@ -63,11 +63,11 @@ ul.user-menu li a:hover {
 /* Kiểu dáng cho các ô trong bảng */
 .main-product table td,
 .main-product table th {
-    padding: 16px 15px; /* hợp lý và cân bằng hơn */
-    vertical-align: middle; /* CHỐT: căn giữa chữ theo chiều dọc */
-     white-space: nowrap;   /* không xuống dòng */
-    overflow: hidden;      /* tránh tràn */
-    text-overflow: ellipsis; /* … nếu quá dài */
+    padding: 16px 15px;
+    vertical-align: middle; 
+     white-space: nowrap;  
+    overflow: hidden;     
+    text-overflow: ellipsis; 
 }
 .main-product table td:nth-child(3),
 .main-product table td:nth-child(5),

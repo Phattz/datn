@@ -98,8 +98,6 @@ class UserController
                 header("Location: index.php");
                 exit;
             }
-
-            // Đăng nhập thành công
             // Đăng nhập thành công
        $_SESSION['user'] = $result['id'];
 
@@ -113,12 +111,21 @@ class UserController
                 exit;
             }
             // Người dùng thường
+            $_SESSION['user'] = $result['id'];
             $_SESSION['cart_message'] = [
                 'text' => 'Đăng nhập thành công',
                 'type' => 'success'
             ];
-            header("Location: index.php");
+
+            $redirect = $_GET['redirect'] ?? '';
+
+            if ($redirect !== '') {
+                header("Location: index.php?page=" . $redirect);
+            } else {
+                header("Location: index.php");
+            }
             exit;
+
         
     
 

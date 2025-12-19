@@ -176,3 +176,40 @@ form button[name="removeFromCart"]:hover {
         background-color: #8D6E6E;
         box-shadow: 0 4px 12px rgba(90, 88, 88, 0.6);
 }
+/* Vùng chứa 2 nút khi chưa login */
+.cart-action-not-login {
+    display: flex;
+    justify-content: flex-end;
+    gap: 14px;
+    margin-top: 18px;
+}
+
+/* Nút dùng chung: Mua ngay + Đăng nhập */
+.cart-btn {
+    display: inline-block;
+    margin-top: 20px;
+    background-color: #808080;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 4px;
+    font-size: 15px;
+}
+
+/* Hover */
+.cart-btn:hover {
+    background-color: #8D6E6E;
+    box-shadow: 0 4px 12px rgba(90, 88, 88, 0.6);
+    color: #fff;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .cart-action-not-login {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .cart-btn {
+        width: 100%;
+    }
+}

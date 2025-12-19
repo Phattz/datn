@@ -201,12 +201,15 @@ header {
 
 .nav_menu {
     display: flex;
+    flex-wrap: nowrap;
     align-items: center;
     height: 50px;
 }
 
 .nav_menu li {
-    width: 150px;
+    width: auto;           
+    flex: unset;
+    white-space: nowrap; 
 }
 
 .nav_menu li a {

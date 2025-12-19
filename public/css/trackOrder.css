@@ -1,0 +1,324 @@
+/* ===== TRA CỨU ĐƠN HÀNG (GUEST) ===== */
+.track-order-container {
+    max-width: 520px;
+    margin: 40px auto;
+    background: #fff;
+    padding: 30px;
+    border-radius: 6px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
+
+.track-order-container h2 {
+    text-align: center;
+    font-size: 22px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.track-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.track-form input {
+    padding: 12px 14px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+.track-form input:focus {
+    border-color: #8D6E6E;
+    outline: none;
+}
+
+.track-form button {
+    background-color: #808080;
+    color: #fff;
+    border: none;
+    padding: 12px;
+    font-size: 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.track-form button:hover {
+    background-color: #8D6E6E;
+    box-shadow: 0 4px 12px rgba(90, 88, 88, 0.6);
+}
+/* ===== KẾT QUẢ TRA CỨU ===== */
+.track-result {
+    max-width: 1200px;      /* rộng giống layout site */
+    margin: 40px auto;      /* CĂN GIỮA */
+    background: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+}
+
+.track-result h2 {
+    margin-bottom: 20px;
+    font-size: 22px;
+    color: #333;
+}
+
+.track-result p {
+    font-size: 15px;
+    margin-bottom: 10px;
+    color: #444;
+}
+
+.track-result strong {
+    color: #333;
+}
+
+.track-status {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* Trạng thái */
+.status-waiting { background: #fff3cd; color: #856404; }
+.status-shipping { background: #cce5ff; color: #004085; }
+.status-done { background: #d4edda; color: #155724; }
+.status-cancel { background: #f8d7da; color: #721c24; }
+
+.track-back {
+    display: inline-block;
+    margin-top: 25px;
+    padding: 10px 18px;
+    background: #888;
+    color: #fff;
+    border-radius: 6px;
+    text-decoration: none;
+}
+
+.track-back:hover {
+    background: #8D6E6E;
+}
+.track-cancel-btn {
+    margin-top: 20px;
+    padding: 12px 24px;
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.track-cancel-btn:hover {
+    background-color: #b52a37;
+}
+.confirm-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 99999;
+}
+
+.confirm-box {
+    background: #fff;
+    padding: 24px 28px;
+    border-radius: 10px;
+    width: 360px;
+    max-width: 90%;
+    text-align: center;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+}
+
+.confirm-box h3 {
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.confirm-box p {
+    font-size: 15px;
+    color: #555;
+}
+
+.confirm-actions {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    margin-top: 20px;
+}
+
+.btn-cancel {
+    padding: 10px 18px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background: #f5f5f5;
+    cursor: pointer;
+}
+
+.btn-confirm {
+    padding: 10px 18px;
+    border-radius: 6px;
+    border: none;
+    background: #dc3545;
+    color: #fff;
+    cursor: pointer;
+}
+
+.btn-confirm:hover {
+    background: #b52a37;
+}
+/* ===== BẢNG ĐƠN HÀNG / TRA CỨU ===== */
+.track-order-table {
+    table-layout: fixed;
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 25px;
+    background: #fff;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.track-order-table thead {
+    background: #f5f5f5;
+}
+
+.track-order-table th {
+    padding: 14px 12px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #333;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+.track-order-table td {
+    padding: 14px 12px;
+    font-size: 14px;
+    color: #333;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+}
+
+/* Hover dòng */
+.track-order-table tbody tr:hover {
+    background: #fafafa;
+}
+
+/* ===== TRẠNG THÁI ===== */
+.order-status {
+    display: inline-block;
+    min-width: 90px;
+    padding: 6px 14px;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 10px;
+}
+
+/* Đã giao */
+.status-done {
+    background: #d4f5e2;
+    color: #2e7d32;
+}
+
+/* Đã hủy */
+.status-cancel {
+    background: #fde2e2;
+    color: #c62828;
+}
+
+/* Chờ xác nhận */
+.status-waiting {
+    background: #fff3cd;
+    color: #856404;
+}
+
+/* Đang giao */
+.status-shipping {
+    background: #e3f2fd;
+    color: #1565c0;
+}
+
+/* ===== LINK XEM CHI TIẾT ===== */
+.track-view-link {
+    color: #0d6efd;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.track-view-link:hover {
+    text-decoration: underline;
+}
+
+/* ===== NÚT HỦY ===== */
+.btn-cancel-order {
+    background: #dc3545;
+    color: #fff;
+    border: none;
+    padding: 6px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.btn-cancel-order:hover {
+    background: #b52a37;
+}
+
+/* Khi không được hủy */
+.order-disabled {
+    color: #aaa;
+    font-size: 16px;
+}
+
+/* ===== NÚT QUAY LẠI ===== */
+.track-back {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 22px;
+    background: #808080;
+    color: #fff;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: .25s;
+}
+
+.track-back:hover {
+    background: #8D6E6E;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .track-order-table th,
+    .track-order-table td {
+        font-size: 12px;
+        padding: 10px 6px;
+    }
+
+    .order-status {
+        font-size: 12px;
+        padding: 5px 10px;
+    }
+}
+/* ===== KHÔNG CHO CHỮ XUỐNG DÒNG TRONG BẢNG ===== */
+.track-order-table th,
+.track-order-table td {
+    white-space: nowrap;     /* không xuống dòng */
+}
+
+/* Trạng thái cũng không xuống dòng */
+.order-status {
+    white-space: nowrap;
+}
+
+/* Link xem chi tiết */
+.track-view-link {
+    white-space: nowrap;
+}
+

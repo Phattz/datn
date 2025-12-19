@@ -23,30 +23,30 @@ class PaymentController{
 
     function viewPayment(){
         $data = [];
-        if (isset($_SESSION['user'])) {
-            $userId = $_SESSION['user'];
+    
+        // Nếu chưa login → guest
+        if (empty($_SESSION['user'])) {
+            $_SESSION['guest'] = true;
+            $_SESSION['guest_user_id'] = 1000;
+            $data['is_guest'] = true;
+        } else {
             require_once 'app/model/userModel.php';
             $userModel = new UserModel();
-            $userInfo = $userModel->getUserById($userId);
-            $data['userInfo'] = $userInfo;
+            $data['userInfo'] = $userModel->getUserById($_SESSION['user']);
         }
+    
         return $this->renderView('payment', $data);
     }
+    
  
     function viewPaymentStep2() {
-        if (empty($_SESSION['user'])) {
-           $_SESSION['cart_message'] = [
-                'text' => 'Vui lòng đăng nhập trước khi thanh toán',
-                'type' => 'error'
-            ];
-            header("Location: index.php");
-            exit;
-        }
         if (isset($_POST['payment'])) {
             $name = $_POST['name'];
             $phone = $_POST['phone'];
             $address = $_POST['address'];
-            $idUser = $_SESSION['user'];
+            $idUser = isset($_SESSION['user'])
+            ? $_SESSION['user']
+            : ($_SESSION['guest_user_id'] ?? 1000);
             $voucherCode = isset($_POST['voucher_code']) ? trim($_POST['voucher_code']) : '';
 
             // TÍNH TOÁN TIỀN
@@ -130,14 +130,11 @@ class PaymentController{
     }
 
     function createOrder(){
-        if (empty($_SESSION['user'])) {
-             $_SESSION['cart_message'] = [
-                'text' => 'Vui lòng đăng nhập trước khi đặt hàng',
-                'type' => 'error'
-            ];
-            header("Location: index.php");
-            exit;
-        }
+        $idUser = !empty($_SESSION['user'])
+    ? $_SESSION['user']
+    : $_SESSION['guest_user_id'];
+
+        
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submitOrder'])) {
     
@@ -162,7 +159,11 @@ class PaymentController{
             $paymentMethod = intval($_POST['paymentMethod']); 
             $orderSession = $_SESSION['order'][0];
             
-            if (empty($orderSession['idUser'])) { $orderSession['idUser'] = $_SESSION['user']; }
+            if (empty($orderSession['idUser'])) {
+                $orderSession['idUser'] = isset($_SESSION['user'])
+                    ? $_SESSION['user']
+                    : ($_SESSION['guest_user_id'] ?? 1000);
+            }
             require_once 'app/model/userModel.php';
             $userModel = new UserModel();
             $user = $userModel->getUserById($orderSession['idUser']);

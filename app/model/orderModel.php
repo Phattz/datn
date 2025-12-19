@@ -59,7 +59,7 @@ class OrderModel{
     }
     //lấy đơn hàng theo id user
     function getOrderByIdUser($idUser){
-        $sql = "SELECT id, receiverName, receiverPhone, totalPrice, dateOrder, orderStatus 
+        $sql = "SELECT id, receiverName, receiverPhone, totalPrice, dateOrder, completed_at, orderStatus 
                 FROM orders 
                 WHERE idUser = ?
                 ORDER BY dateOrder DESC";
@@ -123,6 +123,7 @@ class OrderModel{
             od.idProductDetail,
             p.id AS idProduct,
             od.quantity,
+            o.completed_at,
             od.salePrice,
             od.ratingStar,
             od.reviewContent,
@@ -149,32 +150,51 @@ class OrderModel{
     
 
 
-    public function updateOrderStatus($orderId, $status)
+public function updateOrderStatus($orderId, $status)
 {
-    $sql = "UPDATE orders SET orderStatus = :orderStatus WHERE id = :id";
-    $this->db->update($sql, ['orderStatus' => $status, 'id' => $orderId]);
+    // Lấy trạng thái hiện tại
+    $current = $this->db->getOne(
+        "SELECT orderStatus, completed_at FROM orders WHERE id = ?",
+        [$orderId]
+    );
+
+    // Nếu chuyển sang ĐÃ GIAO và CHƯA có completed_at → set thời gian
+    if ($status == 3 && empty($current['completed_at'])) {
+        $sql = "UPDATE orders
+                SET orderStatus = 3,
+                    completed_at = NOW()
+                WHERE id = ?";
+        return $this->db->update($sql, [$orderId]);
+    }
+
+    // Các trạng thái khác → chỉ update status, KHÔNG đụng completed_at
+    $sql = "UPDATE orders
+            SET orderStatus = ?
+            WHERE id = ?";
+    return $this->db->update($sql, [$status, $orderId]);
 }
 
-    public function getOrderStatus($idOrder)
+public function getOrderStatus($idOrder)
     {
         $sql = "SELECT orderStatus FROM orders WHERE id = :idOrder";
         $result = $this->db->getOne($sql, ['idOrder' => $idOrder]);
         return $result['orderStatus'] ?? null;
     }
-
-        public function isOrderBelongToUser($idOrder, $idUser)
+    
+public function isOrderBelongToUser($idOrder, $idUser)
     {
         $sql = "SELECT id FROM orders WHERE id = ? AND idUser = ?";
         return $this->db->getOne($sql, [$idOrder, $idUser]) ? true : false;
     }
 
-    
 public function getOrdersPaginated($limit, $offset) {
     $limit  = (int)$limit;
     $offset = (int)$offset;
     $sql = "SELECT * FROM orders ORDER BY dateOrder DESC LIMIT $limit OFFSET $offset";
     return $this->db->getAll($sql);
-}public function getOrdersByStatus($status, $limit, $offset) {
+}
+
+public function getOrdersByStatus($status, $limit, $offset) {
     $limit  = (int)$limit;
     $offset = (int)$offset;
     $sql = "SELECT * FROM orders WHERE orderStatus = :status ORDER BY dateOrder DESC LIMIT $limit OFFSET $offset";
@@ -193,5 +213,30 @@ public function getTotalOrdersByStatus($status) {
     $result = $this->db->getOne($sql, [':status' => $status]);
     return $result['total'] ?? 0;
 }
+public function getOrderByIdAndPhone($orderId, $phone)
+{
+    $sql = "
+        SELECT *
+        FROM orders
+        WHERE id = ?
+          AND receiverPhone = ?
+        LIMIT 1
+    ";
+
+    return $this->db->getOne($sql, [$orderId, $phone]);
+}
+public function cancelOrderByIdAndPhone($orderId, $phone)
+{
+    $sql = "
+        UPDATE orders
+        SET orderStatus = 0
+        WHERE id = ?
+          AND receiverPhone = ?
+          AND orderStatus = 1
+    ";
+
+    return $this->db->update($sql, [$orderId, $phone]);
+}
+
     
 }

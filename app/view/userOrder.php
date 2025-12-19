@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="public/css/userOrder.css">
 </head>
 <body>
-    <?php if (!empty($_SESSION['cart_message'])): ?>
+<?php if (!empty($_SESSION['cart_message'])): ?>
     <div id="toast-msg-fixed" class="<?= $_SESSION['cart_message']['type'] ?>">
         <?= $_SESSION['cart_message']['text']; ?>
     </div>
@@ -24,7 +24,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 </script>
-
     <main class="productCart">
         <div class="grid wide container">
             <div class="row">
@@ -45,6 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                     <th>Giá đơn hàng</th>
                                     <th>Ngày tạo đơn</th>
                                     <th>Trạng thái</th>
+                                    <th>Ngày hoàn thành</th>
                                     <th>Xem</th>
                                     <th>Hủy đơn hàng</th>
                                 </tr>
@@ -73,6 +73,15 @@ document.addEventListener("DOMContentLoaded", () => {
                                         ?>
                                         <!-- <span>Chờ xác nhận</span> -->
                                     </td>
+
+                                    <td>
+                                        <?php if (!empty($completed_at)): ?>
+                                            <?= $completed_at ?>
+                                        <?php else: ?>
+                                            ---
+                                        <?php endif; ?>
+                                    </td>
+
                                     <td><a class="table-action-link" href="index.php?page=orderDetail&id=<?= $id ?>">Xem chi tiết</a></td>
                                     <?php
                                     if($orderStatus == 1){
@@ -102,6 +111,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <button id="cancel-no">Không</button>
     </div>
 </div>
+
 </body>
 <script>
 let cancelId = null;
