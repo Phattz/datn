@@ -239,42 +239,7 @@ if (!empty($_POST['idColor'])) {
         }
     }
 
-    public function delPro()
-    {
-        if (isset($_POST['delete_ids']) && !empty($_POST['delete_ids'])) {
-            $deleteIds = $_POST['delete_ids'];
-            foreach ($deleteIds as $id) {
-                // Lấy thông tin sản phẩm
-                $product = $this->product->getIdPro($id);
-                $productName = $product['name'] ?? 'N/A';
-                
-                // Xóa ảnh chính
-                if (!empty($product['image'])) {
-                    $imagePath = "../public/image/" . $product['image'];
-                }
-                // Xóa ảnh phụ
-                if (!empty($product['listImages'])) {
-                    $images = explode(',', $product['listImages']);
-                    foreach ($images as $img) {
-                        $imagePath = "../public/image/" . trim($img);
-                    }
-                }
-                // Xóa sản phẩm
-                $this->product->deletePro($id);
-                
-                // Ghi log
-                $this->logModel->addLog([
-                    'action' => 'delete',
-                    'table_name' => 'products',
-                    'record_id' => $id,
-                    'description' => "Xóa sản phẩm: {$productName} (ID: {$id})"
-                ]);
-            }
-            // Redirect hoặc thông báo thành công
-            echo '<script>alert("Sản phẩm đã được xóa.")</script>';
-            echo '<script>location.href="?page=product"</script>';
-        }
-    }
+   
 
 public function increaseStock($id) {
     $detail = $this->product->getDetailById($id);

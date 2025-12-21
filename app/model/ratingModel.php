@@ -34,34 +34,50 @@ class RatingModel {
     }
 
     // Người dùng gửi đánh giá
-    public function insertRating($idOrderDetail, $star, $content) {
-        $sql = "UPDATE orderdetails 
-                SET ratingStar = ?, reviewContent = ?
-                WHERE id = ?";
-        return $this->db->update($sql, [$star, $content, $idOrderDetail]);
+    public function insertRating($idOrderDetail, $idProductDetail, $star, $content)
+    {
+        $sql = "
+            UPDATE orderdetails
+            SET
+                ratingStar = ?,
+                reviewContent = ?,
+                dateRate = NOW()
+            WHERE id = ?
+            AND idProductDetail = ?
+            AND ratingStar IS NULL
+        ";
+
+        return $this->db->update($sql, [
+            $star,
+            $content,
+            $idOrderDetail,
+            $idProductDetail
+        ]);
     }
 
-    function getRatingListLimit($idProduct, $limit = 3)
-{
-    $sql = "
-        SELECT od.reviewContent,
-               od.ratingStar,
-               od.dateRate,
-               COALESCE(u.name, 'Khách') AS userName,
-               c.nameColor AS colorName
-        FROM orderdetails od
-        INNER JOIN productdetail pd ON pd.id = od.idProductDetail
-        LEFT JOIN colors c ON c.id = pd.idColor
-        INNER JOIN orders o ON o.id = od.idOrder
-        LEFT JOIN users u ON u.id = o.idUser
-        WHERE pd.idProduct = ?
-          AND od.ratingStar IS NOT NULL
-        ORDER BY od.id DESC
-        LIMIT $limit
-    ";
+    
 
-    return $this->db->getAll($sql, [$idProduct]);
-}
+    function getRatingListLimit($idProduct, $limit = 3)
+    {
+        $sql = "
+            SELECT od.reviewContent,
+                   od.ratingStar,
+                   od.dateRate,
+                   o.receiverName AS userName,
+                   c.nameColor AS colorName
+            FROM orderdetails od
+            INNER JOIN productdetail pd ON pd.id = od.idProductDetail
+            LEFT JOIN colors c ON c.id = pd.idColor
+            INNER JOIN orders o ON o.id = od.idOrder
+            WHERE pd.idProduct = ?
+              AND od.ratingStar IS NOT NULL
+            ORDER BY od.id DESC
+            LIMIT $limit
+        ";
+    
+        return $this->db->getAll($sql, [$idProduct]);
+    }
+    
 
 
     function getRatingListFull($idProduct)
@@ -70,13 +86,12 @@ class RatingModel {
         SELECT od.reviewContent,
                od.ratingStar,
                od.dateRate,
-               COALESCE(u.name, 'Khách') AS userName,
+               o.receiverName AS userName,
                c.nameColor AS colorName
         FROM orderdetails od
         INNER JOIN productdetail pd ON pd.id = od.idProductDetail
         LEFT JOIN colors c ON c.id = pd.idColor
-        INNERJOIN orders o ON o.id = od.idOrder
-        LEFT JOIN users u ON u.id = o.idUser
+        INNER JOIN orders o ON o.id = od.idOrder
         WHERE pd.idProduct = ?
           AND od.ratingStar IS NOT NULL
         ORDER BY od.id DESC
@@ -84,6 +99,7 @@ class RatingModel {
 
     return $this->db->getAll($sql, [$idProduct]);
 }
+
 
 
     // Thống kê số lượng theo từng sao (5–1)
@@ -104,29 +120,28 @@ class RatingModel {
     // Lấy đánh giá theo phân trang
     function getRatingPaginate($idProduct, $limit, $offset)
 {
-    // BẮT BUỘC ÉP KIỂU SỐ, tránh injection
     $limit = intval($limit);
     $offset = intval($offset);
 
     $sql = "
-         SELECT od.reviewContent,
+        SELECT od.reviewContent,
                od.ratingStar,
                od.dateRate,
-               COALESCE(u.name, 'Khách') AS userName,
+               o.receiverName AS userName,
                c.nameColor AS colorName
         FROM orderdetails od
         INNER JOIN orders o ON od.idOrder = o.id
-        LEFT JOIN users u ON u.id = o.idUser
         LEFT JOIN productdetail pd ON pd.id = od.idProductDetail
         LEFT JOIN colors c ON c.id = pd.idColor
         WHERE pd.idProduct = ?
-        AND od.ratingStar IS NOT NULL
+          AND od.ratingStar IS NOT NULL
         ORDER BY od.id DESC
         LIMIT $limit OFFSET $offset
     ";
 
     return $this->db->getAll($sql, [$idProduct]);
 }
+
 
 
 function getRatingTotal($idProduct) 

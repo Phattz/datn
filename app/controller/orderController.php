@@ -1,15 +1,21 @@
 <?php
 class orderController {
     private $order;
-
+    private $orderItem;
+    private $productModel;
     function __construct() {
         require_once 'app/model/orderModel.php';
-        $this->order = new OrderModel();
+        require_once 'app/model/orderItemModel.php';
+        require_once 'app/model/productsModel.php';
+
+        $this->order        = new OrderModel();
+        $this->orderItem    = new OrderItemModel();
+        $this->productModel = new ProductsModel();
     }
 
     public function trackOrder()
 {   
-    // ✅ THÊM ĐOẠN NÀY
+
     if ($_SERVER['REQUEST_METHOD'] === 'GET'
         && isset($_GET['order_id'], $_GET['phone'])) {
 
@@ -63,48 +69,21 @@ public function cancelOrder()
     $orderId = trim($_POST['order_id'] ?? '');
     $phone   = trim($_POST['phone'] ?? '');
 
-    if ($orderId === '' || $phone === '') {
-        $_SESSION['cart_message'] = [
-            'text' => 'Thiếu thông tin hủy đơn',
-            'type' => 'error'
-        ];
-        header("Location: index.php?page=trackOrder");
-        exit;
-    }
-
-    // LẤY ĐƠN TRƯỚC
     $order = $this->order->getOrderByIdAndPhone($orderId, $phone);
-
-    if (!$order) {
-        $_SESSION['cart_message'] = [
-            'text' => 'Không tìm thấy đơn hàng',
-            'type' => 'error'
-        ];
+    if (!$order || (int)$order['orderStatus'] !== 1) {
         header("Location: index.php?page=trackOrder");
         exit;
     }
 
-    // ĐƠN ĐÃ HỦY RỒI → KHÔNG BÁO LỖI
-    if ($order['orderStatus'] == 0) {
-        $_SESSION['cart_message'] = [
-            'text' => 'Đơn hàng này đã được hủy trước đó',
-            'type' => 'success'
-        ];
-        header("Location: index.php?page=trackOrder&order_id={$orderId}&phone={$phone}");
-        exit;
+    $orderItems = $this->order->getOrderDetailsWithImages($orderId);
+
+    foreach ($orderItems as $item) {
+        $this->productModel->increaseStock(
+            (int)$item['idProductDetail'],
+            (int)$item['quantity']
+        );
     }
 
-    // CHỈ HỦY KHI ĐANG CHỜ XÁC NHẬN
-    if ($order['orderStatus'] != 1) {
-        $_SESSION['cart_message'] = [
-            'text' => 'Không thể hủy đơn hàng ở trạng thái hiện tại',
-            'type' => 'error'
-        ];
-        header("Location: index.php?page=trackOrder&order_id={$orderId}&phone={$phone}");
-        exit;
-    }
-
-    // TIẾN HÀNH HỦY
     $this->order->cancelOrderByIdAndPhone($orderId, $phone);
 
     $_SESSION['cart_message'] = [
@@ -115,6 +94,8 @@ public function cancelOrder()
     header("Location: index.php?page=trackOrder&order_id={$orderId}&phone={$phone}");
     exit;
 }
+
+
 public function trackOrderDetail()
 {
     $orderId = trim($_GET['order_id'] ?? '');

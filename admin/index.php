@@ -6,7 +6,7 @@ session_start();
 //     exit;
 // }
 require_once '../app/model/colorModel.php';
-
+require_once '../app/model/voucherModel.php';
 require_once '../app/model/database.php';
 require_once '../app/model/productCateModel.php';
 require_once '../app/model/productsModel.php';
@@ -28,6 +28,7 @@ require_once 'app/controller/adminBannerController.php';
 require_once 'app/controller/adminColorController.php';
 require_once 'app/controller/adminLogController.php';
 require_once 'app/controller/adminPostController.php';
+require_once 'app/controller/voucherController.php';
 require_once 'app/view/menu.php';
 $db = new Database();
 if (isset($_GET['page'])) {
@@ -87,10 +88,7 @@ if (isset($_GET['page'])) {
             $addpro = new ProAdminController();
             $addpro->addPro();
             break;
-        case 'deletepro':
-            $deletepro = new ProAdminController();
-            $deletepro->delPro();
-            break;
+        
         case 'user':
             $user = new UserController();
             $user->viewUser();
@@ -186,11 +184,7 @@ if (isset($_GET['page'])) {
             $color = new AdminColorController();
             $color->updateColor();
             break;
-        case 'deletecolor':
-            $color = new AdminColorController();
-            $color->delColor();
-            break;
-            
+        
         // Log/Database
         case 'log':
             $log = new AdminLogController();
@@ -225,6 +219,10 @@ if (isset($_GET['page'])) {
         case 'adminSearchPost':
             $adminSearchPost = new PostAdminController();
             $adminSearchPost->adminSearchPost();
+            break;
+        case 'voucher':
+            $controller = new VoucherController();
+            $controller->viewVoucher();
             break;
     }
 } else {

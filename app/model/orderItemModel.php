@@ -17,6 +17,15 @@ class OrderItemModel{
     
         return $this->db->insert($sql, $param);
     }
-    
+    public function getOrderItemsByOrderId($orderId)
+    {
+        $sql = "
+            SELECT idProductDetail, quantity
+            FROM orderdetails
+            WHERE idOrder = ?
+        ";
+
+        return $this->db->getAll($sql, [$orderId]);
+    }
     
 }

@@ -92,10 +92,8 @@
                                                 </div>
                                             </a>
 
-                                            <button class="addCart-product">Thêm vào giỏ hàng</button>
-                                            <button class="heart-button" data-id="<?=$id?>">
-                                                <i class="icon on fa-solid fa-heart" ></i>
-                                                <i class="icon off fa-regular fa-heart"></i>
+                                            <button type="submit" name="addToCart" class="addCart-product">
+                                                Thêm vào giỏ hàng
                                             </button>
                                         </div>
                                     </div>

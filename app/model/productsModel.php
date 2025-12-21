@@ -338,6 +338,14 @@ public function decreaseStock($idDetail, $quantity)
                 WHERE id = ?";
         return $this->db->update($sql, [(int)$quantity, $idDetail]);
     }
+    public function increaseStock($idDetail, $quantity)
+    {
+        $sql = "UPDATE productdetail
+                SET stockQuantity = stockQuantity + ?
+                WHERE id = ?";
+        return $this->db->update($sql, [(int)$quantity, $idDetail]);
+    }
+    
 public function getAllProducts($search = '', $page = 1, $limit = 10) {
     $offset = ($page - 1) * $limit;
 

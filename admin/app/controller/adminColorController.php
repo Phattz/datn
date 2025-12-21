@@ -112,37 +112,6 @@ class AdminColorController {
         }
     }
 
-    function delColor(){
-        if (isset($_POST['delete_ids']) && !empty($_POST['delete_ids'])) {
-            $deleted = 0;
-            $failed = 0;
-            
-            foreach ($_POST['delete_ids'] as $id) {
-                $color = $this->color->getColorById($id);
-                $colorName = $color['nameColor'] ?? 'N/A';
-                
-                if ($this->color->deleteColor($id)) {
-                    $deleted++;
-                    
-                    // Ghi log
-                    $this->logModel->addLog([
-                        'action' => 'delete',
-                        'table_name' => 'colors',
-                        'record_id' => $id,
-                        'description' => "Xóa màu: {$colorName} (ID: {$id})"
-                    ]);
-                } else {
-                    $failed++;
-                }
-            }
-            
-            if ($failed > 0) {
-                echo '<script>alert("Đã xóa ' . $deleted . ' màu. ' . $failed . ' màu không thể xóa vì đang được sử dụng!");</script>';
-            } else {
-                echo '<script>alert("Đã xóa ' . $deleted . ' màu!");</script>';
-            }
-            echo '<script>location.href="?page=color";</script>';
-        }
-    }
+    
     
 }

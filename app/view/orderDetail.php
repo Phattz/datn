@@ -104,7 +104,6 @@
 
                             <td style="text-align:left;"><?= $item['productName'] ?></td>
                             <td><strong><?= $item['colorName'] ?></strong></td>
-                            <td><?= number_format($item['salePrice']) ?> đ</td>
                             <td><?= $item['quantity'] ?></td>
                             <td><?= number_format($item['quantity'] * $item['salePrice']) ?> đ</td>
 
@@ -168,7 +167,6 @@
             </div>
         </div>
     </main>
-    <!-- ======= MODAL ĐÁNH GIÁ ======= -->
 <!-- MODAL ĐÁNH GIÁ -->
 <div id="ratingModal" class="modal-overlay">
     <div class="modal-box">
@@ -179,7 +177,8 @@
             <input type="hidden" name="idOrderDetail" id="modal_idOrderDetail">
             <input type="hidden" name="idProductDetail" id="modal_idProductDetail">
             <input type="hidden" name="ratingStar" id="ratingStarInput" value="5">
-
+            <input type="hidden" name="reviewerName"
+            value="<?= htmlspecialchars($orderItem['receiverName']) ?>">
             <div class="stars">
                 <span data-star="1">★</span>
                 <span data-star="2">★</span>

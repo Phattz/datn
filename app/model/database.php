@@ -20,6 +20,11 @@ class DataBase
         }
     }
     // get data from database
+    public function execute($sql, $params = [])
+    {
+        $stmt = $this->conn->prepare($sql);
+        return $stmt->execute($params);
+    }
     public function query($sql, $param = []): mixed
     {
         $this->stmt = $this->conn->prepare($sql);

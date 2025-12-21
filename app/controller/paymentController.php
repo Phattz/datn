@@ -8,7 +8,7 @@ class PaymentController{
     private $vnp_TmnCode = "CGXZLS0Z"; 
     private $vnp_HashSecret = "XNBCJFAKAZQSGTARRLGCHVZWCIOIGSHN"; 
     private $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-    private $vnp_Returnurl = "http://localhost/datn/index.php?page=vnpay_return"; // Đảm bảo URL này đúng với Router
+    private $vnp_Returnurl = "http://localhost/datn/index.php?page=vnpay_return";
 
     function __construct(){
         $this->order = new OrderModel();
@@ -27,7 +27,7 @@ class PaymentController{
         // Nếu chưa login → guest
         if (empty($_SESSION['user'])) {
             $_SESSION['guest'] = true;
-            $_SESSION['guest_user_id'] = 1000;
+            $_SESSION['guest'] = true;
             $data['is_guest'] = true;
         } else {
             require_once 'app/model/userModel.php';
@@ -37,16 +37,17 @@ class PaymentController{
     
         return $this->renderView('payment', $data);
     }
-    
  
     function viewPaymentStep2() {
+    
         if (isset($_POST['payment'])) {
             $name = $_POST['name'];
             $phone = $_POST['phone'];
             $address = $_POST['address'];
+            $email   = $_POST['email'] ?? null;
             $idUser = isset($_SESSION['user'])
             ? $_SESSION['user']
-            : ($_SESSION['guest_user_id'] ?? 1000);
+            : $idUser = $_SESSION['user'] ?? null;
             $voucherCode = isset($_POST['voucher_code']) ? trim($_POST['voucher_code']) : '';
 
             // TÍNH TOÁN TIỀN
@@ -103,6 +104,7 @@ class PaymentController{
                 'name' => $name,
                 'phone' => $phone,
                 'address' => $address,
+                'email'      => $email,
                 'productTotal' => $productTotal,
                 'shippingFee' => $shippingFee,
                 'discountOrder' => $discountOrder,
@@ -130,12 +132,8 @@ class PaymentController{
     }
 
     function createOrder(){
-        $idUser = !empty($_SESSION['user'])
-    ? $_SESSION['user']
-    : $_SESSION['guest_user_id'];
-
-        
-
+        $orderSession = $_SESSION['order'][0] ?? null;
+    
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submitOrder'])) {
     
             if (!isset($_POST['paymentMethod'])) {
@@ -148,7 +146,7 @@ class PaymentController{
             }
     
             if (!isset($_SESSION['order']) || !isset($_SESSION['cart'])) {
-               $_SESSION['cart_message'] = [
+                $_SESSION['cart_message'] = [
                     'text' => 'Không có thông tin đơn hàng',
                     'type' => 'error'
                 ];
@@ -156,35 +154,39 @@ class PaymentController{
                 exit;
             }
     
-            $paymentMethod = intval($_POST['paymentMethod']); 
-            $orderSession = $_SESSION['order'][0];
-            
-            if (empty($orderSession['idUser'])) {
-                $orderSession['idUser'] = isset($_SESSION['user'])
-                    ? $_SESSION['user']
-                    : ($_SESSION['guest_user_id'] ?? 1000);
-            }
-            require_once 'app/model/userModel.php';
-            $userModel = new UserModel();
-            $user = $userModel->getUserById($orderSession['idUser']);
-            if (!$user) {
-                echo "<script>location.href='index.php?page=logout';</script>";
-                exit;
+            $paymentMethod = intval($_POST['paymentMethod']);
+            $orderSession  = $_SESSION['order'][0];
+    
+    
+            $idUser = $_SESSION['user'] ?? null;
+    
+
+            if ($idUser !== null) {
+                require_once 'app/model/userModel.php';
+                $userModel = new UserModel();
+                $user = $userModel->getUserById($idUser);
+    
+                if (!$user) {
+                    header("Location: index.php?page=logout");
+                    exit;
+                }
             }
     
+
             $dataOrder = [
                 "shippingAddress" => $orderSession['address'],
                 "idVoucher"       => $orderSession['idVoucher'] ?? null,
                 "receiverPhone"   => $orderSession['phone'],
                 "receiverName"    => $orderSession['name'],
+                "receiverEmail"   => $orderSession['email'],
                 "idPayment"       => $paymentMethod,
                 "totalPrice"      => $orderSession['totalPrice'],
                 "dateOrder"       => date("Y-m-d H:i:s"),
                 "orderStatus"     => 1, // 1 = Chờ thanh toán
-                "idUser"          => $orderSession['idUser']
+                "idUser"          => $idUser // NULL nếu guest
             ];
-            
-            // TẠO ĐƠN HÀNG VÀO DB
+    
+            // TẠO ĐƠN HÀNG
             $orderId = $this->order->insertOrder($dataOrder);
     
             // LƯU CHI TIẾT ĐƠN HÀNG
@@ -196,25 +198,46 @@ class PaymentController{
                     "salePrice"       => $item['price']
                 ];
                 $this->orderItem->insertOrderItem($dataOrderItem);
-
-                // Giảm tồn kho theo biến thể
-                $this->productModel->decreaseStock($item['idProductDetail'], $item['quantity']);
+    
+                // Giảm tồn kho
+                $this->productModel->decreaseStock(
+                    $item['idProductDetail'],
+                    $item['quantity']
+                );
             }
+            require_once 'app/controller/MailerController.php';
 
-            // --- PHÂN LUỒNG THANH TOÁN ---
+            $mailer = new MailerController();
             
-            // Nếu là VNPAY (Kiểm tra xem Value trong HTML của bạn là 2 hay số khác)
+            // Lấy email người nhận từ session (đã nhập ở form payment)
+            $receiverEmail = $orderSession['email'] ?? null;
+            
+            if ($receiverEmail) {
+            
+                // Lấy chi tiết đơn hàng để render mail
+                $orderDetails = $this->order->getOrderDetailsWithImages($orderId);
+            
+                $mailer->sendOrderEmail(
+                    $receiverEmail,
+                    [
+                        'id'         => $orderId,
+                        'dateOrder'  => $dataOrder['dateOrder'],
+                        'totalPrice' => $dataOrder['totalPrice']
+                    ],
+                    $orderDetails
+                );
+            }
+            // --- PHÂN LUỒNG THANH TOÁN ---
             if ($paymentMethod == 2) {
                 $this->vnpayCreateUrl($orderId, $orderSession['totalPrice']);
-                exit; // Dừng code để chuyển hướng
+                exit;
             }
-
-            // NẾU LÀ COD -> Xử lý như cũ
-            unset($_SESSION['cart']);
-            unset($_SESSION['order']);
+    
+            // COD
+            unset($_SESSION['cart'], $_SESSION['order']);
             $_SESSION['cart_total'] = 0;
     
-             $_SESSION['cart_message'] = [
+            $_SESSION['cart_message'] = [
                 'text' => 'Đặt hàng thành công',
                 'type' => 'success'
             ];
@@ -222,6 +245,7 @@ class PaymentController{
             exit;
         }
     }
+    
 
     // 2. HÀM TẠO URL VNPAY
     public function vnpayCreateUrl($orderId, $amount) {
@@ -325,5 +349,23 @@ class PaymentController{
             echo "Sai chữ ký bảo mật";
         }
     }
+    public function showPayment()
+{
+    $data = [];
+
+    // voucher
+    $voucherModel = new VoucherModel();
+    $data['listVoucher'] = $voucherModel->getAllVouchersActive();
+
+    // user
+    if (!empty($_SESSION['user'])) {
+        require_once 'app/model/userModel.php';
+        $userModel = new UserModel();
+        $data['userInfo'] = $userModel->getUserById($_SESSION['user']);
+    }
+
+    return $this->renderView('payment', $data);
+}
+
 }
 ?>

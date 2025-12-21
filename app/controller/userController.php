@@ -62,84 +62,75 @@ class UserController
     ======================== */
     public function login()
     {
-        if (isset($_POST['dangnhap'])) {
+        if (!isset($_POST['dangnhap'])) {
+            header("Location: index.php");
+            exit;
+        }
 
- 
-            $email = trim($_POST['email']);
-            $password = md5($_POST['mklogin']);
+        $email = trim($_POST['email']);
+        $password = md5($_POST['mklogin']);
 
-            $result = $this->user->checkUser($email, $password);
+        $result = $this->user->checkUser($email, $password);
 
-            if (!is_array($result)) {
-                $_SESSION['cart_message'] = [
-                    'text' => 'Sai email hoặc mật khẩu',
-                    'type' => 'error'
-                ];
-                header("Location: index.php");
-                exit;
-            }
-
-            // Tài khoản chưa active
-            if ($result['active'] == 0) {
-                $_SESSION['cart_message'] = [
-                    'text' => 'Bạn chưa xác thực email. Vui lòng kiểm tra hộp thư.',
-                    'type' => 'warning'
-                ];
-                header("Location: index.php");
-                exit;
-            }
-
-            // Tài khoản bị khoá
-            if ($result['active'] == 2) {
-                $_SESSION['cart_message'] = [
-                    'text' => 'Tài khoản đã bị khóa',
-                    'type' => 'error'
-                ];
-                header("Location: index.php");
-                exit;
-            }
-            // Đăng nhập thành công
-       $_SESSION['user'] = $result['id'];
-
-            // Admin
-            if ($result['role'] == 1) {
-                $_SESSION['cart_message'] = [
-                    'text' => 'Đăng nhập Admin thành công',
-                    'type' => 'success'
-                ];
-                header("Location: admin/index.php");
-                exit;
-            }
-            // Người dùng thường
-            $_SESSION['user'] = $result['id'];
+        if (!is_array($result)) {
             $_SESSION['cart_message'] = [
-                'text' => 'Đăng nhập thành công',
+                'text' => 'Sai email hoặc mật khẩu',
+                'type' => 'error'
+            ];
+            header("Location: index.php");
+            exit;
+        }
+
+        if ($result['active'] == 0) {
+            $_SESSION['cart_message'] = [
+                'text' => 'Bạn chưa xác thực email. Vui lòng kiểm tra hộp thư.',
+                'type' => 'warning'
+            ];
+            header("Location: index.php");
+            exit;
+        }
+
+        if ($result['active'] == 2) {
+            $_SESSION['cart_message'] = [
+                'text' => 'Tài khoản đã bị khóa',
+                'type' => 'error'
+            ];
+            header("Location: index.php");
+            exit;
+        }
+
+        $_SESSION['user'] = $result['id'];
+
+
+        if ($result['role'] == 1) {
+            $_SESSION['cart_message'] = [
+                'text' => 'Đăng nhập Admin thành công',
                 'type' => 'success'
             ];
-
-            $redirect = $_GET['redirect'] ?? '';
-
-            if ($redirect !== '') {
-                header("Location: index.php?page=" . $redirect);
-            } else {
-                header("Location: index.php");
-            }
+            header("Location: admin/index.php");
             exit;
-
-        
-    
-
-        // Admin
-        if ($result['role'] == 1) {
-            echo "<script>alert('Đăng nhập Admin thành công!');location.href='admin/index.php';</script>";
-            return;
         }
 
-        // Người dùng thường (mặc định)
-        echo "<script>alert('Đăng nhập thành công!');location.href='index.php';</script>";
-
+        if (!empty($_POST['redirect'])) {
+            header("Location: " . $_POST['redirect']);
+            exit;
         }
+
+        if (!empty($_SESSION['redirect_after_login'])) {
+            $redirect = $_SESSION['redirect_after_login'];
+            unset($_SESSION['redirect_after_login']);
+            header("Location: $redirect");
+            exit;
+        }
+
+        $_SESSION['cart_message'] = [
+            'text' => 'Đăng nhập thành công',
+            'type' => 'success'
+        ];
+        header("Location: index.php");
+        exit;
     }
+
     /* ========================
        GOOGLE SIGN IN
     ======================== */
@@ -380,29 +371,27 @@ class UserController
     }
 
     function cancelOrder()
-    {
-        if (!isset($_SESSION['user'])) {
-            header("Location: index.php");
-            exit;
-        }
-
-        if (isset($_GET['id'])) {
-             $orderId = (int)$_GET['id'];
-
-            // Hủy đơn
-            $this->order->cancelOrder($orderId);
-
-            // Toast
-            $_SESSION['cart_message'] = [
-                'text' => 'Hủy đơn hàng thành công',
-                'type' => 'success'
-            ];
-
-            // Redirect chuẩn
-            header("Location: index.php?page=userOrder");
-            exit;
-        }
+{
+    if (!isset($_SESSION['user'])) {
+        header("Location: index.php");
+        exit;
     }
+
+    if (isset($_GET['id'])) {
+        // GIẢ LẬP POST
+        $_POST['order_id'] = (int)$_GET['id'];
+
+        $order = $this->order->getOrderById($_POST['order_id']);
+        $_POST['phone'] = $order['receiverPhone'] ?? '';
+
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+
+        require_once 'app/controller/orderController.php';
+        (new orderController())->cancelOrder();
+        exit;
+    }
+}
+
 
 
     function viewUserAddress()
@@ -507,25 +496,20 @@ class UserController
 
     $this->renderView("orderDetail", $data);
 }
-public function submitRating() {
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-        $orderId  = $_POST['idOrder'];
-        $detailId = $_POST['idProductDetail'];
-        $star     = $_POST['ratingStar'];
-        $content  = $_POST['reviewContent'] ?? '';
+// Ví dụ logic trong userController.php
+public function showPayment() {
+    $voucherModel = new VoucherModel();
+    $listVoucher = $voucherModel->getAllVouchersActive();
 
-        $ratingModel = new RatingModel();
-        $ratingModel->insertRating($detailId, $star, $content);
+    // Debug thử
 
-        echo "<script>
-                alert('Đánh giá thành công!');
-                window.location.href='index.php?page=orderDetail&id=$orderId';
-              </script>";
-        exit;
-    }
-
-
+    $data['listVoucher'] = $listVoucher;
+    include "view/payment.php";
 }
+
+
+
+
 }
 

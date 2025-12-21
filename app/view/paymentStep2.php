@@ -74,6 +74,12 @@ foreach ($_SESSION['cart'] as $pro) {
                                     <p><?= $phone ?></p>
                                 </div>
                                 <div class="tcolor fs14 mgt24">
+                                    <p>Email</p>
+                                </div>
+                                <div class="fs16 mgt20">
+                                    <p><?= htmlspecialchars($email) ?></p>
+                                </div>
+                                <div class="tcolor fs14 mgt24">
                                     <p>Địa chỉ</p>
                                 </div>
                                 <div class=" fs16 mgt20">
@@ -101,12 +107,15 @@ foreach ($_SESSION['cart'] as $pro) {
                                 $tongsp += $tong1sp;
                             }
                         }
-                        $orderSession = $_SESSION['order'][0] ?? [];
-                        $shippingFee = $orderSession['shippingFee'] ?? 30000;
-                        $discountOrder = $orderSession['discountOrder'] ?? 0;
-                        $discountShipping = $orderSession['discountShipping'] ?? 0;
-                        $voucherCode = $orderSession['voucherCode'] ?? '';
-                        $grandTotal = $orderSession['totalPrice'] ?? ($tongsp + $shippingFee);
+                       $orderSession = $_SESSION['order'][0] ?? [];
+$shippingFee = $orderSession['shippingFee'] ?? 30000;
+$discountOrder = $orderSession['discountOrder'] ?? 0;
+$discountShipping = $orderSession['discountShipping'] ?? 0;
+$voucherCode = $orderSession['voucherCode'] ?? '';
+
+$grandTotal = ($tongsp + $shippingFee) - $discountOrder - $discountShipping;
+if ($grandTotal < 0) $grandTotal = 0; // tránh âm
+
                         ?>
                         <div class="payment__infomation-summary">
                             <div class="summary-item">

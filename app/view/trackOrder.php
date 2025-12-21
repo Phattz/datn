@@ -1,3 +1,4 @@
+
 <link rel="stylesheet" href="public/css/trackOrder.css">
 <style>
         #toast-msg-fixed {
@@ -54,5 +55,40 @@ document.addEventListener("DOMContentLoaded", () => {
         <input type="text" name="order_id" placeholder="Nhập mã đơn hàng (VD: 56)">
         <input type="text" name="phone" placeholder="Số điện thoại nhận hàng">
         <button type="submit">Tra cứu</button>
+        <div class="track-login-hint" id="trackHint">
+            <?php if (empty($_SESSION['user'])): ?>
+                <span>Muốn xem đầy đủ lịch sử đơn hàng?</span>
+                <button type="button" class="dangnhap track-login-btn">
+                    Đăng nhập để tra cứu đầy đủ
+                </button>
+            <?php else: ?>
+                <span>Bạn đã đăng nhập</span>
+                <a href="index.php?page=userOrder" class="track-login-btn">
+                    Xem lịch sử đơn hàng
+                </a>
+            <?php endif; ?>
+        </div>
     </form>
 </div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const trackLoginBtn = document.querySelector('.track-login-btn.dangnhap');
+
+    if (trackLoginBtn && typeof openLoginModal === 'function') {
+        trackLoginBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            const redirectInput = document.getElementById('loginRedirect');
+            if (redirectInput) {
+                redirectInput.value = 'index.php?page=userOrder';
+            }
+
+            openLoginModal(e);
+        });
+    }
+});
+document.querySelector('.track-form')?.addEventListener('submit', function () {
+    const hint = document.getElementById('trackHint');
+    if (hint) hint.style.display = 'none';
+});
+</script>
+

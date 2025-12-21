@@ -30,6 +30,7 @@
                         <li><a href="?page=post" class="<?= (isset($_GET['page']) && $_GET['page'] === 'post') ? 'active' : '' ?>"><i class="fa fa-file-text"></i> Bài viết</a></li>
                         <li><a href="?page=banner" class="<?= (isset($_GET['page']) && $_GET['page'] === 'banner') ? 'active' : '' ?>"><i class="fa-solid fa-image"></i> Banner</a></li>
                         <li><a href="?page=color" class="<?= (isset($_GET['page']) && $_GET['page'] === 'color') ? 'active' : '' ?>"><i class="fa-solid fa-palette"></i> Màu sắc</a></li>
+                        <li><a href="?page=voucher" class="<?= (isset($_GET['page']) && $_GET['page'] === 'voucher') ? 'active' : '' ?>"><i class="fa-solid fa-ticket"></i> Voucher</a></li>
                         <li><a href="?page=log" class="<?= (isset($_GET['page']) && $_GET['page'] === 'log') ? 'active' : '' ?>"><i class="fa-solid fa-database"></i> Database Log</a></li>
                     </ul>
                 </div>

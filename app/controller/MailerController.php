@@ -72,4 +72,29 @@ class MailerController {
             echo "Không thể gửi email! Vui lòng thử lại.";
         }
     }
+    public function sendOrderEmail($email, $order, $orderDetails)
+    {
+        try {
+            $this->mailer->clearAddresses();
+            $this->mailer->addAddress($email);
+            $this->mailer->Subject = "Xác nhận đơn hàng #{$order['id']}";
+
+            $this->mailer->Body = $this->renderEmailView('email-order', [
+                'order' => $order,
+                'orderDetails' => $orderDetails
+            ]);
+
+            $this->mailer->send();
+            return true;
+        } 
+        catch (Exception $e) {
+            file_put_contents(
+                "mail_error.log",
+                "OrderMail Error: ".$this->mailer->ErrorInfo."\n",
+                FILE_APPEND
+            );
+            return false;
+        }
+    }
+
 }

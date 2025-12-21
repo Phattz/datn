@@ -250,6 +250,7 @@ header {
     display: block;
     border-bottom: 1px solid #8D6E6E;
     background-color: #fbfbfb;
+    padding: 0px 20px;
 }
 
 .nav_main-menu li .nav_drop-down {

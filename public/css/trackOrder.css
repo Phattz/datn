@@ -181,7 +181,6 @@
     margin-top: 25px;
     background: #fff;
     border-radius: 6px;
-    overflow: hidden;
 }
 
 .track-order-table thead {
@@ -257,7 +256,7 @@
 
 /* ===== NÚT HỦY ===== */
 .btn-cancel-order {
-    background: #dc3545;
+    background: #ff4d4f;
     color: #fff;
     border: none;
     padding: 6px 16px;
@@ -322,3 +321,46 @@
     white-space: nowrap;
 }
 
+.track-login-hint {
+    margin-top: 14px;
+    width: 100%;
+    text-align: center;
+}
+
+.track-login-hint span {
+    display: block;
+    margin-bottom: 20px;
+    color: #666;
+    font-size: 14px;
+}
+
+.track-login-btn {
+    padding: 10px 22px;
+    border-radius: 8px;
+    border: 1px solid #8D6E6E;
+    background: #fff;
+    color: #8D6E6E;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all .25s ease;
+    width: 100%;
+}
+
+.track-login-btn:hover {
+    background: #8D6E6E;
+    color: #fff;
+}
+
+.trackOrder{
+    width: 150px;
+    margin-left:0px;
+}
+#cancel-confirm-overlay button {
+    cursor: pointer;
+    transition: all .2s ease;
+}
+
+#cancel-confirm-overlay button:hover {
+    opacity: .9;
+    transform: translateY(-1px);
+}

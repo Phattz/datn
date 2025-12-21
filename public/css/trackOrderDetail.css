@@ -235,3 +235,135 @@
         text-align: left;
     }
 }
+#cancel-confirm-overlay button {
+    cursor: pointer;
+    transition: all .2s ease;
+}
+
+#cancel-confirm-overlay button:hover {
+    opacity: .9;
+    transform: translateY(-1px);
+}
+.rate-btn {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    white-space: nowrap;
+    background: #8D6E6E;
+    color: #fff;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+}
+
+.rate-btn:hover {
+    background: #6f5555;
+}
+
+.rated-label {
+    color: #444;
+    font-weight: bold;
+}
+
+.rated-label.disabled {
+    color: #ccc;
+}
+/* ===== MODAL ĐÁNH GIÁ ===== */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;                 /* JS bật flex */
+    align-items: center;
+    justify-content: center;
+    z-index: 99999;
+}
+
+.modal-box {
+    background: #fff;
+    padding: 22px 24px;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 480px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    animation: modalFadeIn .25s ease;
+    box-sizing: border-box;
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-box h3 {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+/* NGÔI SAO */
+.stars span {
+    font-size: 28px;
+    cursor: pointer;
+    color: #ccc;
+    margin-right: 3px;
+}
+
+.stars span:hover,
+.stars span.active {
+    color: #ff9800;
+}
+
+/* TEXTAREA */
+.modal-box textarea {
+    width: 90%;
+    height: 90px;
+    margin-top: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 10px;
+    resize: vertical;
+}
+
+/* HÀNG NÚT BÊN DƯỚI */
+.modal-actions {
+    margin-top: 20px;
+    text-align: right;
+    margin-right: 50px;
+}
+
+/* NÚT HỦY */
+.modal-actions .cancel {
+    background: #ccc;
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    margin-right: 8px;
+}
+
+/* NÚT GỬI ĐÁNH GIÁ */
+.modal-actions .submit {
+    background: #8D6E6E;
+    color: white;
+    padding: 8px 18px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.modal-actions .submit:hover {
+    background: #6f5555;
+}
+
+.modal-actions .cancel:hover {
+    background: #b3b3b3;
+}

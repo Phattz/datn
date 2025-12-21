@@ -47,6 +47,36 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 </script>
+<div id="cancel-confirm-overlay" style="
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.5);
+    z-index:99999;
+    align-items:center;
+    justify-content:center;
+">
+    <div style="
+        background:#fff;
+        padding:20px 24px;
+        border-radius:10px;
+        text-align:center;
+        min-width:280px;
+    ">
+        <p style="margin-bottom:16px;font-weight:500">
+            Bạn có chắc muốn hủy đơn hàng?
+        </p>
+        <button onclick="submitCancelOrder()"
+                style="padding:8px 16px;margin-right:8px;background:#E53935;color:#fff;border:none;border-radius:6px">
+            Xác nhận
+        </button>
+        <button onclick="closeCancelConfirm()"
+                style="padding:8px 16px;border:1px solid #ccc;border-radius:6px">
+            Hủy
+        </button>
+    </div>
+</div>
+
 <div class="track-result">
     <h2>Thông tin đơn hàng</h2>
 
@@ -101,24 +131,20 @@ document.addEventListener("DOMContentLoaded", () => {
                 </td>
 
                 <td>
-                    <?php if ($order['orderStatus'] == 1): ?>
-                        <form method="post"
-                              action="index.php?page=cancelTrackOrder"
-                              id="cancelForm">
-
+                    <?php if ((int)$order['orderStatus'] === 1): ?>
+                        <form method="post" action="index.php?page=cancelTrackOrder" class="trackOrder">
                             <input type="hidden" name="order_id" value="<?= $order['id'] ?>">
                             <input type="hidden" name="phone" value="<?= $order['receiverPhone'] ?>">
 
-                            <button type="button"
-                                    class="btn-cancel-order"
-                                    onclick="openCancelConfirm()">
-                                Hủy đơn
+                            <button class="btn-cancel-order">
+                                Hủy đơn hàng
                             </button>
                         </form>
                     <?php else: ?>
                         <span class="order-disabled">—</span>
                     <?php endif; ?>
                 </td>
+                        
             </tr>
         </tbody>
     </table>
@@ -127,15 +153,25 @@ document.addEventListener("DOMContentLoaded", () => {
 </div>
 
 <script>
-function openCancelConfirm() {
-    document.getElementById('cancel-confirm-overlay').style.display = 'flex';
-}
+let currentCancelForm = null;
+
+// Bắt tất cả form hủy đơn (đúng class đang có)
+document.querySelectorAll('form.trackOrder').forEach(form => {
+    form.addEventListener('submit', function (e) {
+        e.preventDefault(); 
+        currentCancelForm = this;
+        document.getElementById('cancel-confirm-overlay').style.display = 'flex';
+    });
+});
 
 function closeCancelConfirm() {
     document.getElementById('cancel-confirm-overlay').style.display = 'none';
+    currentCancelForm = null;
 }
 
 function submitCancelOrder() {
-    document.getElementById('cancelForm').submit();
+    if (currentCancelForm) {
+        currentCancelForm.submit(); 
+    }
 }
 </script>

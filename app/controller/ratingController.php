@@ -7,29 +7,44 @@ class RatingController {
         $this->ratingModel = new RatingModel();
     }
 
-    public function submitRating() {
-
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    
-            $orderDetailId = $_POST['idOrderDetail'];
-            $star = $_POST['ratingStar'];
-            $content = $_POST['reviewContent'];
-    
-            if (empty($orderDetailId) || empty($star)) {
-                echo "<script>alert('Thiếu dữ liệu'); history.back();</script>";
-                exit;
-            }
-    
-            $ratingModel = new RatingModel();
-            $ratingModel->insertRating($orderDetailId, $star, $content);
-    
-            echo "<script>
-                alert('Đánh giá thành công!');
-                window.location.href = document.referrer;
-            </script>";
+    public function submitRating()
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header("Location: index.php");
             exit;
         }
+    
+        $idOrder         = (int)($_POST['idOrder'] ?? 0);
+        $idOrderDetail   = (int)($_POST['idOrderDetail'] ?? 0);
+        $idProductDetail = (int)($_POST['idProductDetail'] ?? 0);
+        $star            = (int)($_POST['ratingStar'] ?? 0);
+        $content         = trim($_POST['reviewContent'] ?? '');
+    
+        if (!$idOrderDetail || !$idProductDetail || !$star) {
+            $_SESSION['cart_message'] = [
+                'text' => 'Thiếu dữ liệu đánh giá',
+                'type' => 'error'
+            ];
+            header("Location: " . $_SERVER['HTTP_REFERER']);
+            exit;
+        }
+    
+        // ===== INSERT RATING =====
+        $this->ratingModel->insertRating(
+            $idOrderDetail,
+            $idProductDetail,
+            $star,
+            $content
+        );
+    
+        // ===== TOAST SUCCESS =====
+        $_SESSION['cart_message'] = [
+            'text' => 'Đánh giá thành công!',
+            'type' => 'success'
+        ];
+    
+        header("Location: index.php");
+        exit;
     }
     
-
 }

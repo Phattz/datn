@@ -80,8 +80,8 @@ usort($data['listord'], function($a, $b) use ($orderPriority) {
 
     if ($statusA === $statusB) {
         // Nếu cùng trạng thái
-        if ($statusA === 1) {
-            // Với đơn chờ xác nhận: sắp xếp theo ngày cũ trước
+        if ($statusA === 1 || $statusA === 2) {
+            // Với đơn chờ xác nhận và đơn đang vận chuyển: sắp xếp theo ngày cũ trước
             return strtotime($a['dateOrder']) <=> strtotime($b['dateOrder']);
         } else {
             // Các trạng thái khác: sắp xếp theo ngày mới trước
@@ -90,6 +90,7 @@ usort($data['listord'], function($a, $b) use ($orderPriority) {
     }
     return $statusA <=> $statusB;
 });
+
 ?>
 <?php foreach ($data['listord'] as $item): 
     $id          = $item['id'] ?? '';

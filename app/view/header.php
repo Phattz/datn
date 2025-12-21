@@ -167,6 +167,7 @@ $googleClientId = getenv('GOOGLE_CLIENT_ID') ?: '991055090704-v6juu3g2bsuj7olv0p
                         <a href="#">Bạn chưa có tài khoản? Đăng ký</a>
                     </div>
                     <form action="index.php?page=login" method="post">
+                        <input type="hidden" name="redirect" id="loginRedirect">
                         <div class="input-group">
                             <label for="email">Email:</label>
                             <input type="email" id="email" name="email" placeholder="Nhập email" required>

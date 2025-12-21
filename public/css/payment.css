@@ -76,12 +76,14 @@
 
 /* Input và Textarea */
 .payment__infomation input[type="text"],
+.payment__infomation input[type="email"],
 .payment__infomation textarea {
     width: 100%;
     padding: 15px;
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 16px;
+    box-sizing: border-box;
 }
 
 
@@ -128,4 +130,9 @@
 }
 .product-price,.product-info{
     padding: 40px 0;
+}
+.payment__infomation input:focus,
+.payment__infomation textarea:focus {
+    outline: none;
+    border-color: #8d6e6e;
 }

@@ -21,8 +21,10 @@ require_once 'app/model/orderModel.php';
 require_once 'app/model/orderItemModel.php';
 require_once 'app/model/bannerModel.php';
 require_once 'app/model/mailModel.php';
+require_once "app/model/voucherModel.php";
 
 //Controller
+require_once "app/controller/PaymentController.php";
 require_once 'app/controller/homeController.php';
 require_once 'app/controller/paymentController.php';
 require_once 'app/controller/userController.php';
@@ -49,6 +51,14 @@ if ($page === "checkQuantity") {
     $cart->checkQuantity();
     exit;  // ✨ BẮT BUỘC ĐỂ KHÔNG RENDER HTML
 }
+if (
+    empty($_SESSION['user']) &&
+    empty($_POST['redirect']) &&
+    empty($_SESSION['redirect_after_login']) &&
+    ($_GET['page'] ?? '') !== 'login'
+) {
+    $_SESSION['redirect_after_login'] = $_SERVER['REQUEST_URI'];
+}
 require_once 'app/view/header.php';
 // tang giam so luong 
 $ctrl = $_GET['ctrl'] ?? null;
@@ -72,6 +82,10 @@ if (isset($_GET['page'])) {
             $home = new HomeController();
             $home->viewHome();
             break;
+            case 'payment':
+        $controller = new PaymentController();
+        $controller->showPayment();
+        break;
         //trang giới thiệu
         case 'about':
         $controller = new HomeController();

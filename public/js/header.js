@@ -66,6 +66,10 @@ function openLoginModal(e) {
             boxLogin.style.display = "none";
         };
     }
+    const redirectInput = document.getElementById('loginRedirect');
+    if (redirectInput && !redirectInput.value) {
+        redirectInput.value = window.location.href;
+    }
 }
 
 let clickDangNhap = document.querySelector('.nav_drop-down .dangnhap')
