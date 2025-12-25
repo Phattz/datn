@@ -1,0 +1,294 @@
+
+<?php
+session_start();
+ob_start();
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+date_default_timezone_set('Asia/Ho_Chi_Minh');
+$page = $_GET['page'] ?? 'home';
+// session_unset();
+//Model
+require_once 'vendor/autoload.php';
+require_once 'app/model/database.php';
+require_once 'app/model/productsModel.php';
+require_once 'app/model/userModel.php';
+require_once 'app/model/productCateModel.php';
+require_once 'app/model/productCommentModel.php';
+require_once 'app/model/postModel.php';
+require_once 'app/model/ratingModel.php';
+require_once 'app/model/searchModel.php';
+require_once 'app/model/orderModel.php';
+require_once 'app/model/orderItemModel.php';
+require_once 'app/model/bannerModel.php';
+require_once 'app/model/mailModel.php';
+require_once "app/model/voucherModel.php";
+
+//Controller
+require_once "app/controller/PaymentController.php";
+require_once 'app/controller/homeController.php';
+require_once 'app/controller/paymentController.php';
+require_once 'app/controller/userController.php';
+require_once 'app/controller/productController.php';
+require_once 'app/controller/ratingController.php';
+require_once 'app/controller/mailerController.php';
+require_once 'app/controller/cartController.php';
+require_once 'app/controller/searchController.php';
+require_once 'app/controller/contactController.php';
+require_once 'app/controller/postController.php';
+$page = $_GET['page'] ?? null;
+$ctrl = $_GET['ctrl'] ?? null;
+// Xử lý đăng nhập/đăng ký Google bằng Ajax, tránh render header/footer
+if ($page === 'googleLogin') {
+    $googleAuth = new UserController();
+    $googleAuth->googleLogin();
+    exit;
+}
+
+// ✔ API CHECK QUANTITY – TRẢ JSON
+// =============================
+if ($page === "checkQuantity") {
+    $cart = new CartController();
+    $cart->checkQuantity();
+    exit;  
+}
+require_once 'app/view/header.php';
+// tang giam so luong 
+$ctrl = $_GET['ctrl'] ?? null;
+$act  = $_GET['act'] ?? null;
+if ($ctrl === 'cart') {
+    $cart = new CartController();
+
+    if ($act === 'increase') {
+        $cart->increase($_GET['proId'], $_GET['color']);
+
+    } elseif ($act === 'decrease') {
+        $cart->decrease($_GET['proId'], $_GET['color']);
+
+    } elseif ($act === 'viewCart') {
+        $cart->viewCart();
+
+    } elseif ($act === 'checkoutFromCart') {
+        $cart->checkoutFromCart();
+    }
+}
+
+$db = new DataBase();
+if (isset($_GET['page'])) {
+    $page = $_GET['page'];
+    switch ($page) {
+        case 'home':
+            $home = new HomeController();
+            $home->viewHome();
+            break;
+        case 'payment':
+        $controller = new PaymentController();
+        $controller->showPayment();
+        break;
+        //trang giới thiệu
+        case 'about':
+        $controller = new HomeController();
+        $controller->about();
+        break;
+        // trang sản phẩm
+        case 'product':
+            $product = new ProductController();
+            $product->viewProCate();
+            break;
+        case 'productDetail':
+            $productDetail = new ProductController();
+            $productDetail->viewProDetail();
+            break;
+        case 'getPrice':
+            $ctrl->getPrice();
+            break;
+            
+        // Bình Luận
+        case 'addComment':
+            $addComment = new ProductController();
+            $addComment->addComment();
+            break;
+        case 'submitRating':
+
+            $idOrder         = $_POST['idOrder'] ?? null;
+            $idProductDetail = $_POST['idProductDetail'] ?? null;
+            $star            = $_POST['ratingStar'] ?? null;
+            $content         = $_POST['reviewContent'] ?? "";
+        
+            if (!$idOrder || !$idProductDetail || !$star) {
+                die("Thiếu dữ liệu đánh giá!");
+            }
+        
+            $ratingController = new RatingController();
+            $ratingController->submitRating($idOrder, $idProductDetail, $star, $content);
+            break;
+            // giỏ hàng
+        case 'boxCart':
+            $cart = new CartController();
+            $cart->viewCart();
+            break;
+        
+        case 'postDetail':
+            $postDetail = new PostController();
+            $postDetail->viewPostDetail();
+            break;
+            // trang bài viết
+        case 'post':
+            $post = new PostController();
+            $post->viewPost();
+            break;
+        // case 'paymentStep1':
+        //     $paymentStep2 = new PaymentController();
+        //     $paymentStep2->viewPaymentStep1();
+        //     break;
+        case 'paymentStep2':
+            $paymentStep2 = new PaymentController();
+            $paymentStep2->viewPaymentStep2();
+            break;
+        //tra cứu đơn
+        case 'trackOrder':
+            require_once 'app/controller/OrderController.php';
+            (new OrderController())->trackOrder();
+            break;
+            // trang thông tin người dùng
+        case 'userInfo':
+            $userInfo = new UserController();
+            $userInfo->viewUserInfo();
+            break;
+        case 'updateInfo':
+            $updateInfo = new UserController();
+            $updateInfo->updateUserInfo();
+            break;
+            //trang đơn hàng người dùng
+        case 'userOrder':
+            $userOrder = new UserController();
+            $userOrder->viewUserOrder();
+            break;
+        case 'cancelOrder':
+            $cancelOrder = new UserController();
+            $cancelOrder->cancelOrder();
+            break;
+        case 'cancelTrackOrder':
+            require_once 'app/controller/orderController.php';
+            (new orderController())->cancelOrder();
+            break;
+        case 'trackOrderDetail':
+            require_once 'app/controller/orderController.php';
+            $controller = new orderController();
+            $controller->trackOrderDetail();
+                break;
+            //trang địa chỉ người dùng
+        case 'userAddress':
+            $userAddress = new UserController();
+            $userAddress->viewUserAddress();
+            break;
+        case 'deleteAddress':
+            $deleteAddress = new UserController();
+            $deleteAddress->deleteAddress();
+            break;
+        case 'updateAddress':
+            $updateAddress = new UserController();
+            $updateAddress->updateAddress();
+            break;
+
+        case 'orderDetail':
+            $userController = new UserController();
+            $userController->viewOrderDetail();
+            break;
+            
+        
+        
+
+            //trang liên hệ
+        case 'contact':
+            $contact = new ContactController();
+            $contact->viewContact();
+            break;
+           //gửi mail liên hệ
+        case 'contactSendMail':
+            $contactSendMail = new ContactController();
+            $contactSendMail->handleContactForm();
+            //trang giới thiệu
+      
+        //các chức năng
+        case 'register':
+            $register = new UserController();
+            $register->register();
+            break;
+        case 'login':
+            $login = new UserController();
+            $login->login();
+            break;
+        case 'logout':
+            unset($_SESSION['user']);
+        
+            $_SESSION['cart_message'] = [
+                'text' => 'Đăng xuất thành công',
+                'type' => 'success'
+            ];
+        
+            header("Location: index.php");
+            exit;
+            break;
+        case 'forgotPass':
+            $forgotPass = new UserController();
+            $forgotPass->forgotPass();
+            break;
+        //giỏ hàng
+        case 'addToCart':
+            $addToCart = new CartController();
+            $addToCart->addToCart();
+            break;
+        case 'removeFromCart':
+            $removeFromCart = new CartController();
+            $removeFromCart->removeFromCart();
+            break;
+        case 'addToCartInDetail':
+            $addToCartInDetail = new CartController();
+            $addToCartInDetail->addToCartInDetail();
+            break;
+        case 'updateCart':
+            $updateCart = new CartController();
+            $updateCart->updateCart();
+            break;
+        //tìm kiếm
+        case 'search':
+            $search = new SearchController();
+            $search->getSearch();
+            break;
+ // ----------------------------------------------------
+        // PHẦN QUAN TRỌNG: ĐẶT HÀNG & THANH TOÁN
+        // ----------------------------------------------------
+        
+        // 1. Xử lý tạo đơn hàng (Chuyển hướng sang VNPAY nếu chọn)
+        case 'order':
+            $order = new PaymentController();
+            $order->createOrder();
+            break;
+
+        // 2. [MỚI THÊM] Xử lý khi VNPAY trả kết quả về
+        case 'vnpay_return':
+            $vnpay = new PaymentController();
+            $vnpay->vnpayReturn();
+            break;
+        
+        // ----------------------------------------------------
+
+        //xác thực email
+        case 'verify':
+            $verify = new UserController();
+            $verify->verifyEmail();
+            break;
+        
+
+
+
+        default:
+            $home = new HomeController();
+            $home->viewHome();
+            break;
+    }
+} else {
+    $home = new HomeController();
+    $home->viewHome();
+}
+require_once 'app/view/footer.php';

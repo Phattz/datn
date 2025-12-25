@@ -1,0 +1,191 @@
+
+/* Tiêu đề */
+.title {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin: 20px 0;
+    color: #333;
+    text-align: center;
+}
+
+/* Thanh tìm kiếm */
+.search-bar {
+    position: relative;
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.search-bar input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #8D6E6E;
+    border-radius: 5px;
+}
+
+.search-bar button {
+    position: absolute;
+    width: 15%;
+    height: 70%;
+    right: 2px;
+    top: 2px;
+    border: none;
+    color: #8D6E6E;
+    cursor: pointer;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+}
+
+
+.search-bar button:hover {
+    background-color: #8D6E6E;
+    color: #fff;
+}
+
+/* Phần bảng bài viết nổi bật */
+.featured-posts {   
+    width: 100%;
+    border-spacing: 0;
+    margin-top: 10px;
+    border: 1px solid #8D6E6E ;    
+}
+.featured-posts tr {
+    display: flex;
+    align-items: center;
+    padding: 5px 15px;
+    table-layout: fixed;
+}
+
+.featured-posts td img {
+    width: 80px;
+    height: 80px;   
+    background-color: #ccc;
+    display: block;
+    left: 10px;
+}
+
+.featured-posts td {
+    border-bottom: 1px solid #8D6E6E;
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+    display: flex;
+    padding: 10px;
+}
+
+.featured-posts td a{
+    text-decoration: none;
+    color: #000;
+    flex: 1;
+}
+
+.featured-posts td a img{
+    text-decoration: none;  
+    color: #ccc;
+}
+.featured-posts td a p { 
+    margin: 5px 0; 
+}
+
+/* Container chính của bài viết */
+.post-item {
+    display: flex;
+    flex-direction: row; /* Hình ảnh bên trái, nội dung bên phải */
+    padding: 15px 10px; /* Khoảng cách bên trong */
+    margin: 10px;
+    border-bottom: 1px solid #8D6e6e; /* Viền dưới mỗi bài viết */
+    margin-bottom: 15px; /* Thêm khoảng cách giữa các bài viết */
+    width: 100%; /* Chiếm toàn bộ chiều rộng */
+    box-sizing: border-box; /* Bao gồm cả padding trong width */
+    gap: 15px;
+}
+
+/* Đảm bảo hình ảnh không bị tràn */
+.post-item img {
+    width: 200px; /* Kích thước hình ảnh */
+    height: 200px;
+    object-fit: cover; /* Giữ đúng tỷ lệ hình ảnh */
+}
+/* Nội dung bài viết */
+.post-content {
+    position: relative;
+    display: flex;
+    flex-direction: column; /* Nội dung được xếp dọc */
+    justify-content: flex-start; /* Căn nội dung theo đầu trên */
+    flex: 1; /* Đảm bảo nội dung bên phải chiếm hết khoảng trống còn lại */
+}
+
+/* Tiêu đề và thông tin bài viết */
+.post-content h3 {
+    font-size: 18px;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.post-content .author-date,
+.post-content .comments {
+    font-size: 14px;
+    color: #888;
+    margin-bottom: 5px;
+}
+
+.post-content .description {
+    margin: 10px 0;
+    color: black;
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    
+}
+
+/* Nút "Xem thêm..." */
+.post-content button {
+    position: absolute;
+    width: 125px;
+    height: 40px;
+    padding: 10px;
+    gap: 10px;
+    background-color: #888;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    bottom: 0px;
+}
+
+.post-content button:hover {
+    background-color: #8D6E6E;
+}
+
+.pagination {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.pagination a {
+    display: inline-block;
+    padding: 8px 12px;
+    margin: 0 5px;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    color: #8D6E6E;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.pagination a.active {
+    background-color: #8D6E6E;
+    color: #fff;
+    border-color: #8D6E6E;
+}
+
+.pagination a:hover {
+    background-color: #714c4c;
+    color: #fff;
+}

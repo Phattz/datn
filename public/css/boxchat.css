@@ -1,0 +1,143 @@
+/* ICON CHAT */
+#chatbot-icon {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(135deg, #ff6fa5, #ff3f86);
+    color: white;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 18px rgba(255, 63, 134, 0.35);
+    transition: 0.25s;
+    z-index: 9999;
+}
+
+#chatbot-icon:hover {
+    transform: scale(1.05);
+}
+
+/* HỘP CHAT */
+#chatbox-box {
+    position: fixed;
+    bottom: 96px;
+    right: 24px;
+    width: 380px;
+    height: 480px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 12px 28px rgba(0,0,0,0.18);
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 9999;
+}
+
+/* HEADER */
+.chat-header {
+    background: linear-gradient(135deg, #ff6fa5, #ff3f86);
+    color: white;
+    padding: 14px 16px;
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* CONTENT */
+#chat-content {
+    flex: 1;
+    padding: 12px;
+    overflow-y: auto;
+    background: #f7f8fb;
+}
+
+/* TIN NHẮN */
+.bot-msg, .user-msg {
+    max-width: 80%;
+    padding: 8px 12px;
+    border-radius: 12px;
+    margin-bottom: 8px;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.bot-msg {
+    background: white;
+    border: 1px solid #eee;
+}
+
+.user-msg {
+    background: #ff5fa2;
+    color: white;
+    margin-left: auto;
+}
+
+/* INPUT */
+.chat-input {
+    display: flex;
+    border-top: 1px solid #eee;
+}
+
+.chat-input input {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    outline: none;
+    font-size: 14px;
+}
+
+.chat-input button {
+    padding: 0 18px;
+    border: none;
+    background: #ff3f86;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* ===== SẢN PHẨM TRONG CHAT ===== */
+.chat-product {
+    display: flex;
+    gap: 10px;
+    background: white;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    padding: 10px;
+    margin: 8px 0;
+}
+
+.chat-product img {
+    width: 80px;
+    height: 80px;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.chat-product-info h4 {
+    font-size: 14px;
+    margin-bottom: 6px;
+}
+
+/* NÚT MUA NGAY */
+.chat-buy-btn {
+    display: inline-block;
+    padding: 6px 12px;
+    border: 2px solid #ff3f86;
+    color: #ff3f86;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: 0.25s;
+}
+
+.chat-buy-btn:hover {
+    background: #ff3f86;
+    color: white;
+}

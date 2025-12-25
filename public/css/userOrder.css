@@ -1,0 +1,277 @@
+
+.l-3, .l-4, .l-9 {
+    padding: 20px;
+}
+.grid.wide.container {
+    transform: translateX(-80px);
+}
+ul.user-menu {
+    list-style: none;
+    margin: 10px 0;
+}
+
+ul.user-menu li a {
+    color: #333;
+    text-decoration: none;
+    display: block;
+    padding: 8px 0;
+    border-bottom: 1px solid #8D6E6E;
+    padding: 30px;
+}
+
+ul.user-menu li a:hover {
+    color: #8D6E6E;
+}
+
+/*Phần infoUser*/
+.productCart{
+    margin: 50px 0;
+}
+.user-menu{
+    font-weight: bold;
+    list-style-type: none;
+    padding: 0;
+}
+
+/* Đặt kiểu dáng cho bảng */
+.main-product table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 16px;
+    text-align: left;
+}
+
+/* Kiểu dáng cho phần đầu bảng */
+.main-product table thead th {
+    background-color: #f4f4f4;
+    color: #333;
+    font-weight: bold;
+    padding: 10px 15px;
+    border-bottom: 2px solid #ddd;
+}
+
+/* Kiểu dáng cho các hàng trong bảng */
+.main-product table tbody tr {
+    border-bottom: 1px solid #ddd;
+}
+
+.main-product table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Kiểu dáng cho các ô trong bảng */
+.main-product table td,
+.main-product table th {
+    padding: 16px 15px;
+    vertical-align: middle; 
+     white-space: nowrap;  
+    overflow: hidden;     
+    text-overflow: ellipsis; 
+}
+.main-product table td:nth-child(3),
+.main-product table td:nth-child(5),
+.main-product table th:nth-child(3),
+.main-product table th:nth-child(5) {
+    white-space: nowrap;
+}
+
+/* Kiểu cho trạng thái */
+.status {
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-weight: bold;
+    display: inline-block;
+}
+
+/* Kiểu cho các liên kết */
+.main-product table a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.main-product table a:hover {
+    text-decoration: underline;
+}
+
+.main-product table a.cancel-order {
+    color: #fff;
+    background-color: #ff4d4f;
+    padding: 8px 15px;
+    border-radius: 5px; 
+    text-decoration: none;
+}
+
+.main-product table a.cancel-order:hover {
+    background-color: #e41e26;
+    text-decoration: none;
+}
+
+/* Kiểu cho checkbox */
+.main-product table input[type="checkbox"] {
+    cursor: pointer;
+}
+
+/* Đặt bo tròn và hiệu ứng khi hover hàng */
+.main-product table tbody tr:hover {
+    background-color: #f1f1f1;
+    transition: background-color 0.2s ease;
+}
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 140px;        
+    height: 36px;        
+    padding: 0 14px;
+    
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+    text-align: center;
+
+    line-height: normal; 
+}
+
+/* Chờ xác nhận */
+.status-pending {
+    background: #fff3cd;
+    color: #856404;
+}
+
+/* Đã hủy */
+.status-cancel {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+/* Đang vận chuyển */
+.status-shipping {
+    background: #d1ecf1;
+    color: #0c5460;
+}
+
+/* Đã giao */
+.status-done {
+    background: #d4edda;
+    color: #155724;
+}
+
+.table-action-link {
+    white-space: nowrap; /* Không cho xuống dòng */
+    display: inline-block;
+}
+.cancel-order {
+    white-space: nowrap;   /* Giữ 1 dòng */
+    display: inline-block; 
+}
+/* ===== CONFIRM CANCEL ORDER TOAST ===== */
+.cancel-toast {
+    position: fixed;
+    top: 160px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #fff;
+    padding: 18px 24px;
+    border-radius: 10px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+    z-index: 99999;
+    min-width: 360px;
+    text-align: center;
+    animation: cancelFadeIn .25s ease;
+}
+
+/* Ẩn */
+.cancel-toast.hide {
+    display: none;
+}
+
+.cancel-toast span {
+    display: block;
+    font-size: 15px;
+    color: #333;
+    margin-bottom: 16px;
+}
+
+/* Action buttons */
+.cancel-toast-actions {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+}
+
+.cancel-toast-actions button {
+    padding: 8px 18px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+    min-width: 90px;
+    transition: .2s ease;
+}
+
+/* Nút xác nhận */
+#cancel-yes {
+    background: #E53935;
+    color: #fff;
+}
+
+#cancel-yes:hover {
+    background: #c62828;
+}
+
+/* Nút không */
+#cancel-no {
+    background: #e0e0e0;
+    color: #333;
+}
+
+#cancel-no:hover {
+    background: #d5d5d5;
+}
+
+/* Animation */
+@keyframes cancelFadeIn {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+    }
+}
+
+#toast-msg-fixed {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 14px 26px;
+    top: 150px;
+    border-radius: 8px;
+    font-size: 16px;
+    color: #fff;
+    z-index: 99999;
+    transition: opacity .4s ease;
+    
+}
+#toast-msg-fixed.success { background:#4CAF50; }
+#toast-msg-fixed.error { background:#E53935; }
+#toast-msg-fixed.hide { opacity:0; }
+
+.color-option.active {
+    background: #8D6E6E !important;
+    color: #fff !important;
+    border-color: #8D6E6E !important;
+}
+.user-name {
+    font-size: 16px;
+    margin-bottom: 4px;
+    font-weight: bold;
+}
+
+.comment-text {
+    margin: 0 0 5px 0;
+}       

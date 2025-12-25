@@ -1,0 +1,148 @@
+
+.l-3, .l-4, .l-9 {
+    padding: 20px;
+}
+
+ul.user-menu {
+    list-style: none;
+    margin: 10px 0;
+}
+
+ul.user-menu li a {
+    color: #333;
+    text-decoration: none;
+    display: block;
+    padding: 8px 0;
+    border-bottom: 1px solid #8D6E6E;
+    padding: 30px;
+}
+
+ul.user-menu li a:hover {
+    color: #8d6e6e;
+}
+
+/*Phần infoUser*/
+
+.inforUser{
+    margin: 20px;
+}
+
+#user-info-form{
+    width: 100%;
+}
+
+.user-menu{
+    font-weight: bold;
+    list-style-type: none;
+    padding: 0;
+}
+
+.user-info{
+    margin-top: 20px;
+}
+
+.info-block {
+    margin-bottom: 20px;
+}
+
+/* Định dạng cho form */
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Tiêu đề thông tin người dùng */
+.user-info h1 {
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Định dạng cho form */
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Tạo khoảng cách cho các trường nhập liệu */
+.form-group {
+    margin-bottom: 15px;
+}
+
+/* Nhãn của các trường */
+label {
+    font-size: 16px;
+    font-weight: bold;
+    color: #555;
+    display: block;
+    text-align: start;
+}
+
+/* Định dạng cho các input */
+input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f5f5f5;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+input:disabled {
+    background-color: #f4f4f4;
+}
+
+/* Định dạng cho các nút */
+.ubtn {
+    padding: 10px 20px;
+    border: 1px solid #8D6E6E;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    color: #fff;
+    background-color: #808080;
+}
+
+.ubtn:hover {
+    background-color: #8D6E6E;
+}
+
+/* Nút Lưu ban đầu ẩn */
+#save-btn {
+    display: none;
+}
+
+#toast-msg-fixed {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 14px 26px;
+    top: 150px;
+    border-radius: 8px;
+    font-size: 16px;
+    color: #fff;
+    z-index: 99999;
+    transition: opacity .4s ease;
+    
+}
+#toast-msg-fixed.success { background:#4CAF50; }
+#toast-msg-fixed.error { background:#E53935; }
+#toast-msg-fixed.hide { opacity:0; }
+
+.color-option.active {
+    background: #8D6E6E !important;
+    color: #fff !important;
+    border-color: #8D6E6E !important;
+}
+.user-name {
+    font-size: 16px;
+    margin-bottom: 4px;
+    font-weight: bold;
+}
+
+.comment-text {
+    margin: 0 0 5px 0;
+}

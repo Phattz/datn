@@ -1,0 +1,251 @@
+
+.l-3, .l-4, .l-9 {
+    padding: 20px;
+}
+
+ul.user-menu {
+    list-style: none;
+    margin: 10px 0;
+}
+
+ul.user-menu li a {
+    color: #333;
+    text-decoration: none;
+    display: block;
+    padding: 8px 0;
+    border-bottom: 1px solid #8D6E6E;
+    padding: 30px;
+}
+
+ul.user-menu li a:hover {
+    color: #8d6e6e;
+}
+/*Phần infoUser*/
+.user-menu{
+    font-weight: bold;
+    list-style-type: none;
+    padding: 0;
+}
+
+.user-info{
+    margin: 20px;
+}
+
+.info-block {
+    margin-bottom: 20px;
+}
+
+/*địa chỉ */
+.useraddress{
+    margin: 50px 0;
+}
+.useraddress__title{
+    display: flex;
+    justify-items: left;
+}
+
+.useraddress__title-address{
+    font-size: 30px;
+    font-weight: bold;
+}
+
+/* ô địa chỉ */
+.address{
+    border: 1px solid #ccc;
+    align-items: center;
+    width: 100%;
+    margin-top: 32px;
+    border-radius: 7px;
+    background-color: #f6f6f6;
+}
+
+.address .address-col{
+    padding: 25px;
+    line-height: 30px;
+    display: block;
+    text-align: start;
+}
+/* check box */
+.address .address__input{
+    padding: 0 0 50px 20px;
+}
+
+.address .address__input #checkbox{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%; 
+    border: 2px solid #ccc;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+.address .address__input #checkbox:checked {
+    background-color: #8d6e6e;
+    border-color: #ccc;
+}
+
+.address .address-col .address__item-title{
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.address .address-col .address__item-content{
+    font-size: 16px;
+}
+
+.address__item-icon>.icon>i{
+    color: #333;
+    cursor: pointer;
+}
+
+/* ô thêm địa chỉ */
+.add__address{
+    text-align: center;
+}
+
+.add__address-action{
+    width: 100%;
+    margin-top: 32px;
+    border-top: 1px dotted #ccc;
+}
+/* nút thêm ô địa chỉ */
+.add__address-btn{
+    margin: 10px;
+    padding: 5px 10px;
+    border-radius: 50%;
+    font-size: 15px;
+    background-color: #ccc;
+    cursor: pointer;
+    border:none;
+    text-decoration: none;
+    color: black;
+}
+
+.add__address-btn:hover{
+    background-color: #8d6e6e;
+    color: #fff;
+}
+
+.add__address-btn:active{
+    transform: scale(0.95);
+}   
+
+.add__address-item{
+    padding-top: 10px;
+}
+
+.add__address-item p{
+    font-size: 14px;
+    margin-top: 15px;
+}
+
+
+  /* dialog bảng thêm địa chỉ */
+.dialog{
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity linear 0.2s;
+}
+
+.dialog:target{
+    visibility: visible;
+    opacity: 1;
+}
+
+.overlay{
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.dialog-body{
+    width: 800px;
+    padding: 40px;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-radius: 5px;
+}
+
+.btn-close-dialog{
+    text-decoration: none;
+    color: #000;
+}
+
+.title-add-address{
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 0;
+}
+form{
+    width: 100%;
+    max-width: 800px; /* Giới hạn chiều rộng tối đa cho form */
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Khoảng cách giữa các phần tử */
+}
+label{
+    font-size: 18px;
+}
+
+input[type="text"]{
+    padding: 15px;
+    border: 1px solid #8d6e6e;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+input[type="submit"]{
+    padding: 10px;
+    background-color: #808080;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+}
+
+input[type="submit"]:hover{
+    background-color: #8d6e6e;   
+}
+
+#toast-msg-fixed {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 14px 26px;
+    top: 150px;
+    border-radius: 8px;
+    font-size: 16px;
+    color: #fff;
+    z-index: 99999;
+    transition: opacity .4s ease;
+    
+}
+#toast-msg-fixed.success { background:#4CAF50; }
+#toast-msg-fixed.error { background:#E53935; }
+#toast-msg-fixed.hide { opacity:0; }
+
+.color-option.active {
+    background: #8D6E6E !important;
+    color: #fff !important;
+    border-color: #8D6E6E !important;
+}
+.user-name {
+    font-size: 16px;
+    margin-bottom: 4px;
+    font-weight: bold;
+}
+
+.comment-text {
+    margin: 0 0 5px 0;
+}
